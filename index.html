@@ -153,16 +153,25 @@
         .chart-container {
             margin-bottom: 20px;
         }
-        .ai-factor-positive {
-            color: #28a745;
-            font-weight: bold;
+        .ai-analysis-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
         }
-        .ai-factor-negative {
-            color: #dc3545;
-            font-weight: bold;
+        .reason-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-left: 4px solid #4CAF50;
         }
-        .ai-factor-neutral {
-            color: #6c757d;
+        .warning-reason {
+            border-left-color: #FFC107;
+        }
+        .danger-reason {
+            border-left-color: #F44336;
         }
     </style>
 </head>
@@ -256,64 +265,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- NUOVI FATTORI AI PER BASKET -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">⭐ Forma recente</label>
-                        <select class="form-control" id="basket-forma">
-                            <option value="1.2">🚀 Ottima (3+ vittorie consecutive)</option>
-                            <option value="1.0" selected>✅ Buona</option>
-                            <option value="0.8">⚠️ Alternante</option>
-                            <option value="0.6">📉 Pessima (3+ sconfitte)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">🏠 Fattore Campo</label>
-                        <select class="form-control" id="basket-campo">
-                            <option value="1.1">🏠 In casa</option>
-                            <option value="1.0" selected>⚖️ Neutro</option>
-                            <option value="0.9">✈️ In trasferta</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">📊 Confronti Diretti</label>
-                        <select class="form-control" id="basket-confronti">
-                            <option value="1.15">✅ Dominante (vinti 3+ degli ultimi 5)</option>
-                            <option value="1.0" selected>⚖️ Equilibrati</option>
-                            <option value="0.85">❌ Sottomesso (persi 3+ degli ultimi 5)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">🎯 Motivazione</label>
-                        <select class="form-control" id="basket-motivazione">
-                            <option value="1.1">🔥 Alta (playoff/titolo)</option>
-                            <option value="1.0" selected>✅ Normale</option>
-                            <option value="0.9">😐 Bassa (fine stagione)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">🕒 Condizioni Fisiche</label>
-                        <select class="form-control" id="basket-condizioni">
-                            <option value="1.1">💪 Ottime (nessun infortunio)</option>
-                            <option value="1.0" selected>✅ Normali</option>
-                            <option value="0.8">🏥 Critiche (infortuni chiave)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
             
             <div class="mb-4">
                 <label class="form-label">📊 Successi storici</label>
@@ -367,24 +318,11 @@
                         <p><strong>📊 Successi:</strong> <span id="basket-successi-result"></span></p>
                     </div>
                 </div>
-
-                <!-- NUOVA SEZIONE FATTORI AI -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">🧠 Analisi Fattori AI</h5>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>⭐ Forma:</strong> <span id="basket-fattore-forma"></span></p>
-                                <p><strong>🏠 Campo:</strong> <span id="basket-fattore-campo"></span></p>
-                                <p><strong>📊 Confronti:</strong> <span id="basket-fattore-confronti"></span></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>🎯 Motivazione:</strong> <span id="basket-fattore-motivazione"></span></p>
-                                <p><strong>🕒 Condizioni:</strong> <span id="basket-fattore-condizioni"></span></p>
-                                <p><strong>📈 Impatto Totale:</strong> <span id="basket-impatto-totale"></span></p>
-                            </div>
-                        </div>
-                    </div>
+                
+                <!-- ANALISI DETTAGLIATA AI -->
+                <div id="basket-analisi-ai" class="ai-analysis-card hidden">
+                    <h4 class="text-center mb-4">🧠 Analisi Dettagliata AI</h4>
+                    <div id="basket-ragionamento-ai"></div>
                 </div>
                 
                 <div id="basket-consiglio" class="consiglio-box"></div>
@@ -452,65 +390,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- NUOVI FATTORI AI PER CALCIO -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">⭐ Forma Squadra 1</label>
-                        <select class="form-control" id="calcio-forma1">
-                            <option value="1.2">🚀 Ottima (3+ vittorie consecutive)</option>
-                            <option value="1.0" selected>✅ Buona</option>
-                            <option value="0.8">⚠️ Alternante</option>
-                            <option value="0.6">📉 Pessima (3+ sconfitte)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">⭐ Forma Squadra 2</label>
-                        <select class="form-control" id="calcio-forma2">
-                            <option value="1.2">🚀 Ottima (3+ vittorie consecutive)</option>
-                            <option value="1.0" selected>✅ Buona</option>
-                            <option value="0.8">⚠️ Alternante</option>
-                            <option value="0.6">📉 Pessima (3+ sconfitte)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">🏠 Fattore Campo</label>
-                        <select class="form-control" id="calcio-campo">
-                            <option value="1.15">🏠 Squadra 1 in casa</option>
-                            <option value="1.0" selected>⚖️ Campo neutro</option>
-                            <option value="0.85">✈️ Squadra 2 in casa</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">🎯 Motivazione</label>
-                        <select class="form-control" id="calcio-motivazione">
-                            <option value="1.1">🔥 Alta (titolo/qualificazione)</option>
-                            <option value="1.0" selected>✅ Normale</option>
-                            <option value="0.9">😐 Bassa (amichevole/fine torneo)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">🌧️ Condizioni Meteo</label>
-                        <select class="form-control" id="calcio-meteo">
-                            <option value="1.0" selected>☀️ Buone</option>
-                            <option value="0.9">🌧️ Pioggia (Under favorito)</option>
-                            <option value="1.1">💨 Vento (Over favorito)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
             
             <div class="mb-4">
                 <label class="form-label">📊 Successi storici</label>
@@ -564,24 +443,11 @@
                         <p><strong>📊 Successi:</strong> <span id="calcio-successi-result"></span></p>
                     </div>
                 </div>
-
-                <!-- NUOVA SEZIONE FATTORI AI PER CALCIO -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">🧠 Analisi Fattori AI</h5>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>⭐ Forma Squadra 1:</strong> <span id="calcio-fattore-forma1"></span></p>
-                                <p><strong>⭐ Forma Squadra 2:</strong> <span id="calcio-fattore-forma2"></span></p>
-                                <p><strong>🏠 Campo:</strong> <span id="calcio-fattore-campo"></span></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>🎯 Motivazione:</strong> <span id="calcio-fattore-motivazione"></span></p>
-                                <p><strong>🌧️ Meteo:</strong> <span id="calcio-fattore-meteo"></span></p>
-                                <p><strong>📈 Impatto Totale:</strong> <span id="calcio-impatto-totale"></span></p>
-                            </div>
-                        </div>
-                    </div>
+                
+                <!-- ANALISI DETTAGLIATA AI -->
+                <div id="calcio-analisi-ai" class="ai-analysis-card hidden">
+                    <h4 class="text-center mb-4">🧠 Analisi Dettagliata AI</h4>
+                    <div id="calcio-ragionamento-ai"></div>
                 </div>
                 
                 <div id="calcio-consiglio" class="consiglio-box"></div>
@@ -609,16 +475,15 @@
                     <div class="card-body">
                         <p>L'<strong>AI Betting</strong> analizza multiple variabili per ogni sport:</p>
                         
-                        <p><strong>🏀 Basket:</strong> Media prestazioni vs soglia, dati storici, value bet + Fattori AI avanzati</p>
-                        <p><strong>⚽ Calcio:</strong> Medie combinate squadre, tipo scommessa (Over/Under), storico + Fattori AI avanzati</p>
+                        <p><strong>🏀 Basket:</strong> Media prestazioni vs soglia, dati storici, value bet</p>
+                        <p><strong>⚽ Calcio:</strong> Medie combinate squadre, tipo scommessa (Over/Under), storico</p>
                         
-                        <h5 class="mt-4">🧠 Nuovi Fattori AI:</h5>
+                        <h5 class="mt-4">🧠 Nuova Analisi Dettagliata:</h5>
                         <ul>
-                            <li><strong>Forma recente:</strong> Vittorie/sconfitte consecutive</li>
-                            <li><strong>Fattore campo:</strong> Casa/trasferta/campo neutro</li>
-                            <li><strong>Confronti diretti:</strong> Storico degli scontri</li>
-                            <li><strong>Motivazione:</strong> Importanza della partita</li>
-                            <li><strong>Condizioni:</strong> Infortuni, meteo, fattori esterni</li>
+                            <li><strong>Analisi statistica avanzata</strong> dei dati inseriti</li>
+                            <li><strong>Spiegazione dettagliata</strong> del ragionamento AI</li>
+                            <li><strong>Fattori chiave</strong> che influenzano la decisione</li>
+                            <li><strong>Raccomandazione personalizzata</strong> basata su dati reali</li>
                         </ul>
 
                         <h5 class="mt-4">Punteggio Confidenza:</h5>
@@ -629,7 +494,7 @@
                             <li>❌ <strong>0-39%:</strong> Sconsigliato</li>
                         </ul>
                         
-                        <p><em>L'AI considera sempre probabilità, value bet e fattori specifici dello sport per il consiglio finale.</em></p>
+                        <p><em>L'AI spiega sempre il suo ragionamento e i fattori che influenzano la decisione finale.</em></p>
                     </div>
                 </div>
             </div>
@@ -653,15 +518,10 @@
         }
 
         function mostraSezione(sport) {
-            // Nascondi tutte le sezioni
             document.getElementById('basket-section').classList.add('hidden');
             document.getElementById('calcio-section').classList.add('hidden');
-            
-            // Rimuovi la classe active da tutte le card
             document.getElementById('basket-card').classList.remove('active-sport');
             document.getElementById('calcio-card').classList.remove('active-sport');
-            
-            // Mostra la sezione selezionata
             document.getElementById(sport + '-section').classList.remove('hidden');
             document.getElementById(sport + '-card').classList.add('active-sport');
         }
@@ -678,7 +538,6 @@
 
         // Funzione per creare il grafico di analisi
         function creaGraficoAnalisi(prob, quota, quotaTeo, sport, containerId) {
-            // Crea un grafico indicator per la probabilità
             var indicatorData = {
                 type: "indicator",
                 mode: "gauge+number+delta",
@@ -702,7 +561,6 @@
                 }
             };
 
-            // Crea un grafico a barre per le quote
             var barData = {
                 type: "bar",
                 x: ['Quota Teorica', 'Quota Bookmaker'],
@@ -714,42 +572,174 @@
                 textposition: 'auto'
             };
 
-            // Layout per il grafico indicator
             var indicatorLayout = {
                 title: `Probabilità ${sport}`,
                 height: 400
             };
 
-            // Layout per il grafico a barre
             var barLayout = {
                 title: `Confronto Quote ${sport}`,
                 height: 400
             };
 
-            // Crea i due grafici separati
             Plotly.newPlot(containerId + '-prob', [indicatorData], indicatorLayout);
             Plotly.newPlot(containerId + '-quote', [barData], barLayout);
         }
 
+        // NUOVA FUNZIONE: Analisi dettagliata AI
+        function generaAnalisiDettagliataAI(sport, pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successi, metodo) {
+            var analisiHTML = '';
+            var ragionamenti = [];
+            
+            // Analisi basata sul tipo di pronostico
+            if (pronostico.toLowerCase().includes("over")) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `📈 <strong>Media vs Soglia:</strong> La media (${media}) è ${media > soglia ? 'superiore' : 'inferiore'} alla soglia (${soglia}) - ${media > soglia ? 'favorevole per OVER' : 'sfavorevole per OVER'}`
+                });
+                
+                if (media > soglia * 1.15) {
+                    ragionamenti.push({
+                        tipo: "positive", 
+                        testo: `🎯 <strong>Margine Comfort:</strong> La media supera la soglia del 15%+ - indicatore molto positivo`
+                    });
+                } else if (media < soglia * 0.85) {
+                    ragionamenti.push({
+                        tipo: "negative",
+                        testo: `⚠️ <strong>Gap Significativo:</strong> La media è significativamente sotto la soglia - rischio elevato`
+                    });
+                }
+            } else if (pronostico.toLowerCase().includes("under")) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `📉 <strong>Media vs Soglia:</strong> La media (${media}) è ${media < soglia ? 'inferiore' : 'superiore'} alla soglia (${soglia}) - ${media < soglia ? 'favorevole per UNDER' : 'sfavorevole per UNDER'}`
+                });
+                
+                if (media < soglia * 0.85) {
+                    ragionamenti.push({
+                        tipo: "positive",
+                        testo: `🎯 <strong>Margine Comfort:</strong> La media è sotto la soglia del 15%+ - indicatore molto positivo`
+                    });
+                } else if (media > soglia * 1.15) {
+                    ragionamenti.push({
+                        tipo: "negative",
+                        testo: `⚠️ <strong>Gap Significativo:</strong> La media è significativamente sopra la soglia - rischio elevato`
+                    });
+                }
+            }
+
+            // Analisi probabilità
+            if (prob >= 70) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `🎲 <strong>Alta Probabilità:</strong> ${prob}% di successo - livello di confidenza molto alto`
+                });
+            } else if (prob >= 60) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `✅ <strong>Buona Probabilità:</strong> ${prob}% di successo - livello di confidenza solido`
+                });
+            } else if (prob >= 50) {
+                ragionamenti.push({
+                    tipo: "warning",
+                    testo: `⚖️ <strong>Probabilità Equilibrata:</strong> ${prob}% di successo - situazione bilanciata`
+                });
+            } else {
+                ragionamenti.push({
+                    tipo: "negative",
+                    testo: `📊 <strong>Probabilità Bassa:</strong> Solo ${prob}% di successo - rischio significativo`
+                });
+            }
+
+            // Analisi value bet
+            if (valueMargin > 15) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `💰 <strong>Value Bet Eccellente:</strong> +${valueMargin.toFixed(1)}% di valore - opportunità rara`
+                });
+            } else if (valueMargin > 5) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `💵 <strong>Buon Value Bet:</strong> +${valueMargin.toFixed(1)}% di valore - situazione favorevole`
+                });
+            } else if (valueMargin > 0) {
+                ragionamenti.push({
+                    tipo: "warning",
+                    testo: `📊 <strong>Value Bet Limitato:</strong> +${valueMargin.toFixed(1)}% di valore - margine ridotto`
+                });
+            } else {
+                ragionamenti.push({
+                    tipo: "negative",
+                    testo: `❌ <strong>Nessun Value Bet:</strong> ${valueMargin.toFixed(1)}% di valore - quota bookmaker non conveniente`
+                });
+            }
+
+            // Analisi dati storici
+            if (metodo.includes("STORICI")) {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `📚 <strong>Dati Storici Solidi:</strong> Analisi basata su ${successi} - fondamento statistico robusto`
+                });
+            } else {
+                ragionamenti.push({
+                    tipo: "warning",
+                    testo: `🤖 <strong>Stima AI:</strong> Probabilità calcolata algoritmicamente - attendibilità variabile`
+                });
+            }
+
+            // Sport-specific analysis
+            if (sport === 'basket') {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `🏀 <strong>Analisi Basket:</strong> Considera variabilità prestazioni e fattori individuali`
+                });
+            } else if (sport === 'calcio') {
+                ragionamenti.push({
+                    tipo: "positive",
+                    testo: `⚽ <strong>Analisi Calcio:</strong> Valuta dinamiche di squadra e fattori tattici`
+                });
+            }
+
+            // Costruisci HTML
+            ragionamenti.forEach(rag => {
+                var classe = rag.tipo === "positive" ? "reason-item" : 
+                            rag.tipo === "warning" ? "reason-item warning-reason" : 
+                            "reason-item danger-reason";
+                analisiHTML += `<div class="${classe}">${rag.testo}</div>`;
+            });
+
+            // Conclusione
+            var conclusione = '';
+            if (prob >= 70 && valueMargin > 10) {
+                conclusione = `🎯 <strong>CONCLUSIONE AI:</strong> Combinazione eccellente di alta probabilità (${prob}%) e forte value bet (+${valueMargin.toFixed(1)}%). L'AI raccomanda fortemente questa scommessa.`;
+            } else if (prob >= 60 && valueMargin > 5) {
+                conclusione = `✅ <strong>CONCLUSIONE AI:</strong> Buon bilanciamento tra probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%). Scommessa consigliata con moderazione.`;
+            } else if (prob >= 50 && valueMargin > 0) {
+                conclusione = `⚖️ <strong>CONCLUSIONE AI:</strong> Situazione equilibrata. Probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%) sufficienti per considerare la scommessa.`;
+            } else {
+                conclusione = `⚠️ <strong>CONCLUSIONE AI:</strong> Fattori di rischio elevati. Probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%) insufficienti per una raccomandazione.`;
+            }
+
+            analisiHTML += `<div class="reason-item" style="background: rgba(255,255,255,0.2); border-left-color: #2196F3;">${conclusione}</div>`;
+
+            return analisiHTML;
+        }
+
         // Funzione per l'analisi avanzata AI
         function analisiAvanzataAI(esito, media, soglia, prob, quota, quotaTeo) {
-            // Calcolo del margine deivalue
             var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
             
-            // Analisi specifica per tipo di scommessa
             if (esito.toLowerCase().includes("over")) {
                 var confidenceScore = 0;
                 
-                // Fattore 1: Confronto media vs soglia
-                if (media > soglia * 1.2) {  // 20% sopra la soglia
+                if (media > soglia * 1.2) {
                     confidenceScore += 40;
                 } else if (media > soglia) {
                     confidenceScore += 20;
-                } else if (media > soglia * 0.9) {  // 90% della soglia
+                } else if (media > soglia * 0.9) {
                     confidenceScore += 10;
                 }
                 
-                // Fattore 2: Probabilità storica
                 if (prob > 70) {
                     confidenceScore += 30;
                 } else if (prob > 60) {
@@ -758,7 +748,6 @@
                     confidenceScore += 10;
                 }
                 
-                // Fattore 3: Value bet
                 if (valueMargin > 20) {
                     confidenceScore += 20;
                 } else if (valueMargin > 10) {
@@ -767,7 +756,6 @@
                     confidenceScore += 5;
                 }
                 
-                // Bonus per combinazioni favorevoli
                 if (media > soglia && prob > 60) {
                     confidenceScore += 10;
                 }
@@ -776,16 +764,14 @@
             } else if (esito.toLowerCase().includes("under")) {
                 var confidenceScore = 0;
                 
-                // Fattore 1: Confronto media vs soglia
-                if (media < soglia * 0.8) {  // 20% sotto la soglia
+                if (media < soglia * 0.8) {
                     confidenceScore += 40;
                 } else if (media < soglia) {
                     confidenceScore += 20;
-                } else if (media < soglia * 1.1) {  // 110% della soglia
+                } else if (media < soglia * 1.1) {
                     confidenceScore += 10;
                 }
                 
-                // Fattore 2: Probabilità storica
                 if (prob > 70) {
                     confidenceScore += 30;
                 } else if (prob > 60) {
@@ -794,7 +780,6 @@
                     confidenceScore += 10;
                 }
                 
-                // Fattore 3: Value bet
                 if (valueMargin > 20) {
                     confidenceScore += 20;
                 } else if (valueMargin > 10) {
@@ -803,14 +788,12 @@
                     confidenceScore += 5;
                 }
                 
-                // Bonus per combinazioni favorevoli
                 if (media < soglia && prob > 60) {
                     confidenceScore += 10;
                 }
                 
                 return generaConsiglioFinale("UNDER", confidenceScore, valueMargin, prob);
-            } else if (["gol", "goal", "ace", "vincente"].some(keyword => esito.toLowerCase().includes(keyword))) {
-                // Per scommesse generiche (Gol/No Gol, Ace, Vincente)
+            } else {
                 var confidenceScore = 0;
                 
                 if (prob > 70) {
@@ -832,66 +815,37 @@
                 }
                 
                 return generaConsiglioFinale(esito.toUpperCase(), confidenceScore, valueMargin, prob);
-            } else {
-                return generaConsiglioGenerico(prob, valueMargin);
             }
         }
 
         function generaConsiglioFinale(tipoScommessa, confidenceScore, valueMargin, prob) {
-            // Genera il consiglio finale basato sul punteggio di confidenza
-            
             if (confidenceScore >= 80) {
                 return `<div class="success-card">
                     <h5>🚀 <strong>FORTE RACCOMANDAZIONE ${tipoScommessa}</strong></h5>
-                    <p>Confidenza: ${confidenceScore}%</p>
+                    <p>Confidenza AI: ${confidenceScore}%</p>
                     <p>💰 Value: +${valueMargin.toFixed(1)}% | Probabilità: ${prob}%</p>
                     <p>🎯 L'AI è molto fiduciosa in questa scommessa!</p>
                 </div>`;
             } else if (confidenceScore >= 60) {
                 return `<div class="warning-card">
                     <h5>✅ <strong>CONSIGLIO ${tipoScommessa}</strong></h5>
-                    <p>Confidenza: ${confidenceScore}%</p>
+                    <p>Confidenza AI: ${confidenceScore}%</p>
                     <p>💰 Value: +${valueMargin.toFixed(1)}% | Probabilità: ${prob}%</p>
                     <p>👍 Buona opportunità secondo l'analisi AI.</p>
                 </div>`;
             } else if (confidenceScore >= 40) {
                 return `<div class="warning-card">
                     <h5>⚠️ <strong>${tipoScommessa} CON PRUDENZA</strong></h5>
-                    <p>Confidenza: ${confidenceScore}%</p>
+                    <p>Confidenza AI: ${confidenceScore}%</p>
                     <p>💰 Value: +${valueMargin.toFixed(1)}% | Probabilità: ${prob}%</p>
                     <p>🤔 Possibile ma rischiosa. Considera stake ridotto.</p>
                 </div>`;
             } else {
                 return `<div class="danger-card">
                     <h5>❌ <strong>SCONSIGLIO ${tipoScommessa}</strong></h5>
-                    <p>Confidenza: ${confidenceScore}%</p>
+                    <p>Confidenza AI: ${confidenceScore}%</p>
                     <p>💰 Value: +${valueMargin.toFixed(1)}% | Probabilità: ${prob}%</p>
                     <p>🚫 I dati non supportano questa scommessa.</p>
-                </div>`;
-            }
-        }
-
-        function generaConsiglioGenerico(prob, valueMargin) {
-            // Per scommesse generiche senza Over/Under
-            if (prob > 65 && valueMargin > 10) {
-                return `<div class="success-card">
-                    <h5>🚀 <strong>FORTE RACCOMANDAZIONE</strong></h5>
-                    <p>Probabilità: ${prob}%, Value: +${valueMargin.toFixed(1)}%</p>
-                </div>`;
-            } else if (prob > 55 && valueMargin > 0) {
-                return `<div class="warning-card">
-                    <h5>✅ <strong>CONSIGLIO DI GIOCARE</strong></h5>
-                    <p>Probabilità: ${prob}%, Value: +${valueMargin.toFixed(1)}%</p>
-                </div>`;
-            } else if (prob > 50) {
-                return `<div class="warning-card">
-                    <h5>⚠️ <strong>GIOCA CON PRUDENZA</strong></h5>
-                    <p>Probabilità: ${prob}%, Value: +${valueMargin.toFixed(1)}%</p>
-                </div>`;
-            } else {
-                return `<div class="danger-card">
-                    <h5>❌ <strong>SCONSIGLIO</strong></h5>
-                    <p>Probabilità troppo bassa: ${prob}%</p>
                 </div>`;
             }
         }
@@ -899,8 +853,6 @@
         // Funzione per validare i campi obbligatori
         function validaCampi(sport) {
             var valid = true;
-            
-            // Reset errori
             document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
             
             if (sport === 'basket') {
@@ -936,9 +888,7 @@
 
         // Funzioni di analisi per ogni sport
         function analizzaBasket() {
-            if (!validaCampi('basket')) {
-                return;
-            }
+            if (!validaCampi('basket')) return;
             
             var squadra1 = document.getElementById('basket-squadra1').value;
             var squadra2 = document.getElementById('basket-squadra2').value;
@@ -948,13 +898,6 @@
             var soglia = parseFloat(document.getElementById('basket-soglia').value);
             var quota = parseFloat(document.getElementById('basket-quota').value);
             var successi = document.getElementById('basket-successi').value;
-            
-            // Raccogli i nuovi fattori AI
-            var forma = parseFloat(document.getElementById('basket-forma').value);
-            var campo = parseFloat(document.getElementById('basket-campo').value);
-            var confronti = parseFloat(document.getElementById('basket-confronti').value);
-            var motivazione = parseFloat(document.getElementById('basket-motivazione').value);
-            var condizioni = parseFloat(document.getElementById('basket-condizioni').value);
             
             try {
                 var media = eventi > 0 ? Math.round((totale / eventi) * 100) / 100 : 0.0;
@@ -968,7 +911,6 @@
                     successiTxt = n + " su " + d;
                     metodo = "📊 DATI STORICI";
                 } else {
-                    // Stima basata su media vs soglia se non ci sono dati storici
                     if (media > 0 && soglia > 0) {
                         if (media > soglia) {
                             prob = Math.min(70, 50 + (media - soglia) * 10);
@@ -981,17 +923,6 @@
                     successiTxt = "Stimato da media";
                     metodo = "🤖 STIMA AI";
                 }
-                
-                // APPLICA I FATTORI AI MIGLIORATI
-                var probBase = prob;
-                var probMigliorata = probBase * forma * campo * confronti * motivazione * condizioni;
-                
-                // Limita tra 5% e 95%
-                probMigliorata = Math.max(5, Math.min(95, probMigliorata));
-                probMigliorata = Math.round(probMigliorata * 10) / 10;
-                
-                // USA probMigliorata invece di prob
-                var prob = probMigliorata;
                 
                 var quotaTeo = calcolaQuotaTeorica(prob);
                 var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
@@ -1012,31 +943,16 @@
                 document.getElementById('basket-pronostico-result').textContent = pronostico;
                 document.getElementById('basket-media').textContent = media;
                 document.getElementById('basket-soglia-result').textContent = soglia;
-                document.getElementById('basket-metodo').textContent = metodo + " + AI";
+                document.getElementById('basket-metodo').textContent = metodo;
                 document.getElementById('basket-successi-result').textContent = successiTxt;
-                
-                // Aggiorna i fattori AI
-                document.getElementById('basket-fattore-forma').textContent = (forma > 1 ? "+" : "") + ((forma - 1) * 100).toFixed(0) + "%";
-                document.getElementById('basket-fattore-forma').className = forma > 1 ? 'ai-factor-positive' : (forma < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('basket-fattore-campo').textContent = (campo > 1 ? "+" : "") + ((campo - 1) * 100).toFixed(0) + "%";
-                document.getElementById('basket-fattore-campo').className = campo > 1 ? 'ai-factor-positive' : (campo < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('basket-fattore-confronti').textContent = (confronti > 1 ? "+" : "") + ((confronti - 1) * 100).toFixed(0) + "%";
-                document.getElementById('basket-fattore-confronti').className = confronti > 1 ? 'ai-factor-positive' : (confronti < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('basket-fattore-motivazione').textContent = (motivazione > 1 ? "+" : "") + ((motivazione - 1) * 100).toFixed(0) + "%";
-                document.getElementById('basket-fattore-motivazione').className = motivazione > 1 ? 'ai-factor-positive' : (motivazione < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('basket-fattore-condizioni').textContent = (condizioni > 1 ? "+" : "") + ((condizioni - 1) * 100).toFixed(0) + "%";
-                document.getElementById('basket-fattore-condizioni').className = condizioni > 1 ? 'ai-factor-positive' : (condizioni < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                var impattoTotale = ((probMigliorata / probBase - 1) * 100).toFixed(1);
-                document.getElementById('basket-impatto-totale').textContent = (impattoTotale > 0 ? "+" : "") + impattoTotale + "%";
-                document.getElementById('basket-impatto-totale').className = impattoTotale > 0 ? 'ai-factor-positive' : (impattoTotale < 0 ? 'ai-factor-negative' : 'ai-factor-neutral');
                 
                 // Crea il grafico
                 creaGraficoAnalisi(prob, quota, quotaTeo, "Basket", "basket-grafico");
+                
+                // Genera l'analisi AI dettagliata
+                var analisiDettagliata = generaAnalisiDettagliataAI('basket', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
+                document.getElementById('basket-ragionamento-ai').innerHTML = analisiDettagliata;
+                document.getElementById('basket-analisi-ai').classList.remove('hidden');
                 
                 // Genera il consiglio AI
                 var consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
@@ -1051,9 +967,7 @@
         }
 
         function analizzaCalcio() {
-            if (!validaCampi('calcio')) {
-                return;
-            }
+            if (!validaCampi('calcio')) return;
             
             var squadra1 = document.getElementById('calcio-squadra1').value;
             var squadra2 = document.getElementById('calcio-squadra2').value;
@@ -1063,13 +977,6 @@
             var soglia = parseFloat(document.getElementById('calcio-soglia').value);
             var quota = parseFloat(document.getElementById('calcio-quota').value);
             var successi = document.getElementById('calcio-successi').value;
-            
-            // Raccogli i nuovi fattori AI per calcio
-            var forma1 = parseFloat(document.getElementById('calcio-forma1').value);
-            var forma2 = parseFloat(document.getElementById('calcio-forma2').value);
-            var campo = parseFloat(document.getElementById('calcio-campo').value);
-            var motivazione = parseFloat(document.getElementById('calcio-motivazione').value);
-            var meteo = parseFloat(document.getElementById('calcio-meteo').value);
             
             try {
                 var media = Math.round((media1 + media2) * 100) / 100;
@@ -1083,7 +990,6 @@
                     successiTxt = n + " su " + d;
                     metodo = "📊 DATI STORICI";
                 } else {
-                    // Stima intelligente per il calcio
                     if (media > 0 && soglia > 0) {
                         if (pronostico.toLowerCase().includes("over")) {
                             if (media > soglia) {
@@ -1107,18 +1013,6 @@
                     metodo = "🤖 STIMA AI";
                 }
                 
-                // APPLICA I FATTORI AI MIGLIORATI
-                var probBase = prob;
-                var formaMedia = (forma1 + forma2) / 2;
-                var probMigliorata = probBase * formaMedia * campo * motivazione * meteo;
-                
-                // Limita tra 5% e 95%
-                probMigliorata = Math.max(5, Math.min(95, probMigliorata));
-                probMigliorata = Math.round(probMigliorata * 10) / 10;
-                
-                // USA probMigliorata invece di prob
-                var prob = probMigliorata;
-                
                 var quotaTeo = calcolaQuotaTeorica(prob);
                 var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
                 
@@ -1140,31 +1034,16 @@
                 document.getElementById('calcio-media2-result').textContent = media2;
                 document.getElementById('calcio-media-combinata').textContent = media;
                 document.getElementById('calcio-soglia-result').textContent = soglia;
-                document.getElementById('calcio-metodo').textContent = metodo + " + AI";
+                document.getElementById('calcio-metodo').textContent = metodo;
                 document.getElementById('calcio-successi-result').textContent = successiTxt;
-                
-                // Aggiorna i fattori AI per calcio
-                document.getElementById('calcio-fattore-forma1').textContent = (forma1 > 1 ? "+" : "") + ((forma1 - 1) * 100).toFixed(0) + "%";
-                document.getElementById('calcio-fattore-forma1').className = forma1 > 1 ? 'ai-factor-positive' : (forma1 < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('calcio-fattore-forma2').textContent = (forma2 > 1 ? "+" : "") + ((forma2 - 1) * 100).toFixed(0) + "%";
-                document.getElementById('calcio-fattore-forma2').className = forma2 > 1 ? 'ai-factor-positive' : (forma2 < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('calcio-fattore-campo').textContent = (campo > 1 ? "+" : "") + ((campo - 1) * 100).toFixed(0) + "%";
-                document.getElementById('calcio-fattore-campo').className = campo > 1 ? 'ai-factor-positive' : (campo < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('calcio-fattore-motivazione').textContent = (motivazione > 1 ? "+" : "") + ((motivazione - 1) * 100).toFixed(0) + "%";
-                document.getElementById('calcio-fattore-motivazione').className = motivazione > 1 ? 'ai-factor-positive' : (motivazione < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                document.getElementById('calcio-fattore-meteo').textContent = (meteo > 1 ? "+" : "") + ((meteo - 1) * 100).toFixed(0) + "%";
-                document.getElementById('calcio-fattore-meteo').className = meteo > 1 ? 'ai-factor-positive' : (meteo < 1 ? 'ai-factor-negative' : 'ai-factor-neutral');
-                
-                var impattoTotale = ((probMigliorata / probBase - 1) * 100).toFixed(1);
-                document.getElementById('calcio-impatto-totale').textContent = (impattoTotale > 0 ? "+" : "") + impattoTotale + "%";
-                document.getElementById('calcio-impatto-totale').className = impattoTotale > 0 ? 'ai-factor-positive' : (impattoTotale < 0 ? 'ai-factor-negative' : 'ai-factor-neutral');
                 
                 // Crea il grafico
                 creaGraficoAnalisi(prob, quota, quotaTeo, "Calcio", "calcio-grafico");
+                
+                // Genera l'analisi AI dettagliata
+                var analisiDettagliata = generaAnalisiDettagliataAI('calcio', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
+                document.getElementById('calcio-ragionamento-ai').innerHTML = analisiDettagliata;
+                document.getElementById('calcio-analisi-ai').classList.remove('hidden');
                 
                 // Genera il consiglio AI
                 var consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
@@ -1178,9 +1057,9 @@
             }
         }
 
+        // [RESTANTE CODICE PER SALVATAGGIO, DARK MODE, ECC. RIMANE UGUALE]
         // Funzione per salvare il pronostico
         function salvaPronostico(sport) {
-            // Raccogli tutti i dati del pronostico
             var data = {
                 sport: sport,
                 timestamp: new Date().toISOString(),
@@ -1190,6 +1069,7 @@
                 quotaTeorica: document.getElementById(sport + '-quota-teorica').textContent,
                 valueMargin: document.getElementById(sport + '-value-margin').textContent,
                 consiglio: document.getElementById(sport + '-consiglio').innerHTML,
+                analisiAI: document.getElementById(sport + '-ragionamento-ai').innerHTML,
                 graficoData: {
                     prob: parseFloat(document.getElementById(sport + '-probabilita').textContent),
                     quota: parseFloat(document.getElementById(sport + '-quota').value),
@@ -1197,21 +1077,11 @@
                 }
             };
 
-            // Aggiungi dati specifici per sport
             if (sport === 'basket') {
                 data.media = document.getElementById('basket-media').textContent;
                 data.soglia = document.getElementById('basket-soglia-result').textContent;
                 data.metodo = document.getElementById('basket-metodo').textContent;
                 data.successi = document.getElementById('basket-successi-result').textContent;
-                // Aggiungi fattori AI
-                data.fattoriAI = {
-                    forma: document.getElementById('basket-fattore-forma').textContent,
-                    campo: document.getElementById('basket-fattore-campo').textContent,
-                    confronti: document.getElementById('basket-fattore-confronti').textContent,
-                    motivazione: document.getElementById('basket-fattore-motivazione').textContent,
-                    condizioni: document.getElementById('basket-fattore-condizioni').textContent,
-                    impattoTotale: document.getElementById('basket-impatto-totale').textContent
-                };
             } else if (sport === 'calcio') {
                 data.media1 = document.getElementById('calcio-media1-result').textContent;
                 data.media2 = document.getElementById('calcio-media2-result').textContent;
@@ -1219,25 +1089,12 @@
                 data.soglia = document.getElementById('calcio-soglia-result').textContent;
                 data.metodo = document.getElementById('calcio-metodo').textContent;
                 data.successi = document.getElementById('calcio-successi-result').textContent;
-                // Aggiungi fattori AI
-                data.fattoriAI = {
-                    forma1: document.getElementById('calcio-fattore-forma1').textContent,
-                    forma2: document.getElementById('calcio-fattore-forma2').textContent,
-                    campo: document.getElementById('calcio-fattore-campo').textContent,
-                    motivazione: document.getElementById('calcio-fattore-motivazione').textContent,
-                    meteo: document.getElementById('calcio-fattore-meteo').textContent,
-                    impattoTotale: document.getElementById('calcio-impatto-totale').textContent
-                };
             }
 
-            // Salva nel localStorage
             var pronosticiSalvati = JSON.parse(localStorage.getItem('pronosticiSalvati')) || [];
             pronosticiSalvati.push(data);
             localStorage.setItem('pronosticiSalvati', JSON.stringify(pronosticiSalvati));
-
-            // Aggiorna la visualizzazione
             caricaPronosticiSalvati();
-
             alert('Pronostico salvato con successo!');
         }
 
@@ -1253,27 +1110,11 @@
                 return;
             }
             
-            // Ordina i pronostici dal più recente al più vecchio
             pronosticiSalvati.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             
             pronosticiSalvati.forEach((pronostico, index) => {
                 var div = document.createElement('div');
                 div.className = 'col-md-6 col-lg-4 mb-4';
-                
-                var fattoriAIHtml = '';
-                if (pronostico.fattoriAI) {
-                    fattoriAIHtml = `
-                        <div class="mt-3">
-                            <h6>🧠 Fattori AI:</h6>
-                            <small>
-                                ${Object.entries(pronostico.fattoriAI).map(([key, value]) => 
-                                    `<div>${key}: <span class="${value.includes('+') ? 'ai-factor-positive' : value.includes('-') ? 'ai-factor-negative' : 'ai-factor-neutral'}">${value}</span></div>`
-                                ).join('')}
-                            </small>
-                        </div>
-                    `;
-                }
-                
                 div.innerHTML = `
                     <div class="saved-forecast">
                         <div class="saved-forecast-header">
@@ -1284,7 +1125,10 @@
                         <p><strong>Pronostico:</strong> ${pronostico.pronostico}</p>
                         <p><strong>Probabilità:</strong> ${pronostico.probabilita}</p>
                         <p><strong>Value Margin:</strong> ${pronostico.valueMargin}</p>
-                        ${fattoriAIHtml}
+                        <div class="ai-analysis-card mt-3">
+                            <h6>🧠 Analisi AI Salvata:</h6>
+                            ${pronostico.analisiAI || '<p>Analisi non disponibile</p>'}
+                        </div>
                         <div class="chart-container">
                             <div id="saved-grafico-${index}-prob"></div>
                             <div id="saved-grafico-${index}-quote"></div>
@@ -1295,7 +1139,6 @@
                 
                 container.appendChild(div);
                 
-                // Ricrea i grafici dopo un breve ritardo per permettere il rendering del div
                 setTimeout(() => {
                     creaGraficoAnalisi(
                         pronostico.graficoData.prob,
@@ -1321,8 +1164,6 @@
             document.body.classList.toggle('dark-mode');
             var isDarkMode = document.body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDarkMode);
-            
-            // Aggiorna il testo del pulsante
             var button = document.querySelector('.toggle-dark-mode');
             button.textContent = isDarkMode ? '🌞' : '🌓';
         }
@@ -1338,3 +1179,4 @@
     </script>
 </body>
 </html>
+
