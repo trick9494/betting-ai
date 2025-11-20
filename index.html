@@ -188,21 +188,8 @@
             border-radius: 12px;
             font-size: 0.75em;
         }
-        .pronostico-option {
-            padding: 8px 12px;
-            margin: 2px 0;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .pronostico-option:hover {
-            background-color: #e9ecef;
-        }
-        .dark-mode .pronostico-option:hover {
-            background-color: #2a2a2a;
-        }
         .dropdown-menu-pronostico {
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
         }
         .dropdown-toggle-pronostico {
@@ -212,6 +199,16 @@
         }
         .dropdown-toggle-pronostico::after {
             margin-left: 10px;
+        }
+        .giocatore-fields {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #17a2b8;
+        }
+        .dark-mode .giocatore-fields {
+            background-color: #2a2a2a;
         }
     </style>
 </head>
@@ -436,20 +433,70 @@
                         <span id="selected-calcio-option">🥅 Over/Under Gol</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-pronostico w-100" aria-labelledby="dropdownCalcio">
+                        <li><h6 class="dropdown-header">📊 Mercati Partita</h6></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('over-under-gol', '🥅 Over/Under Gol')">🥅 Over/Under Gol<br><small>0.5, 1.5, 2.5, 3.5 gol</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('doppia-chance', '🔄 Doppia Chance')">🔄 Doppia Chance<br><small>1X, X2, 12</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('risultato-esatto', '🎯 Risultato Esatto')">🎯 Risultato Esatto<br><small>1-0, 2-1, 3-2, etc.</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('gol-nogol', '❌ Gol/No Gol')">❌ Gol/No Gol<br><small>Gol, No Gol</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('both-teams', '⚽ Both Teams to Score')">⚽ Both Teams to Score<br><small>Si, No</small></a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('pari-dispari', '🔢 Pari/Dispari')">🔢 Pari/Dispari<br><small>Pari, Dispari</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('tiri-totali', '🎯 Tiri Totali')">🎯 Tiri Totali<br><small>Over/Under tiri totali partita</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('corner', '📐 Corner')">📐 Corner<br><small>Over/Under corner</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('cartellini', '🟨 Cartellini')">🟨 Cartellini<br><small>Over/Under cartellini</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('primo-tempo', '⏱️ Primo Tempo')">⏱️ Primo Tempo<br><small>Risultati 1° tempo</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('vincitore', '🏆 Vincitore')">🏆 Vincitore<br><small>1, X, 2</small></a></li>
+                        
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">👤 Mercati Giocatori</h6></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('marcatore', '⚽ Marcatore')">⚽ Marcatore<br><small>Qualsiasi/Primo/Ultimo gol</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('assist', '🎯 Assist')">🎯 Assist<br><small>Over/Under assist</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('tiri-totali-giocatore', '🎯 Tiri Totali Giocatore')">🎯 Tiri Totali Giocatore<br><small>Over/Under tiri totali giocatore</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('tiro-porta', '🥅 Tiri in Porta')">🥅 Tiri in Porta<br><small>Over/Under tiri in porta</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('cartellini-giocatore', '🟨 Cartellini Giocatore')">🟨 Cartellini Giocatore<br><small>Over/Under cartellini</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('falli', '👊 Falli')">👊 Falli<br><small>Over/Under falli</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('custom-calcio', '✏️ Personalizzato')">✏️ Personalizzato<br><small>Altri mercati calcio</small></a></li>
                     </ul>
                 </div>
                 <input type="hidden" id="calcio-tipo-pronostico" value="over-under-gol">
+            </div>
+            
+            <!-- CAMPI GIOCATORE (visibili solo per mercati giocatore) -->
+            <div id="calcio-giocatore-fields" class="giocatore-fields hidden">
+                <h5 class="mb-3">👤 Dati Giocatore</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Nome Giocatore</label>
+                            <input type="text" class="form-control" id="calcio-giocatore" placeholder="es. Cristiano Ronaldo">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Squadra Giocatore</label>
+                            <select class="form-control" id="calcio-squadra-giocatore">
+                                <option value="">Seleziona squadra</option>
+                                <option value="squadra1">Squadra 1</option>
+                                <option value="squadra2">Squadra 2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">📈 Media Statistica Giocatore</label>
+                            <input type="number" step="0.1" class="form-control" id="calcio-media-giocatore" value="0" min="0">
+                            <div class="form-text" id="calcio-media-giocatore-text">Media gol/assist/tiri/cartellini del giocatore</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">🔢 Partite Analizzate</label>
+                            <input type="number" step="1" class="form-control" id="calcio-partite-giocatore" value="0" min="0">
+                            <div class="form-text">Numero partite considerate per la statistica</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="mb-3">
@@ -461,19 +508,19 @@
                 </div>
             </div>
             
-            <div class="row mb-3">
+            <div class="row mb-3" id="calcio-stats-squadre">
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">📈 Media Gol/Eventi Squadra 1</label>
                         <input type="number" step="0.1" class="form-control" id="calcio-media1" value="0" min="0">
-                        <div class="form-text">Media gol fatti/subiti per la squadra 1</div>
+                        <div class="form-text" id="calcio-media1-text">Media gol fatti/subiti per la squadra 1</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">📈 Media Gol/Eventi Squadra 2</label>
                         <input type="number" step="0.1" class="form-control" id="calcio-media2" value="0" min="0">
-                        <div class="form-text">Media gol fatti/subiti per la squadra 2</div>
+                        <div class="form-text" id="calcio-media2-text">Media gol fatti/subiti per la squadra 2</div>
                     </div>
                 </div>
             </div>
@@ -546,8 +593,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Dettagli Analisi</h5>
                         <p><strong>⚽ Match:</strong> <span id="calcio-match"></span></p>
+                        <p id="calcio-giocatore-info" class="hidden"><strong>👤 Giocatore:</strong> <span id="calcio-giocatore-result"></span> (<span id="calcio-squadra-giocatore-result"></span>)</p>
                         <p><strong>📊 Pronostico:</strong> <span id="calcio-pronostico-result"></span> <span class="tipo-pronostico" id="calcio-tipo-badge"></span></p>
-                        <p><strong>📈 Media Squadra 1:</strong> <span id="calcio-media1-result"></span> | <strong>Media Squadra 2:</strong> <span id="calcio-media2-result"></span></p>
+                        <p id="calcio-media-giocatore-result" class="hidden"><strong>📈 Media Giocatore:</strong> <span id="calcio-media-giocatore-val"></span></p>
+                        <p id="calcio-stats-squadre-result"><strong>📈 Media Squadra 1:</strong> <span id="calcio-media1-result"></span> | <strong>Media Squadra 2:</strong> <span id="calcio-media2-result"></span></p>
                         <p><strong>🔢 Media Combinata:</strong> <span id="calcio-media-combinata"></span></p>
                         <p><strong>🎯 Soglia Bookmaker:</strong> <span id="calcio-soglia-result"></span></p>
                         <p><strong>🔍 Metodo Analisi:</strong> <span id="calcio-metodo"></span></p>
@@ -619,6 +668,25 @@
         function selezionaPronosticoCalcio(tipo, testo) {
             document.getElementById('calcio-tipo-pronostico').value = tipo;
             document.getElementById('selected-calcio-option').textContent = testo;
+            
+            // Mostra/nascondi campi giocatore
+            const giocatoreFields = document.getElementById('calcio-giocatore-fields');
+            const statsSquadre = document.getElementById('calcio-stats-squadre');
+            
+            const tipiGiocatore = ['marcatore', 'assist', 'tiri-totali-giocatore', 'tiro-porta', 'cartellini-giocatore', 'falli'];
+            
+            if (tipiGiocatore.includes(tipo)) {
+                giocatoreFields.classList.remove('hidden');
+                statsSquadre.classList.add('hidden');
+                // Aggiorna testo descrittivo per i campi giocatore
+                aggiornaTestoMediaGiocatore(tipo);
+            } else {
+                giocatoreFields.classList.add('hidden');
+                statsSquadre.classList.remove('hidden');
+                // Aggiorna testo descrittivo per i campi media squadre
+                aggiornaTestoMediaCalcio(tipo);
+            }
+            
             aggiornaEsempiCalcio();
         }
 
@@ -678,6 +746,9 @@
                 case 'pari-dispari':
                     esempiElement.textContent = 'Esempi: "Pari", "Dispari"';
                     break;
+                case 'tiri-totali':
+                    esempiElement.textContent = 'Esempi: "Over 9.5 tiri totali", "Under 8.5 tiri totali", "Over 10.5 tiri totali"';
+                    break;
                 case 'corner':
                     esempiElement.textContent = 'Esempi: "Over 9.5 corner", "Under 8.5 corner", "Over 10.5 corner"';
                     break;
@@ -689,6 +760,81 @@
                     break;
                 case 'vincitore':
                     esempiElement.textContent = 'Esempi: "1", "X", "2"';
+                    break;
+                case 'marcatore':
+                    esempiElement.textContent = 'Esempi: "Cristiano Ronaldo marcatore", "Messi primo gol", "Haaland ultimo gol"';
+                    break;
+                case 'assist':
+                    esempiElement.textContent = 'Esempi: "Kevin De Bruyne Over 1.5 assist", "Bruno Fernandes Under 2.5 assist"';
+                    break;
+                case 'tiri-totali-giocatore':
+                    esempiElement.textContent = 'Esempi: "Cristiano Ronaldo Over 3.5 tiri totali", "Messi Under 4.5 tiri totali"';
+                    break;
+                case 'tiro-porta':
+                    esempiElement.textContent = 'Esempi: "Lewandowski Over 2.5 tiri in porta", "Mbappé Under 3.5 tiri in porta"';
+                    break;
+                case 'cartellini-giocatore':
+                    esempiElement.textContent = 'Esempi: "Sergio Ramos Over 0.5 cartellini", "Casemiro Under 1.5 cartellini"';
+                    break;
+                case 'falli':
+                    esempiElement.textContent = 'Esempi: "Neymar Over 2.5 falli", "Zielinski Under 1.5 falli"';
+                    break;
+                case 'custom-calcio':
+                    esempiElement.textContent = 'Inserisci qualsiasi pronostico personalizzato per il calcio';
+                    break;
+            }
+        }
+
+        // Aggiorna il testo descrittivo per i campi media in base al tipo di pronostico
+        function aggiornaTestoMediaCalcio(tipo) {
+            const media1Text = document.getElementById('calcio-media1-text');
+            const media2Text = document.getElementById('calcio-media2-text');
+            
+            switch(tipo) {
+                case 'tiri-totali':
+                    media1Text.textContent = 'Media tiri totali per partita - Squadra 1';
+                    media2Text.textContent = 'Media tiri totali per partita - Squadra 2';
+                    break;
+                case 'corner':
+                    media1Text.textContent = 'Media corner per partita - Squadra 1';
+                    media2Text.textContent = 'Media corner per partita - Squadra 2';
+                    break;
+                case 'cartellini':
+                    media1Text.textContent = 'Media cartellini per partita - Squadra 1';
+                    media2Text.textContent = 'Media cartellini per partita - Squadra 2';
+                    break;
+                default:
+                    media1Text.textContent = 'Media gol fatti/subiti per la squadra 1';
+                    media2Text.textContent = 'Media gol fatti/subiti per la squadra 2';
+                    break;
+            }
+        }
+
+        // Aggiorna il testo descrittivo per i campi giocatore in base al tipo di pronostico
+        function aggiornaTestoMediaGiocatore(tipo) {
+            const mediaGiocatoreText = document.getElementById('calcio-media-giocatore-text');
+            
+            switch(tipo) {
+                case 'marcatore':
+                    mediaGiocatoreText.textContent = 'Media gol per partita del giocatore';
+                    break;
+                case 'assist':
+                    mediaGiocatoreText.textContent = 'Media assist per partita del giocatore';
+                    break;
+                case 'tiri-totali-giocatore':
+                    mediaGiocatoreText.textContent = 'Media tiri totali per partita del giocatore';
+                    break;
+                case 'tiro-porta':
+                    mediaGiocatoreText.textContent = 'Media tiri in porta per partita del giocatore';
+                    break;
+                case 'cartellini-giocatore':
+                    mediaGiocatoreText.textContent = 'Media cartellini per partita del giocatore';
+                    break;
+                case 'falli':
+                    mediaGiocatoreText.textContent = 'Media falli per partita del giocatore';
+                    break;
+                default:
+                    mediaGiocatoreText.textContent = 'Media statistiche per partita del giocatore';
                     break;
             }
         }
@@ -713,6 +859,26 @@
             if (!pronostico) {
                 document.getElementById(sport + '-pronostico-error').textContent = 'Campo obbligatorio';
                 valid = false;
+            }
+            
+            // Validazione aggiuntiva per calcio - campi giocatore
+            if (sport === 'calcio') {
+                const tipo = document.getElementById('calcio-tipo-pronostico').value;
+                const tipiGiocatore = ['marcatore', 'assist', 'tiri-totali-giocatore', 'tiro-porta', 'cartellini-giocatore', 'falli'];
+                
+                if (tipiGiocatore.includes(tipo)) {
+                    const giocatore = document.getElementById('calcio-giocatore').value;
+                    const squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
+                    
+                    if (!giocatore) {
+                        alert('❌ Inserisci il nome del giocatore per i mercati giocatore!');
+                        valid = false;
+                    }
+                    if (!squadraGiocatore) {
+                        alert('❌ Seleziona la squadra del giocatore!');
+                        valid = false;
+                    }
+                }
             }
             
             return valid;
@@ -831,8 +997,42 @@
             var tipoPronostico = document.getElementById('calcio-tipo-pronostico').value;
             
             try {
-                var media = Math.round((media1 + media2) * 100) / 100;
-                var prob, successiTxt, metodo;
+                var media, prob, successiTxt, metodo;
+                
+                // Verifica se è un mercato giocatore
+                const tipiGiocatore = ['marcatore', 'assist', 'tiri-totali-giocatore', 'tiro-porta', 'cartellini-giocatore', 'falli'];
+                const isMercatoGiocatore = tipiGiocatore.includes(tipoPronostico);
+                
+                if (isMercatoGiocatore) {
+                    // Usa statistiche giocatore
+                    var mediaGiocatore = parseFloat(document.getElementById('calcio-media-giocatore').value) || 0;
+                    var partiteGiocatore = parseInt(document.getElementById('calcio-partite-giocatore').value) || 0;
+                    media = mediaGiocatore;
+                    
+                    // Mostra info giocatore nei risultati
+                    document.getElementById('calcio-giocatore-info').classList.remove('hidden');
+                    document.getElementById('calcio-media-giocatore-result').classList.remove('hidden');
+                    document.getElementById('calcio-stats-squadre-result').classList.add('hidden');
+                    
+                    var giocatore = document.getElementById('calcio-giocatore').value;
+                    var squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
+                    var nomeSquadra = squadraGiocatore === 'squadra1' ? squadra1 : squadra2;
+                    
+                    document.getElementById('calcio-giocatore-result').textContent = giocatore;
+                    document.getElementById('calcio-squadra-giocatore-result').textContent = nomeSquadra;
+                    document.getElementById('calcio-media-giocatore-val').textContent = mediaGiocatore;
+                } else {
+                    // Usa statistiche squadre
+                    media = Math.round((media1 + media2) * 100) / 100;
+                    
+                    // Nascondi info giocatore nei risultati
+                    document.getElementById('calcio-giocatore-info').classList.add('hidden');
+                    document.getElementById('calcio-media-giocatore-result').classList.add('hidden');
+                    document.getElementById('calcio-stats-squadre-result').classList.remove('hidden');
+                    
+                    document.getElementById('calcio-media1-result').textContent = media1;
+                    document.getElementById('calcio-media2-result').textContent = media2;
+                }
                 
                 if (successi.includes("su") && successi.trim()) {
                     var parts = successi.split("su");
@@ -857,7 +1057,7 @@
                     } else {
                         prob = 50.0;
                     }
-                    successiTxt = "Stimato da medie squadre";
+                    successiTxt = isMercatoGiocatore ? "Stimato da statistiche giocatore" : "Stimato da medie squadre";
                     metodo = "🤖 STIMA AI";
                 }
                 
@@ -878,8 +1078,6 @@
                 
                 document.getElementById('calcio-match').textContent = squadra1 + ' vs ' + squadra2;
                 document.getElementById('calcio-pronostico-result').textContent = pronostico;
-                document.getElementById('calcio-media1-result').textContent = media1;
-                document.getElementById('calcio-media2-result').textContent = media2;
                 document.getElementById('calcio-media-combinata').textContent = media;
                 document.getElementById('calcio-soglia-result').textContent = soglia;
                 document.getElementById('calcio-metodo').textContent = metodo;
@@ -1199,17 +1397,26 @@
                 'handicap': { mercato: 'Handicap', tipo: 'Punti', badge: '⚖️ Handicap' },
                 'punti-totali': { mercato: 'Punti Totali', tipo: 'O/U Partita', badge: '🔢 P.Totali' },
                 'custom': { mercato: 'Personalizzato', tipo: 'Vari', badge: '✏️ Custom' },
-                // Calcio
+                // Calcio - Mercati Partita
                 'over-under-gol': { mercato: 'O/U Gol', tipo: 'Gol', badge: '🥅 O/U Gol' },
                 'doppia-chance': { mercato: 'Doppia Chance', tipo: '1X/X2/12', badge: '🔄 D.Chance' },
                 'risultato-esatto': { mercato: 'Ris. Esatto', tipo: 'Score', badge: '🎯 R.Esatto' },
                 'gol-nogol': { mercato: 'Gol/No Gol', tipo: 'G/NG', badge: '❌ G/NG' },
                 'both-teams': { mercato: 'BTTS', tipo: 'Si/No', badge: '⚽ BTTS' },
                 'pari-dispari': { mercato: 'Pari/Dispari', tipo: 'P/D', badge: '🔢 P/D' },
+                'tiri-totali': { mercato: 'Tiri Totali', tipo: 'O/U', badge: '🎯 Tiri Totali' },
                 'corner': { mercato: 'Corner', tipo: 'O/U', badge: '📐 Corner' },
                 'cartellini': { mercato: 'Cartellini', tipo: 'O/U', badge: '🟨 Cartellini' },
                 'primo-tempo': { mercato: '1° Tempo', tipo: 'Parziale', badge: '⏱️ 1°T' },
-                'vincitore': { mercato: 'Vincitore', tipo: '1/X/2', badge: '🏆 Vincitore' }
+                'vincitore': { mercato: 'Vincitore', tipo: '1/X/2', badge: '🏆 Vincitore' },
+                // Calcio - Mercati Giocatori
+                'marcatore': { mercato: 'Marcatore', tipo: 'Giocatore', badge: '⚽ Marcatore' },
+                'assist': { mercato: 'Assist', tipo: 'Giocatore', badge: '🎯 Assist' },
+                'tiri-totali-giocatore': { mercato: 'Tiri Totali', tipo: 'Giocatore', badge: '🎯 Tiri Gioc.' },
+                'tiro-porta': { mercato: 'Tiri in Porta', tipo: 'Giocatore', badge: '🥅 Tiri Porta' },
+                'cartellini-giocatore': { mercato: 'Cartellini', tipo: 'Giocatore', badge: '🟨 Cart.Gioc.' },
+                'falli': { mercato: 'Falli', tipo: 'Giocatore', badge: '👊 Falli' },
+                'custom-calcio': { mercato: 'Personalizzato', tipo: 'Calcio', badge: '✏️ Custom' }
             };
             return tipi[tipo] || { mercato: 'Mercato', tipo: 'Tipo', badge: '📊' };
         }
@@ -1234,9 +1441,20 @@
             caricaPronosticiSalvati();
             aggiornaEsempiBasket();
             aggiornaEsempiCalcio();
+            
+            // Aggiorna le opzioni della squadra giocatore quando cambiano le squadre
+            document.getElementById('calcio-squadra1').addEventListener('input', aggiornaSquadreGiocatore);
+            document.getElementById('calcio-squadra2').addEventListener('input', aggiornaSquadreGiocatore);
         });
+
+        function aggiornaSquadreGiocatore() {
+            const squadra1 = document.getElementById('calcio-squadra1').value || 'Squadra 1';
+            const squadra2 = document.getElementById('calcio-squadra2').value || 'Squadra 2';
+            
+            const select = document.getElementById('calcio-squadra-giocatore');
+            select.options[1].text = squadra1;
+            select.options[2].text = squadra2;
+        }
     </script>
 </body>
 </html>
-
-
