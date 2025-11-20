@@ -22,6 +22,17 @@
             color: #ffffff;
             border: 1px solid #444;
         }
+        .dark-mode .accordion-button {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+        }
+        .dark-mode .accordion-body {
+            background-color: #1b1b1b;
+            color: #f0f0f0;
+        }
+        .dark-mode .accordion-item {
+            border-color: #333;
+        }
         .dark-mode button {
             background-color: #333;
             color: #fff;
@@ -137,13 +148,6 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .toggle-dark-mode:hover {
-            background-color: #5a6268;
         }
         .form-text {
             font-size: 0.875em;
@@ -217,8 +221,7 @@
         .dark-mode .giocatore-fields {
             background-color: #2a2a2a;
         }
-        
-        /* Stili per il pannello dei pronostici salvati */
+        /* Saved panel */
         .saved-panel {
             position: fixed;
             top: 0;
@@ -354,9 +357,6 @@
             border: none;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        .toggle-saved-panel:hover {
-            background-color: #0b5ed7;
-        }
         .overlay {
             position: fixed;
             top: 0;
@@ -378,128 +378,7 @@
         .dark-mode .no-saved {
             color: #adb5bd;
         }
-        
-        /* Stili per il regolamento */
-        .regolamento-panel {
-            position: fixed;
-            top: 0;
-            left: -400px;
-            width: 400px;
-            height: 100vh;
-            background-color: white;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-            transition: left 0.3s ease;
-            z-index: 1050;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .dark-mode .regolamento-panel {
-            background-color: #1e1e1e;
-            color: #f0f0f0;
-        }
-        .regolamento-panel.open {
-            left: 0;
-        }
-        .regolamento-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .dark-mode .regolamento-panel-header {
-            border-bottom-color: #444;
-        }
-        .regolamento-panel-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
-        }
-        .close-regolamento {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6c757d;
-        }
-        .dark-mode .close-regolamento {
-            color: #adb5bd;
-        }
-        .regolamento-section {
-            margin-bottom: 25px;
-        }
-        .regolamento-section h4 {
-            color: #0d6efd;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #0d6efd;
-        }
-        .dark-mode .regolamento-section h4 {
-            border-bottom-color: #0d6efd;
-        }
-        .regolamento-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #28a745;
-        }
-        .dark-mode .regolamento-item {
-            background-color: #2a2a2a;
-        }
-        .regolamento-item h5 {
-            margin-bottom: 10px;
-            color: #495057;
-            font-size: 1.1rem;
-        }
-        .dark-mode .regolamento-item h5 {
-            color: #adb5bd;
-        }
-        .regolamento-field {
-            margin-bottom: 8px;
-            padding-left: 10px;
-            border-left: 2px solid #6c757d;
-        }
-        .regolamento-field strong {
-            color: #495057;
-        }
-        .dark-mode .regolamento-field strong {
-            color: #adb5bd;
-        }
-        .regolamento-example {
-            background-color: #e9ecef;
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-top: 8px;
-            font-style: italic;
-            font-size: 0.9rem;
-        }
-        .dark-mode .regolamento-example {
-            background-color: #343a40;
-        }
-        .toggle-regolamento {
-            position: fixed;
-            bottom: 140px;
-            right: 20px;
-            z-index: 1000;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .toggle-regolamento:hover {
-            background-color: #218838;
-        }
-        
-        /* Stili per la visualizzazione dettagliata del pronostico salvato */
+        /* Saved detail */
         .saved-detail-panel {
             position: fixed;
             top: 0;
@@ -545,627 +424,28 @@
         .dark-mode .close-detail {
             color: #adb5bd;
         }
-        
-        /* Stili per le statistiche avanzate Over/Under */
-        .stats-advanced {
-            background-color: #e8f4f8;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            border-left: 4px solid #17a2b8;
-        }
-        .dark-mode .stats-advanced {
-            background-color: #1e2a3a;
-        }
-        .stats-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #17a2b8;
-        }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        .stats-label {
-            font-weight: 500;
-        }
-        .stats-value {
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
     <!-- Overlay per chiudere i pannelli -->
     <div class="overlay" id="overlay"></div>
-    
+
     <!-- Pannello dei pronostici salvati -->
     <div class="saved-panel" id="savedPanel">
         <div class="saved-panel-header">
             <h3 class="saved-panel-title"><i class="bi bi-bookmark"></i> Pronostici Salvati</h3>
             <button class="close-panel" id="closePanel"><i class="bi bi-x-lg"></i></button>
         </div>
-        <div id="savedForecastsList">
-            <!-- I pronostici salvati verranno inseriti qui -->
-        </div>
+        <div id="savedForecastsList"></div>
     </div>
-    
-    <!-- Pannello del regolamento -->
-    <div class="regolamento-panel" id="regolamentoPanel">
-        <div class="regolamento-panel-header">
-            <h3 class="regolamento-panel-title"><i class="bi bi-info-circle"></i> Regolamento di Compilazione</h3>
-            <button class="close-regolamento" id="closeRegolamento"><i class="bi bi-x-lg"></i></button>
+
+    <!-- Pannello di dettaglio del pronostico salvato -->
+    <div class="saved-detail-panel" id="savedDetailPanel">
+        <div class="saved-detail-header">
+            <h3 class="saved-detail-title"><i class="bi bi-graph-up"></i> Dettaglio Pronostico</h3>
+            <button class="close-detail" id="closeDetail"><i class="bi bi-x-lg"></i></button>
         </div>
-        <div class="regolamento-content">
-            <div class="regolamento-section">
-                <h4>🏀 BASKET - TUTTI I MERCATI</h4>
-                
-                <div class="regolamento-item">
-                    <h5>🏀 Punti Giocatore (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] punti" + nome giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media punti segnati dal giocatore (ultime 5-10 partite)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Minimo 5 partite, ideale 8-10 partite
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valore proposto dal bookmaker (es. 27.5, 25.5, 30.5)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> "X su Y" partite dove il giocatore ha superato/sottoperato la soglia
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Minuti giocati, ruolo in attacco, avversario (difesa forte/debole)
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "LeBron James Over 27.5 punti"<br>
-                        Media: 28.3 punti (ultime 10 partite) | Soglia: 27.5 | Successi: 7/10 (70%)<br>
-                        <em>Analisi: Giocatore in forma, media superiore alla soglia, alta percentuale successi</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>📈 Rimbalzi Giocatore (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] rimbalzi" + nome giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media rimbalzi totali (offensivi + difensivi)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Minimo 8 partite per dati significativi
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 9.5, 10.5, 11.5, 12.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Percentuale partite Over/Under la soglia
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Altezza giocatore, ruolo sotto canestro, stile di gioco squadra
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Nikola Jokić Over 10.5 rimbalzi"<br>
-                        Media: 11.2 rimbalzi (ultime 12 partite) | Soglia: 10.5 | Successi: 9/12 (75%)<br>
-                        <em>Analisi: Centro dominante, alta media rimbalzi, consistenza dimostrata</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🎯 Assist Giocatore (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] assist" + nome giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media assist per partita
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Minimo 10 partite (statistica variabile)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori comuni: 8.5, 9.5, 10.5, 11.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza assist rispetto alla soglia
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Ruolo di playmaker, percentuale utilizzo, efficienza attacco squadra
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Trae Young Over 9.5 assist"<br>
-                        Media: 10.1 assist (ultime 15 partite) | Soglia: 9.5 | Successi: 11/15 (73%)<br>
-                        <em>Analisi: Playmaker principale, alta creazione gioco, squadra offensiva</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⭐ Performance Multiple (Punti+Rimbalzi+Assist)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] P+R+A" + nome giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Somma media di Punti + Rimbalzi + Assist
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Minimo 8 partite per stabilità
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 35.5, 40.5, 45.5, 50.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Performance complessive rispetto alla soglia
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Versatilità giocatore, minuti giocati, importanza nella squadra
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Luka Dončić Over 45.5 P+R+A"<br>
-                        Media: 47.3 PRA (ultime 10 partite) | Soglia: 45.5 | Successi: 7/10 (70%)<br>
-                        <em>Analisi: Giocatore franchise, alte statistiche multiple, ruolo centrale</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🏆 Vincitore Partita (1/X/2)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "1" (casa), "2" (ospite), "X" (pareggio)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Percentuale vittorie squadra casa/ospite
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Testa a testa diretti, prestazioni recenti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Forma attuale, infortuni, motivazione, fattore campo
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Lakers vincenti (1)"<br>
-                        Lakers: 7 vittorie/10 partite (70%) | Warriors: 4 vittorie/10 partite (40%)<br>
-                        <em>Analisi: Squadra casa in forma migliore, vantaggio del fattore campo</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⚖️ Handicap Punti</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Squadra -/+ [handicap]" (es. "Lakers -5.5")
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Differenza media punti tra le squadre
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultimi 5-8 scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Handicap proposto dal bookmaker
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza copertura handicap
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Forza relativa, partite casalinghe/trasferta, stile di gioco
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Lakers -5.5"<br>
-                        Media differenza punti: +7.2 (ultimi 8 scontri) | Handicap: -5.5 | Successi: 6/8 (75%)<br>
-                        <em>Analisi: Squadra superiore, vantaggio costante, handicap ragionevole</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🔢 Punti Totali Partita (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] punti totali"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media punti totali delle due squadre combinate
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 5-8 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 215.5, 220.5, 225.5, 230.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza Over/Under negli scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Ritmo di gioco, difese, percentuali dal campo
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Over 225.5 punti totali"<br>
-                        Media punti totali: 228.3 (ultimi 5 incontri) | Soglia: 225.5 | Successi: 4/5 (80%)<br>
-                        <em>Analisi: Squadre offensive, alto ritmo, storie recenti di partite ad alto punteggio</em>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="regolamento-section">
-                <h4>⚽ CALCIO - TUTTI I MERCATI</h4>
-                
-                <div class="regolamento-item">
-                    <h5>🥅 Over/Under Gol - ANALISI COMPLETA</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] gol" (es. "Over 2.5 gol")
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Media Gol Fatti Squadra 1:</strong> Media gol segnati (ultime 5-8 partite)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Media Gol Subiti Squadra 1:</strong> Media gol concessi (ultime 5-8 partite)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Media Gol Fatti Squadra 2:</strong> Media gol segnati (ultime 5-8 partite)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Media Gol Subiti Squadra 2:</strong> Media gol concessi (ultime 5-8 partite)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Calcolo Media Attesa:</strong> [(Fatti1 + Subiti2) + (Fatti2 + Subiti1)] ÷ 2
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> 0.5, 1.5, 2.5, 3.5 gol
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Percentuale partite Over/Under negli scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Attacchi efficienti, difese solide, motivazione, importanza partita
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Over 2.5 gol"<br>
-                        Juventus: 1.8 gol fatti, 0.8 gol subiti | Inter: 2.1 gol fatti, 1.0 gol subiti<br>
-                        Media Attesa: [(1.8+1.0) + (2.1+0.8)] ÷ 2 = 2.85 gol | Soglia: 2.5 | Successi: 6/10 (60%)<br>
-                        <em>Analisi: Attacchi forti, difese non impenetrabili, media attesa superiore alla soglia</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🔄 Doppia Chance (1X/X2/12)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "1X" (casa non perde), "X2" (ospite non perde), "12" (no pareggio)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Percentuale risultati 1X/X2/12 negli scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultimi 8-10 scontri diretti e recenti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza esito 1X/X2/12
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Forza relativa, partite casalinghe/trasferta, forma attuale
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "1X - Juventus non perde"<br>
-                        Juventus casa: 8 vittorie/10 partite, 2 pareggi | Inter in trasferta: 3 vittorie/10 partite<br>
-                        Successi 1X: 9/10 (90%) negli ultimi scontri a Torino<br>
-                        <em>Analisi: Forte squadra casa, prestazioni solide in trasferta avversaria</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🎯 Risultato Esatto</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Score esatto" (es. "2-1", "1-1", "3-0")
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Frequenza risultati specifici negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Storia completa scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Percentuale volte che si è verificato esattamente quel risultato
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Stile di gioco, attacchi, difese, precedenti
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Risultato Esatto 2-1"<br>
-                        Frequenza 2-1: 3/10 (30%) negli ultimi scontri | Media gol: 2.8 per partita<br>
-                        <em>Analisi: Risultato frequente nello scontro, allineato con medie gol</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>❌ Gol/No Gol</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Gol" o "No Gol"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Percentuale partite con/almeno un gol
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza Gol/No Gol negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Qualità attacchi, solidità difese, importanza partita
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Gol"<br>
-                        Juventus: gol segnati in 9/10 partite | Inter: gol segnati in 8/10 partite<br>
-                        Successi "Gol": 8/10 (80%) negli scontri diretti<br>
-                        <em>Analisi: Squadre offensivamente pericolose, alta probabilità almeno un gol</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⚽ Both Teams to Score (BTTS)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Si - Both teams to score" o "No - Both teams to score"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Percentuale partite con entrambe le squadre a segno
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 8-10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza BTTS Si/No negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Qualità attacchi, vulnerabilità difese, stile di gioco
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Si - Both teams to score"<br>
-                        Juventus: BTTS Si in 7/10 partite | Inter: BTTS Si in 6/10 partite<br>
-                        Successi BTTS Si: 7/10 (70%) negli scontri diretti<br>
-                        <em>Analisi: Attacchi forti, difese non impenetrabili, storia di gol da entrambe</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🔢 Pari/Dispari Gol Totali</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Pari" o "Dispari"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Distribuzione risultati Pari/Dispari
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultimi 10-15 scontri diretti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Percentuale risultati Pari/Dispari
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Pattern risultati, stile di gioco squadre
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Dispari"<br>
-                        Risultati Dispari: 7/10 (70%) negli ultimi scontri | Media gol: 2.7 (tendenza dispari)<br>
-                        <em>Analisi: Storia recente favorevole ai risultati dispari, pattern consolidato</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🎯 Tiri Totali Partita (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] tiri totali"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media tiri totali per partita di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 8 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 8.5, 9.5, 10.5, 11.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza Over/Under tiri negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Stile di gioco, possesso palla, attacchi propositivi
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Over 9.5 tiri totali"<br>
-                        Juventus: 13.2 tiri/partita | Inter: 12.8 tiri/partita | Media combinata: 26.0 tiri<br>
-                        Soglia: 9.5 tiri per squadra (19 totali) | Successi Over: 7/10 (70%)<br>
-                        <em>Analisi: Squadre offensive, alto volume tiri, media ben sopra la soglia</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>📐 Corner Totali (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] corner"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media corner per partita di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 8-10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori comuni: 8.5, 9.5, 10.5, 11.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza Over/Under corner negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Attacchi laterali, difese, stile di gioco
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Over 10.5 corner"<br>
-                        Juventus: 5.8 corner/partita | Inter: 6.2 corner/partita | Media combinata: 12.0 corner<br>
-                        Soglia: 10.5 | Successi Over: 8/10 (80%) negli scontri<br>
-                        <em>Analisi: Squadre con attacchi prolungati, alta frequenza corner, media sopra soglia</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🟨 Cartellini Totali (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "Over/Under [soglia] cartellini"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media cartellini per partita di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 8-10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 3.5, 4.5, 5.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza Over/Under cartellini negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Arbitro, importanza partita, rivalità, stile di gioco
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Over 4.5 cartellini"<br>
-                        Juventus: 2.3 cartellini/partita | Inter: 2.5 cartellini/partita | Media combinata: 4.8<br>
-                        Soglia: 4.5 | Successi Over: 6/10 (60%) | Arbitro: Rossi (media 5.1 cartellini/partita)<br>
-                        <em>Analisi: Derby, arbitro severo, medie squadre sopra la soglia</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⏱️ Risultato Primo Tempo</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "1 primo tempo", "X primo tempo", "2 primo tempo"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Percentuale risultati primo tempo
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 10 partite di ogni squadra
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza esiti primo tempo negli scontri
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Approccio alla partita, partite casalinghe/trasferta
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "1 primo tempo - Juventus in vantaggio"<br>
-                        Juventus casa: in vantaggio al 1° tempo in 6/10 partite<br>
-                        Inter in trasferta: in svantaggio al 1° tempo in 5/10 partite<br>
-                        Successi: 5/10 (50%) negli scontri a Torino<br>
-                        <em>Analisi: Squadra casa forte all'inizio, avversaria lenta in trasferta</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⚽ Marcatore (Giocatore)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "[Giocatore] marcatore" o "[Giocatore] primo/ultimo gol"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media gol per partita del giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 10-15 partite del giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Percentuale partite in cui il giocatore ha segnato
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Minuti giocati, rigori, punizioni, forma attuale
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Cristiano Ronaldo marcatore"<br>
-                        Media: 0.8 gol/partita (ultime 10 partite) | Successi: 6/10 (60%)<br>
-                        Rigori: 3/4 realizzati | Minuti medi: 85'<br>
-                        <em>Analisi: Attaccante prolifico, titolare fisso, realizzatore affidabile</em>
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🎯 Assist Giocatore (Over/Under)</h5>
-                    <div class="regolamento-field">
-                        <strong>Pronostico Specifico:</strong> "[Giocatore] Over/Under [soglia] assist"
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Valore statistico rilevante:</strong> Media assist per partita del giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Numero eventi analizzati:</strong> Ultime 10-15 partite del giocatore
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Soglia pronostico:</strong> Valori tipici: 0.5, 1.5
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Successi storici:</strong> Frequenza assist rispetto alla soglia
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattori chiave:</strong> Ruolo creativo, compagni di attacco, minuti giocati
-                    </div>
-                    <div class="regolamento-example">
-                        <strong>Esempio affidabile:</strong> "Kevin De Bruyne Over 0.5 assist"<br>
-                        Media: 0.7 assist/partita (ultime 15 partite) | Soglia: 0.5 | Successi: 10/15 (67%)<br>
-                        Ruolo: regista | Minuti: 87'/partita<br>
-                        <em>Analisi: Creatore principale, alta frequenza assist, ruolo chiave nell'attacco</em>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="regolamento-section">
-                <h4>📊 INDICAZIONI GENERALI PER ANALISI AFFIDABILI</h4>
-                
-                <div class="regolamento-item">
-                    <h5>✅ CAMPIONE MINIMO DATI</h5>
-                    <div class="regolamento-field">
-                        <strong>Statistiche Giocatore:</strong> Minimo 8-10 partite recenti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Statistiche Squadra:</strong> Minimo 8-10 partite recenti
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Scontri Diretti:</strong> Tutta la storia disponibile (minimo 5-8 incontri)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Dati Recenti:</strong> Privilegiare ultime 5-10 partite (forma attuale)
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>🎯 SOGLIE DI AFFIDABILITÀ</h5>
-                    <div class="regolamento-field">
-                        <strong>Probabilità Alta:</strong> ≥ 65% - Forte raccomandazione
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Probabilità Media:</strong> 55-64% - Buona opportunità
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Probabilità Bassa:</strong> ≤ 54% - Approccio con cautela
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Value Bet:</strong> ≥ +5% - Quota bookmaker vantaggiosa
-                    </div>
-                </div>
-                
-                <div class="regolamento-item">
-                    <h5>⚠️ FATTORI DI RISCHIO</h5>
-                    <div class="regolamento-field">
-                        <strong>Infortuni:</strong> Verificare presenza/assenza giocatori chiave
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Motivazione:</strong> Importanza partita (salvezza, titolo, coppe)
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Fattore Campo:</strong> Considerare prestazioni casa/trasferta
-                    </div>
-                    <div class="regolamento-field">
-                        <strong>Condizioni Meteo:</strong> Influiscono su stile di gioco e risultati
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="savedDetailContent"></div>
     </div>
 
     <div class="header text-center">
@@ -1174,7 +454,6 @@
     </div>
 
     <div class="container">
-        <!-- Selezione Sport -->
         <div class="row mb-4">
             <div class="col-12">
                 <h3 class="mb-3">🏆 Scegli lo sport</h3>
@@ -1206,7 +485,7 @@
         <!-- BASKET SECTION -->
         <div id="basket-section">
             <h3 class="mb-4"><i class="bi bi-basketball"></i> Basket – Analisi Multi-Mercato</h3>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -1223,7 +502,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label">🎯 Tipo Pronostico Basket</label>
                 <div class="dropdown">
@@ -1244,86 +523,146 @@
                 </div>
                 <input type="hidden" id="basket-tipo-pronostico" value="punti-over-under">
             </div>
-            
-            <!-- CAMPI GIOCATORE BASKET -->
-            <div id="basket-giocatore-fields">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">👤 Nome Giocatore</label>
-                            <input type="text" class="form-control" id="basket-giocatore" placeholder="es. LeBron James" required>
-                            <div class="error-message" id="basket-giocatore-error"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">🏀 Squadra Giocatore</label>
-                            <select class="form-control" id="basket-squadra-giocatore" required>
-                                <option value="">Seleziona squadra</option>
-                                <option value="squadra1">Squadra 1</option>
-                                <option value="squadra2">Squadra 2</option>
-                            </select>
-                            <div class="error-message" id="basket-squadra-giocatore-error"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+
             <div class="mb-3">
                 <label class="form-label">📊 Pronostico Specifico</label>
-                <input type="text" class="form-control" id="basket-pronostico" placeholder="es. Over 27.5 punti" required>
+                <input type="text" class="form-control" id="basket-pronostico" placeholder="es. LeBron James Over 27.5 punti" required>
                 <div class="error-message" id="basket-pronostico-error"></div>
                 <div class="form-text" id="basket-esempi-pronostico">
-                    Esempi: "Over 27.5 punti", "Under 9.5 rimbalzi", "Over 8.5 assist"
+                    Esempi: "LeBron James Over 27.5 punti", "Jokic Under 9.5 rimbalzi", "Lakers vincenti"
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">📈 Valore statistico rilevante</label>
-                        <input type="number" step="0.1" class="form-control" id="basket-totale" value="0" min="0" required>
-                        <div class="form-text">Media punti/rimbalzi/assist del giocatore</div>
+                        <input type="number" step="0.1" class="form-control" id="basket-totale" value="0" min="0">
+                        <div class="form-text">Media punti/rimbalzi/assist del giocatore o squadra</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">🔢 Numero eventi analizzati</label>
-                        <input type="number" step="1" class="form-control" id="basket-eventi" value="0" min="0" required>
-                        <div class="form-text">Partite considerate per la statistica</div>
+                        <input type="number" step="1" class="form-control" id="basket-eventi" value="0" min="0">
+                        <div class="form-text">Partite/eventi considerati per la statistica</div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">🎯 Soglia pronostico</label>
-                        <input type="number" step="0.1" class="form-control" id="basket-soglia" value="0" min="0" required>
+                        <input type="number" step="0.1" class="form-control" id="basket-soglia" value="0" min="0">
                         <div class="form-text">Soglia del bookmaker (es. 27.5 per Over 27.5 punti)</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">💰 Quota bookmaker</label>
-                        <input type="number" step="0.01" class="form-control" id="basket-quota" value="1.80" min="1.01" required>
+                        <input type="number" step="0.01" class="form-control" id="basket-quota" value="1.80" min="1.01">
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-4">
                 <label class="form-label">📊 Successi storici</label>
                 <input type="text" class="form-control" id="basket-successi" placeholder="es. 6 su 10, 70%">
                 <div class="form-text">Quante volte è successo storicamente? (es. "6/10" o "70%")</div>
             </div>
-            
+
             <div class="d-grid gap-2">
                 <button class="btn btn-primary btn-lg" onclick="analizzaBasket()"><i class="bi bi-cpu"></i> Analisi AI Avanzata</button>
             </div>
-            
+
+            <!-- Regolamento di Compilazione – Basket -->
+            <div class="mt-4">
+                <div class="accordion" id="regolamentoBasket">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="rb-heading">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#rb-collapse" aria-expanded="true" aria-controls="rb-collapse">
+                                🧾 Regolamento di compilazione – Basket
+                            </button>
+                        </h2>
+                        <div id="rb-collapse" class="accordion-collapse collapse show" aria-labelledby="rb-heading" data-bs-parent="#regolamentoBasket">
+                            <div class="accordion-body">
+                                <div class="mb-3">
+                                    <h5>🏀 Punti Giocatore (Over/Under)</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Media punti del giocatore nelle ultime partite</div>
+                                    <div><strong>Numero eventi analizzati:</strong> Minimo consigliato 5 partite</div>
+                                    <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 27.5 per Over 27.5)</div>
+                                    <div><strong>Successi storici:</strong> Quante volte supera/sottoperforma la soglia</div>
+                                    <div class="mt-2"><em>Esempio:</em> LeBron James – Media 28.3 (ultime 10) – Soglia 27.5 – Successi 7/10 (70%)</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>📈 Rimbalzi Giocatore (Over/Under)</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Media rimbalzi totali</div>
+                                    <div><strong>Numero eventi analizzati:</strong> Minimo consigliato 8 partite</div>
+                                    <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 9.5)</div>
+                                    <div><strong>Fattori da considerare:</strong> Minuti, ruolo, avversario</div>
+                                    <div class="mt-2"><em>Esempio:</em> Nikola Jokić – Media 10.8 (ultime 12) – Soglia 10.5 – Successi 8/12 (67%)</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>🎯 Assist Giocatore (Over/Under)</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Media assist/partita</div>
+                                    <div><strong>Numero eventi analizzati:</strong> Minimo consigliato 10 partite</div>
+                                    <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 8.5)</div>
+                                    <div><strong>Fattori da considerare:</strong> Usage, efficienza offensiva della squadra</div>
+                                    <div class="mt-2"><em>Esempio:</em> Trae Young – Media 9.2 (ultime 15) – Soglia 8.5 – Successi 10/15 (67%)</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>⭐ Performance multiple (Punti+Rimbalzi+Assist)</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Media PRA</div>
+                                    <div><strong>Numero eventi analizzati:</strong> Minimo consigliato 8 partite</div>
+                                    <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 40.5)</div>
+                                    <div><strong>Fattori da considerare:</strong> Minuti, ruolo, importanza partita</div>
+                                    <div class="mt-2"><em>Esempio:</em> Luka Dončić – Media 42.3 (ultime 10) – Soglia 40.5 – Successi 7/10 (70%)</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>🏆 Vincitore partita (1/X/2)</h5>
+                                    <div><strong>Successi storici:</strong> Percentuale vittorie della squadra</div>
+                                    <div><strong>Fattori da considerare:</strong> Forma, infortuni, H2H, motivazione</div>
+                                    <div><strong>Analisi aggiuntiva:</strong> Valore relativo, classifica</div>
+                                    <div class="mt-2"><em>Esempio:</em> Lakers vs Warriors – Lakers vincenti 7/10</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>⚖️ Handicap punti</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Differenza media punti negli scontri diretti</div>
+                                    <div><strong>Soglia pronostico:</strong> Handicap proposto (es. -5.5)</div>
+                                    <div><strong>Fattori da considerare:</strong> Forza squadre, infortuni, casa/trasferta</div>
+                                    <div class="mt-2"><em>Esempio:</em> Lakers -5.5 – Diff. media +7.2 (ultimi 8) – Successi 6/8 (75%)</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>🔢 Punti totali partita (Over/Under)</h5>
+                                    <div><strong>Valore statistico rilevante:</strong> Media punti totali combinati</div>
+                                    <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 220.5)</div>
+                                    <div><strong>Fattori da considerare:</strong> Ritmo, difese, percentuali</div>
+                                    <div class="mt-2"><em>Esempio:</em> Lakers vs Warriors – Media 225.8 (ultimi 5) – Soglia 220.5 – Successi 4/5 (80%)</div>
+                                </div>
+
+                                <hr class="my-3">
+                                <div class="mb-2">
+                                    <h5>📊 Indicazioni generali</h5>
+                                    <div><strong>💰 Quota bookmaker:</strong> Moltiplicatore della vincita; confronta sempre con quota teorica AI</div>
+                                    <div><strong>📈 Successi storici:</strong> Formato "X su Y" o %; campione minimo 5–10</div>
+                                    <div><strong>🎯 Soglia bookmaker:</strong> Valore limite per O/U; le soglie .5 eliminano pareggi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="basket-results" class="mt-4 hidden">
-                <h3 class="mb-4">📊 Risultati Analisi Basket</h3>
-                
+                <h3 class="mb-4">📊 Risultati Analisi Multi-Mercato</h3>
+
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="metric-card">
@@ -1353,17 +692,16 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="chart-container">
                     <div id="basket-grafico-prob"></div>
                     <div id="basket-grafico-quote"></div>
                 </div>
-                
+
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Dettagli Analisi</h5>
                         <p><strong>🏀 Match:</strong> <span id="basket-match"></span></p>
-                        <p><strong>👤 Giocatore:</strong> <span id="basket-giocatore-result"></span> (<span id="basket-squadra-giocatore-result"></span>)</p>
                         <p><strong>📊 Pronostico:</strong> <span id="basket-pronostico-result"></span> <span class="tipo-pronostico" id="basket-tipo-badge"></span></p>
                         <p><strong>📈 Media Statistica:</strong> <span id="basket-media"></span></p>
                         <p><strong>🎯 Soglia Bookmaker:</strong> <span id="basket-soglia-result"></span></p>
@@ -1371,15 +709,14 @@
                         <p><strong>📊 Successi Storici:</strong> <span id="basket-successi-result"></span></p>
                     </div>
                 </div>
-                
-                <!-- ANALISI DETTAGLIATA AI -->
+
                 <div id="basket-analisi-ai" class="ai-analysis-card">
                     <h4 class="text-center mb-4">🧠 Analisi Dettagliata AI</h4>
                     <div id="basket-ragionamento-ai"></div>
                 </div>
-                
+
                 <div id="basket-consiglio" class="consiglio-box"></div>
-                
+
                 <div class="d-grid gap-2 mt-3">
                     <button class="btn btn-success" onclick="salvaPronostico('basket')"><i class="bi bi-save"></i> Salva Pronostico</button>
                 </div>
@@ -1389,7 +726,7 @@
         <!-- CALCIO SECTION -->
         <div id="calcio-section" class="hidden">
             <h3 class="mb-4"><i class="bi bi-soccer"></i> Calcio – Analisi Multi-Mercato</h3>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -1406,7 +743,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label">🎯 Tipo Pronostico Calcio</label>
                 <div class="dropdown">
@@ -1426,17 +763,21 @@
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('cartellini', '🟨 Cartellini')">🟨 Cartellini<br><small>Over/Under cartellini</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('primo-tempo', '⏱️ Primo Tempo')">⏱️ Primo Tempo<br><small>Risultati 1° tempo</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('vincitore', '🏆 Vincitore')">🏆 Vincitore<br><small>1, X, 2</small></a></li>
-                        
                         <li><hr class="dropdown-divider"></li>
                         <li><h6 class="dropdown-header">👤 Mercati Giocatori</h6></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('marcatore', '⚽ Marcatore')">⚽ Marcatore<br><small>Qualsiasi/Primo/Ultimo gol</small></a></li>
                         <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('assist', '🎯 Assist')">🎯 Assist<br><small>Over/Under assist</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('tiri-totali-giocatore', '🎯 Tiri Totali Giocatore')">🎯 Tiri Totali Giocatore<br><small>Over/Under tiri totali giocatore</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('tiro-porta', '🥅 Tiri in Porta')">🥅 Tiri in Porta<br><small>Over/Under tiri in porta</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('cartellini-giocatore', '🟨 Cartellini Giocatore')">🟨 Cartellini Giocatore<br><small>Over/Under cartellini</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('falli', '👊 Falli')">👊 Falli<br><small>Over/Under falli</small></a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selezionaPronosticoCalcio('custom-calcio', '✏️ Personalizzato')">✏️ Personalizzato<br><small>Altri mercati calcio</small></a></li>
                     </ul>
                 </div>
                 <input type="hidden" id="calcio-tipo-pronostico" value="over-under-gol">
             </div>
-            
-            <!-- CAMPI GIOCATORE CALCIO -->
+
+            <!-- CAMPI GIOCATORE -->
             <div id="calcio-giocatore-fields" class="giocatore-fields hidden">
                 <h5 class="mb-3">👤 Dati Giocatore</h5>
                 <div class="row">
@@ -1462,7 +803,7 @@
                         <div class="mb-3">
                             <label class="form-label">📈 Media Statistica Giocatore</label>
                             <input type="number" step="0.1" class="form-control" id="calcio-media-giocatore" value="0" min="0">
-                            <div class="form-text" id="calcio-media-giocatore-text">Media gol/assist del giocatore</div>
+                            <div class="form-text" id="calcio-media-giocatore-text">Media gol/assist/tiri/cartellini del giocatore</div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1474,7 +815,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label">📊 Pronostico Specifico</label>
                 <input type="text" class="form-control" id="calcio-pronostico" placeholder="es. Over 2.5 gol" required>
@@ -1483,79 +824,24 @@
                     Esempi: "Over 2.5 gol", "1X", "2-1", "Gol", "Si - Both teams to score"
                 </div>
             </div>
-            
-            <!-- STATISTICHE AVANZATE OVER/UNDER GOL -->
-            <div id="calcio-stats-overunder" class="stats-advanced">
-                <div class="stats-header">🥅 Statistiche Over/Under Gol Avanzate</div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📈 Media Gol Fatti Squadra 1</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-fatti1" value="0" min="0">
-                            <div class="form-text">Media gol segnati dalla squadra 1</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📉 Media Gol Subiti Squadra 1</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-subiti1" value="0" min="0">
-                            <div class="form-text">Media gol concessi dalla squadra 1</div>
-                        </div>
+
+            <div class="row mb-3" id="calcio-stats-squadre">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">📈 Media Gol/Eventi Squadra 1</label>
+                        <input type="number" step="0.1" class="form-control" id="calcio-media1" value="0" min="0">
+                        <div class="form-text" id="calcio-media1-text">Media gol fatti/subiti per la squadra 1</div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📈 Media Gol Fatti Squadra 2</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-fatti2" value="0" min="0">
-                            <div class="form-text">Media gol segnati dalla squadra 2</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📉 Media Gol Subiti Squadra 2</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-subiti2" value="0" min="0">
-                            <div class="form-text">Media gol concessi dalla squadra 2</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="calcio-calcolo-automatico" class="mt-3 p-3 bg-light rounded hidden">
-                    <div class="stats-header">🧮 Calcolo Automatico Media Attesa</div>
-                    <div class="stats-row">
-                        <span class="stats-label">Attacco Squadra 1 + Difesa Squadra 2:</span>
-                        <span class="stats-value" id="calcio-attacco1-difesa2">0.0</span>
-                    </div>
-                    <div class="stats-row">
-                        <span class="stats-label">Attacco Squadra 2 + Difesa Squadra 1:</span>
-                        <span class="stats-value" id="calcio-attacco2-difesa1">0.0</span>
-                    </div>
-                    <div class="stats-row">
-                        <span class="stats-label">🎯 Media Gol Attesa:</span>
-                        <span class="stats-value" id="calcio-media-attesa" style="color: #28a745; font-size: 1.1em;">0.0</span>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">📈 Media Gol/Eventi Squadra 2</label>
+                        <input type="number" step="0.1" class="form-control" id="calcio-media2" value="0" min="0">
+                        <div class="form-text" id="calcio-media2-text">Media gol fatti/subiti per la squadra 2</div>
                     </div>
                 </div>
             </div>
-            
-            <!-- STATISTICHE STANDARD PER ALTRI MERCATI -->
-            <div id="calcio-stats-standard" class="hidden">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📈 Media Eventi Squadra 1</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-media1" value="0" min="0">
-                            <div class="form-text" id="calcio-media1-text">Media eventi per la squadra 1</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">📈 Media Eventi Squadra 2</label>
-                            <input type="number" step="0.1" class="form-control" id="calcio-media2" value="0" min="0">
-                            <div class="form-text" id="calcio-media2-text">Media eventi per la squadra 2</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -1571,20 +857,225 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-4">
                 <label class="form-label">📊 Successi storici</label>
                 <input type="text" class="form-control" id="calcio-successi" placeholder="es. 7 su 10, 65%">
                 <div class="form-text">Quante volte è successo storicamente? (es. "7/10" o "65%")</div>
             </div>
-            
+
             <div class="d-grid gap-2">
                 <button class="btn btn-primary btn-lg" onclick="analizzaCalcio()"><i class="bi bi-cpu"></i> Analisi AI Avanzata</button>
             </div>
-            
+
+            <!-- Regolamento di Compilazione – Calcio -->
+            <div class="mt-4">
+                <div class="accordion" id="regolamentoCalcio">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOverUnder">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOverUnder" aria-expanded="true" aria-controls="collapseOverUnder">
+                                🥅 Over/Under Gol
+                            </button>
+                        </h2>
+                        <div id="collapseOverUnder" class="accordion-collapse collapse show" aria-labelledby="headingOverUnder" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Media Gol/Eventi Squadra 1:</strong> Media gol fatti nelle ultime partite</div>
+                                <div><strong>Media Gol/Eventi Squadra 2:</strong> Media gol fatti nelle ultime partite</div>
+                                <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 2.5)</div>
+                                <div><strong>Successi storici:</strong> Percentuale di partite sopra/sotto soglia</div>
+                                <div><strong>Fattori:</strong> Attacchi, difese, motivazione, importanza</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juventus (1.8) vs Inter (2.1) – Soglia 2.5 – Over: 6/10 (60%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingDoppiaChance">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDoppiaChance" aria-expanded="false" aria-controls="collapseDoppiaChance">
+                                🔄 Doppia Chance
+                            </button>
+                        </h2>
+                        <div id="collapseDoppiaChance" class="accordion-collapse collapse" aria-labelledby="headingDoppiaChance" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Successi storici:</strong> Percentuali di 1X, X2 o 12</div>
+                                <div><strong>Fattori:</strong> Forza relativa, casa/trasferta</div>
+                                <div><strong>Analisi aggiuntiva:</strong> Risultati recenti, forma, infortuni</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juventus vs Inter – 1X: 8/10 (80%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingRisultatoEsatto">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRisultatoEsatto" aria-expanded="false" aria-controls="collapseRisultatoEsatto">
+                                🎯 Risultato Esatto
+                            </button>
+                        </h2>
+                        <div id="collapseRisultatoEsatto" class="accordion-collapse collapse" aria-labelledby="headingRisultatoEsatto" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Successi storici:</strong> Percentuale di esito esatto</div>
+                                <div><strong>Fattori:</strong> Stile, attacco/difesa, precedenti</div>
+                                <div><strong>Analisi:</strong> Medie gol fatti/subiti, casa/trasferta</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juventus vs Inter – 2-1: 3/10 (30%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingBTTS">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBTTS" aria-expanded="false" aria-controls="collapseBTTS">
+                                ⚽ Both Teams to Score (BTTS)
+                            </button>
+                        </h2>
+                        <div id="collapseBTTS" class="accordion-collapse collapse" aria-labelledby="headingBTTS" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Media Gol/Eventi Squadra 1:</strong> Media gol segnati</div>
+                                <div><strong>Media Gol/Eventi Squadra 2:</strong> Media gol segnati</div>
+                                <div><strong>Successi storici:</strong> Percentuale di BTTS</div>
+                                <div><strong>Fattori:</strong> Qualità difese, attacchi, stile</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juventus vs Inter – BTTS Sì: 7/10 (70%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingMarcatore">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMarcatore" aria-expanded="false" aria-controls="collapseMarcatore">
+                                ⚽ Marcatore (Giocatore)
+                            </button>
+                        </h2>
+                        <div id="collapseMarcatore" class="accordion-collapse collapse" aria-labelledby="headingMarcatore" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Nome/Squadra:</strong> Dati del giocatore</div>
+                                <div><strong>Media Statistica:</strong> Media gol/partita</div>
+                                <div><strong>Partite Analizzate:</strong> Campione usato</div>
+                                <div><strong>Fattori:</strong> Minuti, rigori, punizioni, forma</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Cristiano Ronaldo – Media 0.8 (ultime 10) – Probabilità 45%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingAssist">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAssist" aria-expanded="false" aria-controls="collapseAssist">
+                                🎯 Assist (Giocatore)
+                            </button>
+                        </h2>
+                        <div id="collapseAssist" class="accordion-collapse collapse" aria-labelledby="headingAssist" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Media Statistica:</strong> Media assist/partita</div>
+                                <div><strong>Partite Analizzate:</strong> Campione usato</div>
+                                <div><strong>Soglia pronostico:</strong> Valore del bookmaker (es. 1.5)</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Kevin De Bruyne – Media 1.2 (ultime 15) – Soglia 1.5 – Successi 8/15 (53%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTiriTotali">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTiriTotali" aria-expanded="false" aria-controls="collapseTiriTotali">
+                                🎯 Tiri Totali (Partita)
+                            </button>
+                        </h2>
+                        <div id="collapseTiriTotali" class="accordion-collapse collapse" aria-labelledby="headingTiriTotali" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Media Squadra 1:</strong> Tiri totali/partita</div>
+                                <div><strong>Media Squadra 2:</strong> Tiri totali/partita</div>
+                                <div><strong>Soglia:</strong> Valore del bookmaker (es. 25.5)</div>
+                                <div><strong>Fattori:</strong> Stile, possesso, attacchi</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juve 13.2 vs Inter 12.8 – Over 25.5 – Successi 6/10 (60%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingCorner">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCorner" aria-expanded="false" aria-controls="collapseCorner">
+                                📐 Corner (Partita)
+                            </button>
+                        </h2>
+                        <div id="collapseCorner" class="accordion-collapse collapse" aria-labelledby="headingCorner" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Medie corner:</strong> Team 1 e Team 2</div>
+                                <div><strong>Soglia:</strong> Valore del bookmaker (es. 11.5)</div>
+                                <div><strong>Fattori:</strong> Attacchi laterali, difese</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juve 5.8 vs Inter 6.2 – Over 11.5 – Successi 7/10 (70%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingCartellini">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCartellini" aria-expanded="false" aria-controls="collapseCartellini">
+                                🟨 Cartellini (Partita)
+                            </button>
+                        </h2>
+                        <div id="collapseCartellini" class="accordion-collapse collapse" aria-labelledby="headingCartellini" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Medie cartellini:</strong> Team 1 e Team 2</div>
+                                <div><strong>Soglia:</strong> Valore del bookmaker (es. 4.5)</div>
+                                <div><strong>Fattori:</strong> Arbitro, importanza, rivalità</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juve 2.3 vs Inter 2.5 – Over 4.5 – Successi 6/10 (60%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingPrimoTempo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrimoTempo" aria-expanded="false" aria-controls="collapsePrimoTempo">
+                                ⏱️ Primo Tempo
+                            </button>
+                        </h2>
+                        <div id="collapsePrimoTempo" class="accordion-collapse collapse" aria-labelledby="headingPrimoTempo" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>Successi storici:</strong> Percentuale esito nel 1° tempo</div>
+                                <div><strong>Fattori:</strong> Approccio, casa/trasferta</div>
+                                <div><strong>Analisi:</strong> Media gol 1° tempo, tendenze</div>
+                                <div class="example">
+                                    <em>Esempio:</em> Juventus vs Inter – 1° Tempo "1": 5/10 (50%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingIndicazioniGenerali">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIndicazioniGenerali" aria-expanded="false" aria-controls="collapseIndicazioniGenerali">
+                                📊 Indicazioni Generali
+                            </button>
+                        </h2>
+                        <div id="collapseIndicazioniGenerali" class="accordion-collapse collapse" aria-labelledby="headingIndicazioniGenerali" data-bs-parent="#regolamentoCalcio">
+                            <div class="accordion-body">
+                                <div><strong>💰 Quota bookmaker:</strong> Moltiplicatore; confronta con quota teorica AI</div>
+                                <div><strong>📈 Successi storici:</strong> "X su Y" o %; campione minimo 5–10</div>
+                                <div><strong>🎯 Soglia bookmaker:</strong> Limite O/U; soglie .5 eliminano pareggi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="calcio-results" class="mt-4 hidden">
-                <h3 class="mb-4">📊 Risultati Analisi Calcio</h3>
-                
+                <h3 class="mb-4">📊 Risultati Analisi Multi-Mercato</h3>
+
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="metric-card">
@@ -1614,58 +1105,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="chart-container">
                     <div id="calcio-grafico-prob"></div>
                     <div id="calcio-grafico-quote"></div>
                 </div>
-                
-                <!-- DETTAGLI ANALISI OVER/UNDER MIGLIORATA -->
-                <div id="calcio-dettagli-overunder" class="card mb-4 hidden">
-                    <div class="card-body">
-                        <h5 class="card-title">🥅 Analisi Over/Under Gol Avanzata</h5>
-                        <div class="stats-advanced">
-                            <div class="stats-row">
-                                <span class="stats-label">Squadra 1 - Attacco:</span>
-                                <span class="stats-value" id="calcio-fatti1-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">Squadra 1 - Difesa:</span>
-                                <span class="stats-value" id="calcio-subiti1-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">Squadra 2 - Attacco:</span>
-                                <span class="stats-value" id="calcio-fatti2-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">Squadra 2 - Difesa:</span>
-                                <span class="stats-value" id="calcio-subiti2-result">0.0</span>
-                            </div>
-                            <hr>
-                            <div class="stats-row">
-                                <span class="stats-label">Attacco Squadra 1 + Difesa Squadra 2:</span>
-                                <span class="stats-value" id="calcio-combinazione1-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">Attacco Squadra 2 + Difesa Squadra 1:</span>
-                                <span class="stats-value" id="calcio-combinazione2-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">🎯 Media Gol Attesa:</span>
-                                <span class="stats-value" id="calcio-media-attesa-result" style="color: #28a745; font-size: 1.2em;">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">🎯 Soglia Bookmaker:</span>
-                                <span class="stats-value" id="calcio-soglia-overunder-result">0.0</span>
-                            </div>
-                            <div class="stats-row">
-                                <span class="stats-label">📊 Differenziale:</span>
-                                <span class="stats-value" id="calcio-differenziale-result">+0.0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Dettagli Analisi</h5>
@@ -1673,20 +1118,21 @@
                         <p id="calcio-giocatore-info" class="hidden"><strong>👤 Giocatore:</strong> <span id="calcio-giocatore-result"></span> (<span id="calcio-squadra-giocatore-result"></span>)</p>
                         <p><strong>📊 Pronostico:</strong> <span id="calcio-pronostico-result"></span> <span class="tipo-pronostico" id="calcio-tipo-badge"></span></p>
                         <p id="calcio-media-giocatore-result" class="hidden"><strong>📈 Media Giocatore:</strong> <span id="calcio-media-giocatore-val"></span></p>
-                        <p id="calcio-stats-standard-result" class="hidden"><strong>📈 Media Squadra 1:</strong> <span id="calcio-media1-result"></span> | <strong>Media Squadra 2:</strong> <span id="calcio-media2-result"></span></p>
+                        <p id="calcio-stats-squadre-result"><strong>📈 Media Squadra 1:</strong> <span id="calcio-media1-result"></span> | <strong>Media Squadra 2:</strong> <span id="calcio-media2-result"></span></p>
+                        <p><strong>🔢 Media Combinata:</strong> <span id="calcio-media-combinata"></span></p>
+                        <p><strong>🎯 Soglia Bookmaker:</strong> <span id="calcio-soglia-result"></span></p>
                         <p><strong>🔍 Metodo Analisi:</strong> <span id="calcio-metodo"></span></p>
                         <p><strong>📊 Successi Storici:</strong> <span id="calcio-successi-result"></span></p>
                     </div>
                 </div>
-                
-                <!-- ANALISI DETTAGLIATA AI -->
+
                 <div id="calcio-analisi-ai" class="ai-analysis-card">
                     <h4 class="text-center mb-4">🧠 Analisi Dettagliata AI</h4>
                     <div id="calcio-ragionamento-ai"></div>
                 </div>
-                
+
                 <div id="calcio-consiglio" class="consiglio-box"></div>
-                
+
                 <div class="d-grid gap-2 mt-3">
                     <button class="btn btn-success" onclick="salvaPronostico('calcio')"><i class="bi bi-save"></i> Salva Pronostico</button>
                 </div>
@@ -1698,10 +1144,8 @@
         <p class="mb-0">Betting AI – MultiSport Pro &copy; 2023. Supporta tutti i mercati dei bookmaker.</p>
     </footer>
 
-    <!-- PULSANTI FISSI -->
     <button class="toggle-dark-mode" onclick="toggleDarkMode()">🌓</button>
     <button class="toggle-saved-panel" id="toggleSavedPanel"><i class="bi bi-bookmark"></i></button>
-    <button class="toggle-regolamento" id="toggleRegolamento"><i class="bi bi-info-circle"></i></button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -1709,75 +1153,17 @@
         let savedForecasts = [];
         let currentAnalysisData = {};
         let darkMode = localStorage.getItem('darkMode') === 'true';
-        
-        // INIZIALIZZAZIONE
-        document.addEventListener('DOMContentLoaded', function() {
-            // Carica i pronostici salvati
-            try {
-                const saved = localStorage.getItem('savedForecasts');
-                if (saved) {
-                    savedForecasts = JSON.parse(saved);
-                    if (!Array.isArray(savedForecasts)) {
-                        savedForecasts = [];
-                    }
-                } else {
-                    savedForecasts = [];
-                }
-                
-                // Imposta la modalità scura
-                darkMode = localStorage.getItem('darkMode') === 'true';
-                if (darkMode) {
-                    document.body.classList.add('dark-mode');
-                }
-                
-                // Inizializza le sezioni
-                mostraSezione('basket');
-                aggiornaPronosticiSalvati();
-                aggiornaEsempiBasket();
-                aggiornaEsempiCalcio();
-                
-                // Aggiunge event listeners per i pannelli
-                const toggleSavedPanelBtn = document.getElementById('toggleSavedPanel');
-                const closePanelBtn = document.getElementById('closePanel');
-                const toggleRegolamentoBtn = document.getElementById('toggleRegolamento');
-                const closeRegolamentoBtn = document.getElementById('closeRegolamento');
-                const overlayEl = document.getElementById('overlay');
-                
-                if (toggleSavedPanelBtn) toggleSavedPanelBtn.addEventListener('click', toggleSavedPanel);
-                if (closePanelBtn) closePanelBtn.addEventListener('click', closeSavedPanel);
-                if (toggleRegolamentoBtn) toggleRegolamentoBtn.addEventListener('click', toggleRegolamentoPanel);
-                if (closeRegolamentoBtn) closeRegolamentoBtn.addEventListener('click', closeRegolamentoPanel);
-                if (overlayEl) overlayEl.addEventListener('click', function() {
-                    closeSavedPanel();
-                    closeRegolamentoPanel();
-                });
-                
-                // Inizializza calcolo automatico per Over/Under
-                aggiungiEventListenerCalcoloAutomatico();
-                
-            } catch (error) {
-                console.error('Errore nell\'inizializzazione:', error);
-                savedForecasts = [];
-                mostraSezione('basket');
-            }
-        });
 
         // FUNZIONI BASE
         function calcolaProbabilita(num, den) {
-            if (den <= 0 || isNaN(num) || isNaN(den)) {
-                return 0.0;
-            }
+            if (den <= 0 || isNaN(num) || isNaN(den)) return 0.0;
             const prob = (num / den) * 100;
             return Math.round(prob * 10) / 10;
         }
-
         function calcolaQuotaTeorica(prob) {
-            if (prob <= 0 || isNaN(prob)) {
-                return 100.0;
-            }
+            if (prob <= 0 || isNaN(prob)) return 100.0;
             return Math.round(100 / prob * 100) / 100;
         }
-
         function mostraSezione(sport) {
             document.getElementById('basket-section').classList.add('hidden');
             document.getElementById('calcio-section').classList.add('hidden');
@@ -1786,10 +1172,7 @@
             document.getElementById(sport + '-section').classList.remove('hidden');
             document.getElementById(sport + '-card').classList.add('active-sport');
         }
-
-        function showSport(sport) {
-            mostraSezione(sport);
-        }
+        function showSport(sport) { mostraSezione(sport); }
 
         // SELEZIONE PRONOSTICI BASKET
         function selezionaPronosticoBasket(tipo, testo) {
@@ -1802,228 +1185,193 @@
         function selezionaPronosticoCalcio(tipo, testo) {
             document.getElementById('calcio-tipo-pronostico').value = tipo;
             document.getElementById('selected-calcio-option').textContent = testo;
-            
-            // Mostra/nascondi campi giocatore
             const giocatoreFields = document.getElementById('calcio-giocatore-fields');
-            const statsOverUnder = document.getElementById('calcio-stats-overunder');
-            const statsStandard = document.getElementById('calcio-stats-standard');
-            
-            const tipiGiocatore = ['marcatore', 'assist'];
-            const tipiOverUnder = ['over-under-gol'];
-            
-            // Reset visibilità
-            giocatoreFields.classList.add('hidden');
-            statsOverUnder.classList.add('hidden');
-            statsStandard.classList.add('hidden');
-            
+            const statsSquadre = document.getElementById('calcio-stats-squadre');
+            const tipiGiocatore = ['marcatore','assist','tiri-totali-giocatore','tiro-porta','cartellini-giocatore','falli'];
             if (tipiGiocatore.includes(tipo)) {
                 giocatoreFields.classList.remove('hidden');
-            } else if (tipiOverUnder.includes(tipo)) {
-                statsOverUnder.classList.remove('hidden');
+                statsSquadre.classList.add('hidden');
+                aggiornaTestoMediaGiocatore(tipo);
             } else {
-                statsStandard.classList.remove('hidden');
+                giocatoreFields.classList.add('hidden');
+                statsSquadre.classList.remove('hidden');
+                aggiornaTestoMediaCalcio(tipo);
             }
-            
             aggiornaEsempiCalcio();
         }
 
         // AGGIORNA ESEMPI
         function aggiornaEsempiBasket() {
-            var tipo = document.getElementById('basket-tipo-pronostico').value;
-            var esempiElement = document.getElementById('basket-esempi-pronostico');
-            
-            switch(tipo) {
+            const tipo = document.getElementById('basket-tipo-pronostico').value;
+            const el = document.getElementById('basket-esempi-pronostico');
+            switch (tipo) {
                 case 'punti-over-under':
-                    esempiElement.textContent = 'Esempi: "Over 27.5 punti", "Under 25.5 punti", "Over 30.5 punti"';
-                    break;
+                    el.textContent = 'Esempi: "LeBron James Over 27.5 punti", "Curry Under 25.5", "Doncic Over 30.5"'; break;
                 case 'rimbalzi-over-under':
-                    esempiElement.textContent = 'Esempi: "Over 9.5 rimbalzi", "Under 11.5 rimbalzi", "Over 10.5 rimbalzi"';
-                    break;
+                    el.textContent = 'Esempi: "Jokic Over 9.5", "Gobert Under 11.5", "Davis Over 10.5"'; break;
                 case 'assist-over-under':
-                    esempiElement.textContent = 'Esempi: "Over 9.5 assist", "Under 8.5 assist", "Over 10.5 assist"';
-                    break;
+                    el.textContent = 'Esempi: "Trae Young Over 9.5", "Chris Paul Under 8.5", "Haliburton Over 10.5"'; break;
                 case 'performance-multipla':
-                    esempiElement.textContent = 'Esempi: "Over 40.5 P+R+A", "Under 45.5 P+R+A", "Over 50.5 P+R+A"';
-                    break;
+                    el.textContent = 'Esempi: "Jokic Over 40.5 PRA", "Giannis Under 45.5 PRA", "Doncic Over 50.5 PRA"'; break;
                 case 'vincitore':
-                    esempiElement.textContent = 'Esempi: "1", "2", "X"';
-                    break;
+                    el.textContent = 'Esempi: "Lakers vincenti", "Warriors vincenti", "Celtics vincenti"'; break;
                 case 'handicap':
-                    esempiElement.textContent = 'Esempi: "Squadra 1 -5.5", "Squadra 2 +3.5"';
-                    break;
+                    el.textContent = 'Esempi: "Lakers -5.5", "Warriors +3.5", "Celtics -2.5"'; break;
                 case 'punti-totali':
-                    esempiElement.textContent = 'Esempi: "Over 220.5 punti totali", "Under 215.5 punti totali"';
-                    break;
-                case 'custom':
-                    esempiElement.textContent = 'Inserisci qualsiasi pronostico personalizzato per il basket';
-                    break;
+                    el.textContent = 'Esempi: "Over 220.5", "Under 215.5", "Over 230.5"'; break;
+                default:
+                    el.textContent = 'Inserisci qualsiasi pronostico personalizzato';
+            }
+        }
+        function aggiornaEsempiCalcio() {
+            const tipo = document.getElementById('calcio-tipo-pronostico').value;
+            const el = document.getElementById('calcio-esempi-pronostico');
+            switch (tipo) {
+                case 'over-under-gol':
+                    el.textContent = 'Esempi: "Over 2.5", "Under 3.5", "Over 1.5"'; break;
+                case 'doppia-chance':
+                    el.textContent = 'Esempi: "1X", "X2", "12"'; break;
+                case 'risultato-esatto':
+                    el.textContent = 'Esempi: "2-1", "1-1", "3-0", "0-2"'; break;
+                case 'gol-nogol':
+                    el.textContent = 'Esempi: "Gol", "No Gol"'; break;
+                case 'both-teams':
+                    el.textContent = 'Esempi: "BTTS Sì", "BTTS No"'; break;
+                case 'pari-dispari':
+                    el.textContent = 'Esempi: "Pari", "Dispari"'; break;
+                case 'tiri-totali':
+                    el.textContent = 'Esempi: "Over 25.5 tiri totali", "Under 22.5"'; break;
+                case 'corner':
+                    el.textContent = 'Esempi: "Over 10.5 corner", "Under 8.5"'; break;
+                case 'cartellini':
+                    el.textContent = 'Esempi: "Over 4.5 cartellini", "Under 3.5"'; break;
+                case 'primo-tempo':
+                    el.textContent = 'Esempi: "1 primo tempo", "X primo tempo", "Over 1.5 1° tempo"'; break;
+                case 'vincitore':
+                    el.textContent = 'Esempi: "1", "X", "2"'; break;
+                case 'marcatore':
+                    el.textContent = 'Esempi: "Ronaldo marcatore", "Messi primo gol", "Haaland ultimo gol"'; break;
+                case 'assist':
+                    el.textContent = 'Esempi: "KDB Over 1.5 assist", "Bruno U 2.5"'; break;
+                case 'tiri-totali-giocatore':
+                    el.textContent = 'Esempi: "Ronaldo Over 3.5 tiri", "Messi Under 4.5"'; break;
+                case 'tiro-porta':
+                    el.textContent = 'Esempi: "Lewandowski Over 2.5 SOT", "Mbappé Under 3.5 SOT"'; break;
+                case 'cartellini-giocatore':
+                    el.textContent = 'Esempi: "Ramos Over 0.5 cartellini", "Casemiro Under 1.5"'; break;
+                case 'falli':
+                    el.textContent = 'Esempi: "Neymar Over 2.5 falli", "Zielinski Under 1.5"'; break;
+                default:
+                    el.textContent = 'Inserisci qualsiasi pronostico personalizzato';
             }
         }
 
-        function aggiornaEsempiCalcio() {
-            var tipo = document.getElementById('calcio-tipo-pronostico').value;
-            var esempiElement = document.getElementById('calcio-esempi-pronostico');
-            
-            switch(tipo) {
-                case 'over-under-gol':
-                    esempiElement.textContent = 'Esempi: "Over 2.5 gol", "Under 3.5 gol", "Over 1.5 gol"';
-                    break;
-                case 'doppia-chance':
-                    esempiElement.textContent = 'Esempi: "1X", "X2", "12"';
-                    break;
-                case 'risultato-esatto':
-                    esempiElement.textContent = 'Esempi: "2-1", "1-1", "3-0", "0-2"';
-                    break;
-                case 'gol-nogol':
-                    esempiElement.textContent = 'Esempi: "Gol", "No Gol"';
-                    break;
-                case 'both-teams':
-                    esempiElement.textContent = 'Esempi: "Si - Both teams to score", "No - Both teams to score"';
-                    break;
-                case 'pari-dispari':
-                    esempiElement.textContent = 'Esempi: "Pari", "Dispari"';
-                    break;
+        // Aggiorna descrizioni
+        function aggiornaTestoMediaCalcio(tipo) {
+            const t1 = document.getElementById('calcio-media1-text');
+            const t2 = document.getElementById('calcio-media2-text');
+            switch (tipo) {
                 case 'tiri-totali':
-                    esempiElement.textContent = 'Esempi: "Over 9.5 tiri totali", "Under 8.5 tiri totali", "Over 10.5 tiri totali"';
+                    t1.textContent = 'Media tiri totali – Squadra 1';
+                    t2.textContent = 'Media tiri totali – Squadra 2';
                     break;
                 case 'corner':
-                    esempiElement.textContent = 'Esempi: "Over 9.5 corner", "Under 8.5 corner", "Over 10.5 corner"';
+                    t1.textContent = 'Media corner – Squadra 1';
+                    t2.textContent = 'Media corner – Squadra 2';
                     break;
                 case 'cartellini':
-                    esempiElement.textContent = 'Esempi: "Over 4.5 cartellini", "Under 3.5 cartellini", "Over 5.5 cartellini"';
+                    t1.textContent = 'Media cartellini – Squadra 1';
+                    t2.textContent = 'Media cartellini – Squadra 2';
                     break;
-                case 'primo-tempo':
-                    esempiElement.textContent = 'Esempi: "1 primo tempo", "X primo tempo", "2 primo tempo"';
-                    break;
-                case 'vincitore':
-                    esempiElement.textContent = 'Esempi: "1", "X", "2"';
-                    break;
-                case 'marcatore':
-                    esempiElement.textContent = 'Esempi: "Cristiano Ronaldo marcatore", "Messi primo gol", "Haaland ultimo gol"';
-                    break;
-                case 'assist':
-                    esempiElement.textContent = 'Esempi: "Kevin De Bruyne Over 0.5 assist", "Bruno Fernandes Under 1.5 assist"';
-                    break;
+                default:
+                    t1.textContent = 'Media gol fatti/subiti – Squadra 1';
+                    t2.textContent = 'Media gol fatti/subiti – Squadra 2';
             }
         }
-
-        // CALCOLO AUTOMATICO MEDIA ATTESA OVER/UNDER
-        function aggiungiEventListenerCalcoloAutomatico() {
-            const inputs = ['calcio-fatti1', 'calcio-subiti1', 'calcio-fatti2', 'calcio-subiti2'];
-            
-            inputs.forEach(id => {
-                const input = document.getElementById(id);
-                if (input) {
-                    input.addEventListener('input', calcolaMediaAttesa);
-                }
-            });
-            
-            // Calcola subito con i valori attuali
-            calcolaMediaAttesa();
-        }
-
-        function calcolaMediaAttesa() {
-            const fatti1 = parseFloat(document.getElementById('calcio-fatti1').value) || 0;
-            const subiti1 = parseFloat(document.getElementById('calcio-subiti1').value) || 0;
-            const fatti2 = parseFloat(document.getElementById('calcio-fatti2').value) || 0;
-            const subiti2 = parseFloat(document.getElementById('calcio-subiti2').value) || 0;
-            
-            const combinazione1 = (fatti1 + subiti2) / 2;
-            const combinazione2 = (fatti2 + subiti1) / 2;
-            const mediaAttesa = (combinazione1 + combinazione2) / 2;
-            
-            const calcoloContainer = document.getElementById('calcio-calcolo-automatico');
-            
-            if (fatti1 > 0 || subiti1 > 0 || fatti2 > 0 || subiti2 > 0) {
-                calcoloContainer.classList.remove('hidden');
-                
-                document.getElementById('calcio-attacco1-difesa2').textContent = combinazione1.toFixed(2);
-                document.getElementById('calcio-attacco2-difesa1').textContent = combinazione2.toFixed(2);
-                document.getElementById('calcio-media-attesa').textContent = mediaAttesa.toFixed(2);
-                
-                // Colore in base al valore
-                const mediaElement = document.getElementById('calcio-media-attesa');
-                if (mediaAttesa >= 3.0) {
-                    mediaElement.style.color = '#dc3545';
-                } else if (mediaAttesa >= 2.0) {
-                    mediaElement.style.color = '#28a745';
-                } else {
-                    mediaElement.style.color = '#6c757d';
-                }
-            } else {
-                calcoloContainer.classList.add('hidden');
+        function aggiornaTestoMediaGiocatore(tipo) {
+            const t = document.getElementById('calcio-media-giocatore-text');
+            switch (tipo) {
+                case 'marcatore': t.textContent = 'Media gol per partita del giocatore'; break;
+                case 'assist': t.textContent = 'Media assist per partita del giocatore'; break;
+                case 'tiri-totali-giocatore': t.textContent = 'Media tiri totali per partita del giocatore'; break;
+                case 'tiro-porta': t.textContent = 'Media tiri in porta per partita del giocatore'; break;
+                case 'cartellini-giocatore': t.textContent = 'Media cartellini per partita del giocatore'; break;
+                case 'falli': t.textContent = 'Media falli per partita del giocatore'; break;
+                default: t.textContent = 'Media statistica per partita del giocatore';
             }
         }
 
         // VALIDAZIONE
         function validaCampi(sport) {
-            var valid = true;
+            let valid = true;
             document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-            
-            var squadra1 = document.getElementById(sport + '-squadra1').value;
-            var squadra2 = document.getElementById(sport + '-squadra2').value;
-            var pronostico = document.getElementById(sport + '-pronostico').value;
-            
-            if (!squadra1 || squadra1.trim() === '') {
+            const squadra1 = document.getElementById(sport + '-squadra1').value;
+            const squadra2 = document.getElementById(sport + '-squadra2').value;
+            const pronostico = document.getElementById(sport + '-pronostico').value;
+
+            if (!squadra1?.trim()) {
                 document.getElementById(sport + '-squadra1-error').textContent = 'Campo obbligatorio';
                 valid = false;
             }
-            if (!squadra2 || squadra2.trim() === '') {
+            if (!squadra2?.trim()) {
                 document.getElementById(sport + '-squadra2-error').textContent = 'Campo obbligatorio';
                 valid = false;
             }
-            if (!pronostico || pronostico.trim() === '') {
+            if (!pronostico?.trim()) {
                 document.getElementById(sport + '-pronostico-error').textContent = 'Campo obbligatorio';
                 valid = false;
             }
-            
-            // Validazione specifica per basket
-            if (sport === 'basket') {
-                const giocatore = document.getElementById('basket-giocatore').value;
-                const squadraGiocatore = document.getElementById('basket-squadra-giocatore').value;
-                
-                if (!giocatore || giocatore.trim() === '') {
-                    document.getElementById('basket-giocatore-error').textContent = 'Campo obbligatorio';
-                    valid = false;
-                }
-                if (!squadraGiocatore) {
-                    document.getElementById('basket-squadra-giocatore-error').textContent = 'Seleziona una squadra';
-                    valid = false;
+
+            const numeriDaValidare = [sport + '-totale', sport + '-eventi', sport + '-soglia', sport + '-quota'];
+            for (const campo of numeriDaValidare) {
+                const el = document.getElementById(campo);
+                if (el && isNaN(parseFloat(el.value))) {
+                    alert(`Il campo ${campo.replace('-', ' ')} deve contenere un numero valido`);
+                    return false;
                 }
             }
-            
+
+            if (sport === 'calcio') {
+                const tipo = document.getElementById('calcio-tipo-pronostico').value;
+                const tipiGiocatore = ['marcatore','assist','tiri-totali-giocatore','tiro-porta','cartellini-giocatore','falli'];
+                if (tipiGiocatore.includes(tipo)) {
+                    const giocatore = document.getElementById('calcio-giocatore').value;
+                    const squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
+                    if (!giocatore?.trim()) {
+                        alert('❌ Inserisci il nome del giocatore per i mercati giocatore!');
+                        valid = false;
+                    }
+                    if (!squadraGiocatore) {
+                        alert('❌ Seleziona la squadra del giocatore!');
+                        valid = false;
+                    }
+                }
+            }
             return valid;
         }
 
         // ANALISI BASKET
         function analizzaBasket() {
-            if (!validaCampi('basket')) {
-                alert('❌ Compila tutti i campi obbligatori!');
-                return;
-            }
-            
-            var squadra1 = document.getElementById('basket-squadra1').value;
-            var squadra2 = document.getElementById('basket-squadra2').value;
-            var giocatore = document.getElementById('basket-giocatore').value;
-            var squadraGiocatore = document.getElementById('basket-squadra-giocatore').value;
-            var pronostico = document.getElementById('basket-pronostico').value;
-            var totale = parseFloat(document.getElementById('basket-totale').value) || 0;
-            var eventi = parseInt(document.getElementById('basket-eventi').value) || 0;
-            var soglia = parseFloat(document.getElementById('basket-soglia').value) || 0;
-            var quota = parseFloat(document.getElementById('basket-quota').value) || 1.80;
-            var successi = document.getElementById('basket-successi').value;
-            var tipoPronostico = document.getElementById('basket-tipo-pronostico').value;
-            
+            if (!validaCampi('basket')) return;
+            const squadra1 = document.getElementById('basket-squadra1').value;
+            const squadra2 = document.getElementById('basket-squadra2').value;
+            const pronostico = document.getElementById('basket-pronostico').value;
+            const totale = parseFloat(document.getElementById('basket-totale').value) || 0;
+            const eventi = parseInt(document.getElementById('basket-eventi').value) || 0;
+            const soglia = parseFloat(document.getElementById('basket-soglia').value) || 0;
+            const quota = parseFloat(document.getElementById('basket-quota').value) || 1.80;
+            const successi = document.getElementById('basket-successi').value;
+            const tipoPronostico = document.getElementById('basket-tipo-pronostico').value;
+
             try {
-                var media = eventi > 0 ? Math.round((totale / eventi) * 100) / 100 : 0.0;
-                var prob, successiTxt, metodo;
-                
+                const media = eventi > 0 ? Math.round((totale / eventi) * 100) / 100 : 0.0;
+                let prob, successiTxt, metodo;
+
                 if (successi && successi.includes("su") && successi.trim()) {
-                    var parts = successi.split("su");
-                    var n = parseInt(parts[0]);
-                    var d = parseInt(parts[1]);
+                    const parts = successi.split("su");
+                    const n = parseInt(parts[0]); const d = parseInt(parts[1]);
                     prob = calcolaProbabilita(n, d);
-                    successiTxt = n + " su " + d;
+                    successiTxt = `${n} su ${d}`;
                     metodo = "📊 DATI STORICI";
                 } else if (successi && successi.includes("%")) {
                     prob = parseFloat(successi.replace('%', ''));
@@ -2031,85 +1379,54 @@
                     metodo = "📊 DATI STORICI";
                 } else {
                     if (media > 0 && soglia > 0) {
-                        if (pronostico.toLowerCase().includes("over")) {
-                            prob = Math.min(80, 50 + (media - soglia) * 8);
-                        } else if (pronostico.toLowerCase().includes("under")) {
-                            prob = Math.max(20, 50 - (soglia - media) * 8);
-                        } else {
-                            prob = 50.0;
-                        }
-                    } else {
-                        prob = 50.0;
-                    }
+                        if (pronostico.toLowerCase().includes("over")) prob = Math.min(80, 50 + (media - soglia) * 8);
+                        else if (pronostico.toLowerCase().includes("under")) prob = Math.max(20, 50 - (soglia - media) * 8);
+                        else prob = 50.0;
+                    } else prob = 50.0;
                     successiTxt = "Stimato da media statistica";
                     metodo = "🤖 STIMA AI";
                 }
-                
-                var quotaTeo = calcolaQuotaTeorica(prob);
-                var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
-                
-                // AGGIORNA RISULTATI
+
+                const quotaTeo = calcolaQuotaTeorica(prob);
+                const valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
+
                 document.getElementById('basket-probabilita').textContent = prob + '%';
                 document.getElementById('basket-prob-diff').textContent = (prob - 50 >= 0 ? '+' : '') + (prob - 50).toFixed(1) + '%';
                 document.getElementById('basket-prob-diff').className = (prob - 50 >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('basket-quota-teorica').textContent = quotaTeo.toFixed(2);
                 document.getElementById('basket-quota-diff').textContent = (quotaTeo - quota >= 0 ? '+' : '') + (quotaTeo - quota).toFixed(2);
                 document.getElementById('basket-quota-diff').className = (quotaTeo - quota >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('basket-value-margin').textContent = (valueMargin >= 0 ? '+' : '') + valueMargin.toFixed(1) + '%';
                 document.getElementById('basket-value-margin').className = (valueMargin >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('basket-match').textContent = squadra1 + ' vs ' + squadra2;
-                document.getElementById('basket-giocatore-result').textContent = giocatore;
-                document.getElementById('basket-squadra-giocatore-result').textContent = squadraGiocatore === 'squadra1' ? squadra1 : squadra2;
                 document.getElementById('basket-pronostico-result').textContent = pronostico;
                 document.getElementById('basket-media').textContent = media;
                 document.getElementById('basket-soglia-result').textContent = soglia;
                 document.getElementById('basket-metodo').textContent = metodo;
                 document.getElementById('basket-successi-result').textContent = successiTxt;
-                
-                // Aggiorna tipo mercato
-                var tipoTesto = getTipoPronosticoTesto(tipoPronostico);
+
+                const tipoTesto = getTipoPronosticoTesto(tipoPronostico);
                 document.getElementById('basket-mercato').textContent = tipoTesto.mercato;
                 document.getElementById('basket-tipo').textContent = tipoTesto.tipo;
                 document.getElementById('basket-tipo-badge').textContent = tipoTesto.badge;
-                
-                // CREA GRAFICI
+
                 creaGraficoAnalisi(prob, quota, quotaTeo, "Basket", "basket-grafico");
-                
-                // GENERA ANALISI AI
-                var analisiDettagliata = generaAnalisiDettagliataAI('basket', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
+
+                const analisiDettagliata = generaAnalisiDettagliataAI('basket', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
                 document.getElementById('basket-ragionamento-ai').innerHTML = analisiDettagliata;
-                
-                // GENERA CONSIGLIO
-                var consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
+
+                const consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
                 document.getElementById('basket-consiglio').innerHTML = consiglio;
-                
-                // SALVA I DATI DELL'ANALISI CORRENTE
+
                 currentAnalysisData = {
-                    sport: 'basket',
-                    squadra1: squadra1,
-                    squadra2: squadra2,
-                    giocatore: giocatore,
-                    squadraGiocatore: squadraGiocatore,
-                    pronostico: pronostico,
-                    media: media,
-                    soglia: soglia,
-                    prob: prob,
-                    quota: quota,
-                    quotaTeo: quotaTeo,
-                    valueMargin: valueMargin,
-                    successiTxt: successiTxt,
-                    metodo: metodo,
-                    tipoPronostico: tipoPronostico,
-                    analisiDettagliata: analisiDettagliata,
-                    consiglio: consiglio
+                    sport: 'basket', squadra1, squadra2, pronostico, media, soglia, prob, quota, quotaTeo,
+                    valueMargin, successiTxt, metodo, tipoPronostico, analisiDettagliata, consiglio
                 };
-                
-                // MOSTRA RISULTATI
+
                 document.getElementById('basket-results').classList.remove('hidden');
-                
             } catch (e) {
                 alert("❌ Errore nel calcolo: " + e.message);
             }
@@ -2117,206 +1434,129 @@
 
         // ANALISI CALCIO
         function analizzaCalcio() {
-            if (!validaCampi('calcio')) {
-                alert('❌ Compila tutti i campi obbligatori!');
-                return;
-            }
-            
-            var squadra1 = document.getElementById('calcio-squadra1').value;
-            var squadra2 = document.getElementById('calcio-squadra2').value;
-            var pronostico = document.getElementById('calcio-pronostico').value;
-            var soglia = parseFloat(document.getElementById('calcio-soglia').value) || 0;
-            var quota = parseFloat(document.getElementById('calcio-quota').value) || 1.80;
-            var successi = document.getElementById('calcio-successi').value;
-            var tipoPronostico = document.getElementById('calcio-tipo-pronostico').value;
-            
+            if (!validaCampi('calcio')) return;
+            const squadra1 = document.getElementById('calcio-squadra1').value;
+            const squadra2 = document.getElementById('calcio-squadra2').value;
+            const pronostico = document.getElementById('calcio-pronostico').value;
+            const media1 = parseFloat(document.getElementById('calcio-media1').value) || 0;
+            const media2 = parseFloat(document.getElementById('calcio-media2').value) || 0;
+            const soglia = parseFloat(document.getElementById('calcio-soglia').value) || 0;
+            const quota = parseFloat(document.getElementById('calcio-quota').value) || 1.80;
+            const successi = document.getElementById('calcio-successi').value;
+            const tipoPronostico = document.getElementById('calcio-tipo-pronostico').value;
+
             try {
-                var media, prob, successiTxt, metodo;
-                var isOverUnderGol = tipoPronostico === 'over-under-gol';
-                var isMercatoGiocatore = ['marcatore', 'assist'].includes(tipoPronostico);
-                
-                if (isOverUnderGol) {
-                    // Over/Under Gol - usa statistiche avanzate
-                    var fatti1 = parseFloat(document.getElementById('calcio-fatti1').value) || 0;
-                    var subiti1 = parseFloat(document.getElementById('calcio-subiti1').value) || 0;
-                    var fatti2 = parseFloat(document.getElementById('calcio-fatti2').value) || 0;
-                    var subiti2 = parseFloat(document.getElementById('calcio-subiti2').value) || 0;
-                    
-                    const combinazione1 = (fatti1 + subiti2) / 2;
-                    const combinazione2 = (fatti2 + subiti1) / 2;
-                    media = (combinazione1 + combinazione2) / 2;
-                    
-                    // Mostra dettagli Over/Under avanzati
-                    document.getElementById('calcio-dettagli-overunder').classList.remove('hidden');
-                    
-                    // Aggiorna dettagli Over/Under
-                    document.getElementById('calcio-fatti1-result').textContent = fatti1.toFixed(2);
-                    document.getElementById('calcio-subiti1-result').textContent = subiti1.toFixed(2);
-                    document.getElementById('calcio-fatti2-result').textContent = fatti2.toFixed(2);
-                    document.getElementById('calcio-subiti2-result').textContent = subiti2.toFixed(2);
-                    document.getElementById('calcio-combinazione1-result').textContent = combinazione1.toFixed(2);
-                    document.getElementById('calcio-combinazione2-result').textContent = combinazione2.toFixed(2);
-                    document.getElementById('calcio-media-attesa-result').textContent = media.toFixed(2);
-                    document.getElementById('calcio-soglia-overunder-result').textContent = soglia.toFixed(2);
-                    
-                    const differenziale = media - soglia;
-                    document.getElementById('calcio-differenziale-result').textContent = (differenziale >= 0 ? '+' : '') + differenziale.toFixed(2);
-                    document.getElementById('calcio-differenziale-result').style.color = differenziale >= 0 ? '#28a745' : '#dc3545';
-                    
-                } else if (isMercatoGiocatore) {
-                    // Mercati giocatore
+                let media, prob, successiTxt, metodo;
+                const tipiGiocatore = ['marcatore','assist','tiri-totali-giocatore','tiro-porta','cartellini-giocatore','falli'];
+                const isMercatoGiocatore = tipiGiocatore.includes(tipoPronostico);
+
+                if (isMercatoGiocatore) {
                     var mediaGiocatore = parseFloat(document.getElementById('calcio-media-giocatore').value) || 0;
+                    var partiteGiocatore = parseInt(document.getElementById('calcio-partite-giocatore').value) || 0;
                     media = mediaGiocatore;
-                    
-                    // Mostra info giocatore
+
                     document.getElementById('calcio-giocatore-info').classList.remove('hidden');
                     document.getElementById('calcio-media-giocatore-result').classList.remove('hidden');
-                    
-                    var giocatore = document.getElementById('calcio-giocatore').value;
-                    var squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
-                    var nomeSquadra = squadraGiocatore === 'squadra1' ? squadra1 : squadra2;
-                    
+                    document.getElementById('calcio-stats-squadre-result').classList.add('hidden');
+
+                    const giocatore = document.getElementById('calcio-giocatore').value;
+                    const squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
+                    const nomeSquadra = squadraGiocatore === 'squadra1' ? squadra1 : squadra2;
+
                     document.getElementById('calcio-giocatore-result').textContent = giocatore;
                     document.getElementById('calcio-squadra-giocatore-result').textContent = nomeSquadra;
                     document.getElementById('calcio-media-giocatore-val').textContent = mediaGiocatore;
-                    
-                    document.getElementById('calcio-dettagli-overunder').classList.add('hidden');
                 } else {
-                    // Altri mercati
-                    media = 50.0;
-                    document.getElementById('calcio-dettagli-overunder').classList.add('hidden');
+                    media = Math.round((media1 + media2) * 100) / 100;
+
                     document.getElementById('calcio-giocatore-info').classList.add('hidden');
                     document.getElementById('calcio-media-giocatore-result').classList.add('hidden');
+                    document.getElementById('calcio-stats-squadre-result').classList.remove('hidden');
+
+                    document.getElementById('calcio-media1-result').textContent = media1;
+                    document.getElementById('calcio-media2-result').textContent = media2;
                 }
-                
-                // CALCOLO PROBABILITÀ
+
                 if (successi && successi.includes("su") && successi.trim()) {
-                    var parts = successi.split("su");
-                    var n = parseInt(parts[0]);
-                    var d = parseInt(parts[1]);
+                    const parts = successi.split("su");
+                    const n = parseInt(parts[0]); const d = parseInt(parts[1]);
                     prob = calcolaProbabilita(n, d);
-                    successiTxt = n + " su " + d;
+                    successiTxt = `${n} su ${d}`;
                     metodo = "📊 DATI STORICI";
                 } else if (successi && successi.includes("%")) {
-                    prob = parseFloat(successi.replace('%', ''));
+                    prob = parseFloat(successi.replace('%',''));
                     successiTxt = successi;
                     metodo = "📊 DATI STORICI";
                 } else {
-                    if ((isOverUnderGol || isMercatoGiocatore) && media > 0 && soglia > 0) {
-                        if (pronostico.toLowerCase().includes("over")) {
-                            prob = Math.min(75, 50 + (media - soglia) * 10);
-                        } else if (pronostico.toLowerCase().includes("under")) {
-                            prob = Math.max(25, 50 - (soglia - media) * 10);
-                        } else {
-                            prob = 50.0;
-                        }
-                    } else {
-                        prob = 50.0;
-                    }
-                    successiTxt = isOverUnderGol ? "Stimato da analisi attacco/difesa" : 
-                                  isMercatoGiocatore ? "Stimato da statistiche giocatore" : 
-                                  "Stimato da dati generici";
+                    if (media > 0 && soglia > 0) {
+                        if (pronostico.toLowerCase().includes("over")) prob = Math.min(75, 50 + (media - soglia) * 10);
+                        else if (pronostico.toLowerCase().includes("under")) prob = Math.max(25, 50 - (soglia - media) * 10);
+                        else prob = 50.0;
+                    } else prob = 50.0;
+                    successiTxt = isMercatoGiocatore ? "Stimato da statistiche giocatore" : "Stimato da medie squadre";
                     metodo = "🤖 STIMA AI";
                 }
-                
-                var quotaTeo = calcolaQuotaTeorica(prob);
-                var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
-                
-                // AGGIORNA RISULTATI
+
+                const quotaTeo = calcolaQuotaTeorica(prob);
+                const valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
+
                 document.getElementById('calcio-probabilita').textContent = prob + '%';
                 document.getElementById('calcio-prob-diff').textContent = (prob - 50 >= 0 ? '+' : '') + (prob - 50).toFixed(1) + '%';
                 document.getElementById('calcio-prob-diff').className = (prob - 50 >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('calcio-quota-teorica').textContent = quotaTeo.toFixed(2);
                 document.getElementById('calcio-quota-diff').textContent = (quotaTeo - quota >= 0 ? '+' : '') + (quotaTeo - quota).toFixed(2);
                 document.getElementById('calcio-quota-diff').className = (quotaTeo - quota >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('calcio-value-margin').textContent = (valueMargin >= 0 ? '+' : '') + valueMargin.toFixed(1) + '%';
                 document.getElementById('calcio-value-margin').className = (valueMargin >= 0 ? 'value-positive' : 'value-negative');
-                
+
                 document.getElementById('calcio-match').textContent = squadra1 + ' vs ' + squadra2;
                 document.getElementById('calcio-pronostico-result').textContent = pronostico;
+                document.getElementById('calcio-media-combinata').textContent = media;
+                document.getElementById('calcio-soglia-result').textContent = soglia;
                 document.getElementById('calcio-metodo').textContent = metodo;
                 document.getElementById('calcio-successi-result').textContent = successiTxt;
-                
-                // Aggiorna tipo mercato
-                var tipoTesto = getTipoPronosticoTesto(tipoPronostico);
+
+                const tipoTesto = getTipoPronosticoTesto(tipoPronostico);
                 document.getElementById('calcio-mercato').textContent = tipoTesto.mercato;
                 document.getElementById('calcio-tipo').textContent = tipoTesto.tipo;
                 document.getElementById('calcio-tipo-badge').textContent = tipoTesto.badge;
-                
-                // CREA GRAFICI
+
                 creaGraficoAnalisi(prob, quota, quotaTeo, "Calcio", "calcio-grafico");
-                
-                // GENERA ANALISI AI
-                var analisiDettagliata = generaAnalisiDettagliataAI('calcio', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
+
+                const analisiDettagliata = generaAnalisiDettagliataAI('calcio', pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successiTxt, metodo);
                 document.getElementById('calcio-ragionamento-ai').innerHTML = analisiDettagliata;
-                
-                // GENERA CONSIGLIO
-                var consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
+
+                const consiglio = analisiAvanzataAI(pronostico, media, soglia, prob, quota, quotaTeo);
                 document.getElementById('calcio-consiglio').innerHTML = consiglio;
-                
-                // SALVA I DATI DELL'ANALISI CORRENTE
+
                 currentAnalysisData = {
-                    sport: 'calcio',
-                    squadra1: squadra1,
-                    squadra2: squadra2,
-                    pronostico: pronostico,
-                    media: media,
-                    soglia: soglia,
-                    prob: prob,
-                    quota: quota,
-                    quotaTeo: quotaTeo,
-                    valueMargin: valueMargin,
-                    successiTxt: successiTxt,
-                    metodo: metodo,
-                    tipoPronostico: tipoPronostico,
-                    analisiDettagliata: analisiDettagliata,
-                    consiglio: consiglio,
-                    isOverUnderGol: isOverUnderGol,
-                    isMercatoGiocatore: isMercatoGiocatore
+                    sport: 'calcio', squadra1, squadra2, pronostico, media, soglia, prob, quota, quotaTeo,
+                    valueMargin, successiTxt, metodo, tipoPronostico, analisiDettagliata, consiglio,
+                    isMercatoGiocatore, giocatore: isMercatoGiocatore ? document.getElementById('calcio-giocatore').value : null,
+                    squadraGiocatore: isMercatoGiocatore ? document.getElementById('calcio-squadra-giocatore').value : null,
+                    mediaGiocatore: isMercatoGiocatore ? mediaGiocatore : null, media1, media2
                 };
-                
-                if (isOverUnderGol) {
-                    currentAnalysisData.fatti1 = parseFloat(document.getElementById('calcio-fatti1').value) || 0;
-                    currentAnalysisData.subiti1 = parseFloat(document.getElementById('calcio-subiti1').value) || 0;
-                    currentAnalysisData.fatti2 = parseFloat(document.getElementById('calcio-fatti2').value) || 0;
-                    currentAnalysisData.subiti2 = parseFloat(document.getElementById('calcio-subiti2').value) || 0;
-                }
-                
-                if (isMercatoGiocatore) {
-                    currentAnalysisData.giocatore = document.getElementById('calcio-giocatore').value;
-                    currentAnalysisData.squadraGiocatore = document.getElementById('calcio-squadra-giocatore').value;
-                    currentAnalysisData.mediaGiocatore = parseFloat(document.getElementById('calcio-media-giocatore').value) || 0;
-                }
-                
-                // MOSTRA RISULTATI
+
                 document.getElementById('calcio-results').classList.remove('hidden');
-                
             } catch (e) {
                 alert("❌ Errore nel calcolo: " + e.message);
             }
         }
 
-        // FUNZIONE PER CREARE GRAFICI
+        // Grafici
         function creaGraficoAnalisi(prob, quota, quotaTeo, sport, containerId) {
-            // Distruggi i grafici esistenti
-            const probContainer = document.getElementById(containerId + '-prob');
-            const quoteContainer = document.getElementById(containerId + '-quote');
-            
-            if (probContainer) {
-                Plotly.purge(containerId + '-prob');
-            }
-            if (quoteContainer) {
-                Plotly.purge(containerId + '-quote');
-            }
-            
-            var indicatorData = {
-                type: "indicator",
-                mode: "gauge+number+delta",
-                value: prob,
-                domain: { x: [0, 1], y: [0, 1] },
-                title: { text: "Probabilità %" },
+            const probContainerId = containerId + '-prob';
+            const quoteContainerId = containerId + '-quote';
+            const probContainer = document.getElementById(probContainerId);
+            const quoteContainer = document.getElementById(quoteContainerId);
+            if (probContainer) Plotly.purge(probContainerId);
+            if (quoteContainer) Plotly.purge(quoteContainerId);
+
+            const indicatorData = {
+                type: "indicator", mode: "gauge+number+delta", value: prob,
+                domain: { x: [0,1], y: [0,1] }, title: { text: "Probabilità %" },
                 delta: { reference: 50 },
                 gauge: {
                     axis: { range: [null, 100] },
@@ -2326,132 +1566,48 @@
                         { range: [40, 60], color: "yellow" },
                         { range: [60, 100], color: "green" }
                     ],
-                    threshold: {
-                        line: { color: "red", width: 4 },
-                        thickness: 0.75,
-                        value: 60
-                    }
+                    threshold: { line: { color: "red", width: 4 }, thickness: 0.75, value: 60 }
                 }
             };
-
-            var barData = {
-                type: "bar",
-                x: ['Quota Teorica', 'Quota Bookmaker'],
-                y: [quotaTeo, quota],
-                marker: {
-                    color: ['lightblue', 'darkblue']
-                },
-                text: [quotaTeo.toFixed(2), quota.toFixed(2)],
-                textposition: 'auto'
+            const barData = {
+                type: "bar", x: ['Quota Teorica', 'Quota Bookmaker'], y: [quotaTeo, quota],
+                marker: { color: ['lightblue', 'darkblue'] },
+                text: [quotaTeo.toFixed(2), quota.toFixed(2)], textposition: 'auto'
             };
-
-            var indicatorLayout = {
-                title: `Probabilità ${sport}`,
-                height: 400
-            };
-
-            var barLayout = {
-                title: `Confronto Quote ${sport}`,
-                height: 400
-            };
-
-            Plotly.newPlot(containerId + '-prob', [indicatorData], indicatorLayout);
-            Plotly.newPlot(containerId + '-quote', [barData], barLayout);
+            Plotly.newPlot(probContainerId, [indicatorData], { title: `Probabilità ${sport}`, height: 400 });
+            Plotly.newPlot(quoteContainerId, [barData], { title: `Confronto Quote ${sport}`, height: 400 });
         }
 
-        // FUNZIONE PER ANALISI AVANZATA AI
+        // Consiglio AI
         function analisiAvanzataAI(esito, media, soglia, prob, quota, quotaTeo) {
-            var valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
-            
-            if (esito.toLowerCase().includes("over")) {
-                var confidenceScore = 0;
-                
-                if (media > soglia * 1.2) {
-                    confidenceScore += 40;
-                } else if (media > soglia) {
-                    confidenceScore += 20;
-                } else if (media > soglia * 0.9) {
-                    confidenceScore += 10;
-                }
-                
-                if (prob > 70) {
-                    confidenceScore += 30;
-                } else if (prob > 60) {
-                    confidenceScore += 20;
-                } else if (prob > 50) {
-                    confidenceScore += 10;
-                }
-                
-                if (valueMargin > 20) {
-                    confidenceScore += 20;
-                } else if (valueMargin > 10) {
-                    confidenceScore += 10;
-                } else if (valueMargin > 0) {
-                    confidenceScore += 5;
-                }
-                
-                if (media > soglia && prob > 60) {
-                    confidenceScore += 10;
-                }
-                
+            const valueMargin = quotaTeo > 0 ? ((quota / quotaTeo) - 1) * 100 : 0;
+            let confidenceScore = 0;
+            const lower = esito.toLowerCase();
+            if (lower.includes("over")) {
+                if (media > soglia * 1.2) confidenceScore += 40;
+                else if (media > soglia) confidenceScore += 20;
+                else if (media > soglia * 0.9) confidenceScore += 10;
+                if (prob > 70) confidenceScore += 30; else if (prob > 60) confidenceScore += 20; else if (prob > 50) confidenceScore += 10;
+                if (valueMargin > 20) confidenceScore += 20; else if (valueMargin > 10) confidenceScore += 10; else if (valueMargin > 0) confidenceScore += 5;
+                if (media > soglia && prob > 60) confidenceScore += 10;
                 return generaConsiglioFinale("OVER", confidenceScore, valueMargin, prob);
-            } else if (esito.toLowerCase().includes("under")) {
-                var confidenceScore = 0;
-                
-                if (media < soglia * 0.8) {
-                    confidenceScore += 40;
-                } else if (media < soglia) {
-                    confidenceScore += 20;
-                } else if (media < soglia * 1.1) {
-                    confidenceScore += 10;
-                }
-                
-                if (prob > 70) {
-                    confidenceScore += 30;
-                } else if (prob > 60) {
-                    confidenceScore += 20;
-                } else if (prob > 50) {
-                    confidenceScore += 10;
-                }
-                
-                if (valueMargin > 20) {
-                    confidenceScore += 20;
-                } else if (valueMargin > 10) {
-                    confidenceScore += 10;
-                } else if (valueMargin > 0) {
-                    confidenceScore += 5;
-                }
-                
-                if (media < soglia && prob > 60) {
-                    confidenceScore += 10;
-                }
-                
+            } else if (lower.includes("under")) {
+                if (media < soglia * 0.8) confidenceScore += 40;
+                else if (media < soglia) confidenceScore += 20;
+                else if (media < soglia * 1.1) confidenceScore += 10;
+                if (prob > 70) confidenceScore += 30; else if (prob > 60) confidenceScore += 20; else if (prob > 50) confidenceScore += 10;
+                if (valueMargin > 20) confidenceScore += 20; else if (valueMargin > 10) confidenceScore += 10; else if (valueMargin > 0) confidenceScore += 5;
+                if (media < soglia && prob > 60) confidenceScore += 10;
                 return generaConsiglioFinale("UNDER", confidenceScore, valueMargin, prob);
             } else {
-                var confidenceScore = 0;
-                
-                if (prob > 70) {
-                    confidenceScore += 50;
-                } else if (prob > 60) {
-                    confidenceScore += 35;
-                } else if (prob > 55) {
-                    confidenceScore += 20;
-                } else if (prob > 50) {
-                    confidenceScore += 10;
-                }
-                
-                if (valueMargin > 15) {
-                    confidenceScore += 25;
-                } else if (valueMargin > 5) {
-                    confidenceScore += 15;
-                } else if (valueMargin > 0) {
-                    confidenceScore += 5;
-                }
-                
+                if (prob > 70) confidenceScore += 50;
+                else if (prob > 60) confidenceScore += 35;
+                else if (prob > 55) confidenceScore += 20;
+                else if (prob > 50) confidenceScore += 10;
+                if (valueMargin > 15) confidenceScore += 25; else if (valueMargin > 5) confidenceScore += 15; else if (valueMargin > 0) confidenceScore += 5;
                 return generaConsiglioFinale(esito.toUpperCase(), confidenceScore, valueMargin, prob);
             }
         }
-
         function generaConsiglioFinale(tipoScommessa, confidenceScore, valueMargin, prob) {
             if (confidenceScore >= 80) {
                 return `<div class="success-card">
@@ -2484,112 +1640,46 @@
             }
         }
 
-        // FUNZIONE PER ANALISI DETTAGLIATA AI
+        // Analisi dettagliata AI
         function generaAnalisiDettagliataAI(sport, pronostico, media, soglia, prob, quota, quotaTeo, valueMargin, successi, metodo) {
-            var analisiHTML = '';
-            var ragionamenti = [];
-            
-            // Analisi basata sul tipo di pronostico
+            let analisiHTML = '';
+            const ragionamenti = [];
             if (pronostico.toLowerCase().includes("over")) {
-                ragionamenti.push({
-                    tipo: media > soglia ? "positive" : "negative",
-                    testo: `📈 <strong>Media vs Soglia:</strong> La media (${media.toFixed(2)}) è ${media > soglia ? 'superiore' : 'inferiore'} alla soglia (${soglia}) - ${media > soglia ? 'favorevole per OVER' : 'sfavorevole per OVER'}`
-                });
+                ragionamenti.push({tipo:"positive",testo:`📈 <strong>Media vs Soglia:</strong> ${media} vs ${soglia} – ${media > soglia ? 'favorevole' : 'sfavorevole'} per OVER`});
             } else if (pronostico.toLowerCase().includes("under")) {
-                ragionamenti.push({
-                    tipo: media < soglia ? "positive" : "negative",
-                    testo: `📉 <strong>Media vs Soglia:</strong> La media (${media.toFixed(2)}) è ${media < soglia ? 'inferiore' : 'superiore'} alla soglia (${soglia}) - ${media < soglia ? 'favorevole per UNDER' : 'sfavorevole per UNDER'}`
-                });
+                ragionamenti.push({tipo:"positive",testo:`📉 <strong>Media vs Soglia:</strong> ${media} vs ${soglia} – ${media < soglia ? 'favorevole' : 'sfavorevole'} per UNDER`});
             }
+            if (prob >= 70) ragionamenti.push({tipo:"positive",testo:`🎲 <strong>Alta probabilità:</strong> ${prob}%`});
+            else if (prob >= 60) ragionamenti.push({tipo:"positive",testo:`✅ <strong>Buona probabilità:</strong> ${prob}%`});
+            else if (prob >= 50) ragionamenti.push({tipo:"warning",testo:`⚖️ <strong>Equilibrio:</strong> ${prob}%`});
+            else ragionamenti.push({tipo:"negative",testo:`📊 <strong>Bassa probabilità:</strong> ${prob}%`});
 
-            // Analisi probabilità
-            if (prob >= 70) {
-                ragionamenti.push({
-                    tipo: "positive",
-                    testo: `🎲 <strong>Alta Probabilità:</strong> ${prob}% di successo - livello di confidenza molto alto`
-                });
-            } else if (prob >= 60) {
-                ragionamenti.push({
-                    tipo: "positive",
-                    testo: `✅ <strong>Buona Probabilità:</strong> ${prob}% di successo - livello di confidenza solido`
-                });
-            } else if (prob >= 50) {
-                ragionamenti.push({
-                    tipo: "warning",
-                    testo: `⚖️ <strong>Probabilità Equilibrata:</strong> ${prob}% di successo - situazione bilanciata`
-                });
-            } else {
-                ragionamenti.push({
-                    tipo: "negative",
-                    testo: `📊 <strong>Probabilità Bassa:</strong> Solo ${prob}% di successo - rischio significativo`
-                });
-            }
+            if (valueMargin > 15) ragionamenti.push({tipo:"positive",testo:`💰 <strong>Value eccellente:</strong> +${valueMargin.toFixed(1)}%`});
+            else if (valueMargin > 5) ragionamenti.push({tipo:"positive",testo:`💵 <strong>Buon value:</strong> +${valueMargin.toFixed(1)}%`});
+            else if (valueMargin > 0) ragionamenti.push({tipo:"warning",testo:`📊 <strong>Value limitato:</strong> +${valueMargin.toFixed(1)}%`});
+            else ragionamenti.push({tipo:"negative",testo:`❌ <strong>Nessun value:</strong> ${valueMargin.toFixed(1)}%`});
 
-            // Analisi value bet
-            if (valueMargin > 15) {
-                ragionamenti.push({
-                    tipo: "positive",
-                    testo: `💰 <strong>Value Bet Eccellente:</strong> +${valueMargin.toFixed(1)}% di valore - opportunità rara`
-                });
-            } else if (valueMargin > 5) {
-                ragionamenti.push({
-                    tipo: "positive",
-                    testo: `💵 <strong>Buon Value Bet:</strong> +${valueMargin.toFixed(1)}% di valore - situazione favorevole`
-                });
-            } else if (valueMargin > 0) {
-                ragionamenti.push({
-                    tipo: "warning",
-                    testo: `📊 <strong>Value Bet Limitato:</strong> +${valueMargin.toFixed(1)}% di valore - margine ridotto`
-                });
-            } else {
-                ragionamenti.push({
-                    tipo: "negative",
-                    testo: `❌ <strong>Nessun Value Bet:</strong> ${valueMargin.toFixed(1)}% di valore - quota bookmaker non conveniente`
-                });
-            }
+            if (metodo.includes("STORICI")) ragionamenti.push({tipo:"positive",testo:`📚 <strong>Dati storici:</strong> ${successi}`});
+            else ragionamenti.push({tipo:"warning",testo:`🤖 <strong>Stima AI:</strong> calcolo algoritmico`});
 
-            // Analisi dati storici
-            if (metodo.includes("STORICI")) {
-                ragionamenti.push({
-                    tipo: "positive",
-                    testo: `📚 <strong>Dati Storici Solidi:</strong> Analisi basata su ${successi} - fondamento statistico robusto`
-                });
-            } else {
-                ragionamenti.push({
-                    tipo: "warning",
-                    testo: `🤖 <strong>Stima AI:</strong> Probabilità calcolata algoritmicamente - attendibilità variabile`
-                });
-            }
-
-            // Costruisci HTML
-            ragionamenti.forEach(rag => {
-                var classe = rag.tipo === "positive" ? "reason-item" : 
-                            rag.tipo === "warning" ? "reason-item warning-reason" : 
-                            "reason-item danger-reason";
-                analisiHTML += `<div class="${classe}">${rag.testo}</div>`;
+            ragionamenti.forEach(r => {
+                const c = r.tipo === "positive" ? "reason-item" : r.tipo === "warning" ? "reason-item warning-reason" : "reason-item danger-reason";
+                analisiHTML += `<div class="${c}">${r.testo}</div>`;
             });
 
-            // Conclusione
-            var conclusione = '';
-            if (prob >= 70 && valueMargin > 10) {
-                conclusione = `🎯 <strong>CONCLUSIONE AI:</strong> Combinazione eccellente di alta probabilità (${prob}%) e forte value bet (+${valueMargin.toFixed(1)}%). L'AI raccomanda fortemente questa scommessa.`;
-            } else if (prob >= 60 && valueMargin > 5) {
-                conclusione = `✅ <strong>CONCLUSIONE AI:</strong> Buon bilanciamento tra probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%). Scommessa consigliata con moderazione.`;
-            } else if (prob >= 50 && valueMargin > 0) {
-                conclusione = `⚖️ <strong>CONCLUSIONE AI:</strong> Situazione equilibrata. Probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%) sufficienti per considerare la scommessa.`;
-            } else {
-                conclusione = `⚠️ <strong>CONCLUSIONE AI:</strong> Fattori di rischio elevati. Probabilità (${prob}%) e valore (+${valueMargin.toFixed(1)}%) insufficienti per una raccomandazione.`;
-            }
+            let conclusione = '';
+            if (prob >= 70 && valueMargin > 10) conclusione = `🎯 <strong>Conclusione:</strong> Alta probabilità e buon value. Raccomandazione forte.`;
+            else if (prob >= 60 && valueMargin > 5) conclusione = `✅ <strong>Conclusione:</strong> Bilanciamento favorevole. Consigliata con moderazione.`;
+            else if (prob >= 50 && valueMargin > 0) conclusione = `⚖️ <strong>Conclusione:</strong> Valutazione borderline. Possibile considerazione.`;
+            else conclusione = `⚠️ <strong>Conclusione:</strong> Rischio elevato. Non consigliata.`;
 
             analisiHTML += `<div class="reason-item" style="background: rgba(255,255,255,0.2); border-left-color: #2196F3;">${conclusione}</div>`;
-
             return analisiHTML;
         }
 
-        // FUNZIONE PER OTTENERE TIPO PRONOSTICO
+        // Tipo pronostico testo
         function getTipoPronosticoTesto(tipo) {
             const tipi = {
-                // Basket
                 'punti-over-under': { mercato: 'Punti', tipo: 'O/U Giocatore', badge: '🏀 Punti' },
                 'rimbalzi-over-under': { mercato: 'Rimbalzi', tipo: 'O/U Giocatore', badge: '📈 Rimbalzi' },
                 'assist-over-under': { mercato: 'Assist', tipo: 'O/U Giocatore', badge: '🎯 Assist' },
@@ -2598,7 +1688,6 @@
                 'handicap': { mercato: 'Handicap', tipo: 'Punti', badge: '⚖️ Handicap' },
                 'punti-totali': { mercato: 'Punti Totali', tipo: 'O/U Partita', badge: '🔢 P.Totali' },
                 'custom': { mercato: 'Personalizzato', tipo: 'Vari', badge: '✏️ Custom' },
-                // Calcio
                 'over-under-gol': { mercato: 'O/U Gol', tipo: 'Gol', badge: '🥅 O/U Gol' },
                 'doppia-chance': { mercato: 'Doppia Chance', tipo: '1X/X2/12', badge: '🔄 D.Chance' },
                 'risultato-esatto': { mercato: 'Ris. Esatto', tipo: 'Score', badge: '🎯 R.Esatto' },
@@ -2609,78 +1698,57 @@
                 'corner': { mercato: 'Corner', tipo: 'O/U', badge: '📐 Corner' },
                 'cartellini': { mercato: 'Cartellini', tipo: 'O/U', badge: '🟨 Cartellini' },
                 'primo-tempo': { mercato: '1° Tempo', tipo: 'Parziale', badge: '⏱️ 1°T' },
-                'vincitore': { mercato: 'Vincitore', tipo: '1/X/2', badge: '🏆 Vincitore' },
                 'marcatore': { mercato: 'Marcatore', tipo: 'Giocatore', badge: '⚽ Marcatore' },
-                'assist': { mercato: 'Assist', tipo: 'Giocatore', badge: '🎯 Assist' }
+                'assist': { mercato: 'Assist', tipo: 'Giocatore', badge: '🎯 Assist' },
+                'tiri-totali-giocatore': { mercato: 'Tiri Totali', tipo: 'Giocatore', badge: '🎯 Tiri Gioc.' },
+                'tiro-porta': { mercato: 'Tiri in Porta', tipo: 'Giocatore', badge: '🥅 Tiri Porta' },
+                'cartellini-giocatore': { mercato: 'Cartellini', tipo: 'Giocatore', badge: '🟨 Cart.Gioc.' },
+                'falli': { mercato: 'Falli', tipo: 'Giocatore', badge: '👊 Falli' },
+                'custom-calcio': { mercato: 'Personalizzato', tipo: 'Calcio', badge: '✏️ Custom' }
             };
             return tipi[tipo] || { mercato: 'Mercato', tipo: 'Tipo', badge: '📊' };
         }
 
-        // FUNZIONI PER I PANNELLI
+        // PANNELLI
         function toggleSavedPanel() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
-            
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
         function closeSavedPanel() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
-            
             panel.classList.remove('open');
             overlay.classList.remove('active');
         }
-
-        function toggleRegolamentoPanel() {
-            const panel = document.getElementById('regolamentoPanel');
-            const overlay = document.getElementById('overlay');
-            
-            panel.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-
-        function closeRegolamentoPanel() {
-            const panel = document.getElementById('regolamentoPanel');
-            const overlay = document.getElementById('overlay');
-            
+        function closeDetailPanel() {
+            const panel = document.getElementById('savedDetailPanel');
             panel.classList.remove('open');
-            overlay.classList.remove('active');
         }
 
-        function toggleDarkMode() {
-            darkMode = !darkMode;
-            document.body.classList.toggle('dark-mode', darkMode);
-            localStorage.setItem('darkMode', darkMode);
-        }
-
-        // FUNZIONE PER SALVARE PRONOSTICO
         function salvaPronostico(sport) {
-            if (!currentAnalysisData || Object.keys(currentAnalysisData).length === 0) {
+            const resultsElement = document.getElementById(sport + '-results');
+            if (!resultsElement || resultsElement.classList.contains('hidden')) {
                 alert('❌ Prima devi effettuare un\'analisi per salvare il pronostico!');
                 return;
             }
-            
+            const squadra1 = document.getElementById(sport + '-squadra1').value;
+            const squadra2 = document.getElementById(sport + '-squadra2').value;
+            const pronostico = document.getElementById(sport + '-pronostico').value;
+            const probabilita = document.getElementById(sport + '-probabilita').textContent;
+            const quotaTeorica = document.getElementById(sport + '-quota-teorica').textContent;
+            const valueMargin = document.getElementById(sport + '-value-margin').textContent;
+            const mercato = document.getElementById(sport + '-mercato').textContent;
+            const tipoPronostico = document.getElementById(sport + '-tipo-pronostico').value;
+
             const forecast = {
-                id: Date.now(),
-                sport: sport,
-                squadra1: currentAnalysisData.squadra1,
-                squadra2: currentAnalysisData.squadra2,
-                pronostico: currentAnalysisData.pronostico,
-                probabilita: currentAnalysisData.prob + '%',
-                quotaTeorica: currentAnalysisData.quotaTeo.toFixed(2),
-                valueMargin: (currentAnalysisData.valueMargin >= 0 ? '+' : '') + currentAnalysisData.valueMargin.toFixed(1) + '%',
-                mercato: getTipoPronosticoTesto(currentAnalysisData.tipoPronostico).mercato,
-                tipoPronostico: currentAnalysisData.tipoPronostico,
-                timestamp: new Date().toLocaleString('it-IT'),
-                analysisData: currentAnalysisData
+                id: Date.now(), sport, squadra1, squadra2, pronostico,
+                probabilita, quotaTeorica, valueMargin, mercato, tipoPronostico,
+                timestamp: new Date().toLocaleString('it-IT'), analysisData: currentAnalysisData
             };
-            
-            // Aggiunge il pronostico all'array
             savedForecasts.push(forecast);
-            
-            // Salva nel localStorage
+
             try {
                 localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
             } catch (error) {
@@ -2688,17 +1756,12 @@
                 alert('Errore durante il salvataggio del pronostico');
                 return;
             }
-            
-            // Aggiorna la visualizzazione
             aggiornaPronosticiSalvati();
-            
-            // Mostra conferma
             alert('✅ Pronostico salvato con successo!');
         }
 
         function aggiornaPronosticiSalvati() {
             const container = document.getElementById('savedForecastsList');
-            
             if (!Array.isArray(savedForecasts) || savedForecasts.length === 0) {
                 container.innerHTML = `
                     <div class="no-saved">
@@ -2709,35 +1772,31 @@
                 `;
                 return;
             }
-            
-            // Ordina i pronostici per data (dal più recente)
             savedForecasts.sort((a, b) => b.id - a.id);
-            
-            // Genera l'HTML per ogni pronostico salvato
-            container.innerHTML = savedForecasts.map(forecast => `
-                <div class="saved-item" onclick="mostraDettaglioPronostico(${forecast.id})">
+            container.innerHTML = savedForecasts.map(f => `
+                <div class="saved-item" onclick="mostraDettaglioPronostico(${f.id})">
                     <div class="saved-item-header">
-                        <span class="saved-item-sport">${forecast.sport === 'basket' ? '🏀 Basket' : '⚽ Calcio'}</span>
-                        <span class="saved-item-date">${forecast.timestamp}</span>
+                        <span class="saved-item-sport">${f.sport === 'basket' ? '🏀 Basket' : '⚽ Calcio'}</span>
+                        <span class="saved-item-date">${f.timestamp}</span>
                     </div>
-                    <div class="saved-item-match">${forecast.squadra1} vs ${forecast.squadra2}</div>
-                    <div class="saved-item-forecast">${forecast.pronostico}</div>
+                    <div class="saved-item-match">${f.squadra1} vs ${f.squadra2}</div>
+                    <div class="saved-item-forecast">${f.pronostico}</div>
                     <div class="saved-item-stats">
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.probabilita}</div>
+                            <div class="saved-item-stat-value">${f.probabilita}</div>
                             <div class="saved-item-stat-label">Probabilità</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.quotaTeorica}</div>
+                            <div class="saved-item-stat-value">${f.quotaTeorica}</div>
                             <div class="saved-item-stat-label">Quota Teorica</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value ${forecast.valueMargin.includes('+') ? 'value-positive' : 'value-negative'}">${forecast.valueMargin}</div>
+                            <div class="saved-item-stat-value ${f.valueMargin.includes('+') ? 'value-positive' : 'value-negative'}">${f.valueMargin}</div>
                             <div class="saved-item-stat-label">Value</div>
                         </div>
                     </div>
                     <div class="saved-item-actions">
-                        <button class="delete-saved" onclick="event.stopPropagation(); eliminaPronostico(${forecast.id})">
+                        <button class="delete-saved" onclick="event.stopPropagation(); eliminaPronostico(${f.id})">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -2745,13 +1804,97 @@
             `).join('');
         }
 
-        function eliminaPronostico(id) {
-            if (!confirm('Sei sicuro di voler eliminare questo pronostico?')) {
-                return;
+        function mostraDettaglioPronostico(id) {
+            const forecast = savedForecasts.find(f => f.id === id);
+            if (!forecast) return;
+            closeSavedPanel();
+            const panel = document.getElementById('savedDetailPanel');
+            const content = document.getElementById('savedDetailContent');
+
+            let detailHTML = `
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Informazioni Base</h5>
+                        <p><strong>Sport:</strong> ${forecast.sport === 'basket' ? '🏀 Basket' : '⚽ Calcio'}</p>
+                        <p><strong>Match:</strong> ${forecast.squadra1} vs ${forecast.squadra2}</p>
+                        <p><strong>Pronostico:</strong> ${forecast.pronostico}</p>
+                        <p><strong>Mercato:</strong> ${forecast.mercato}</p>
+                        <p><strong>Data Salvataggio:</strong> ${forecast.timestamp}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <h6>Probabilità</h6>
+                            <h3>${forecast.probabilita}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <h6>Quota Teorica</h6>
+                            <h3>${forecast.quotaTeorica}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <h6>Value Margin</h6>
+                            <h3 class="${forecast.valueMargin.includes('+') ? 'value-positive' : 'value-negative'}">${forecast.valueMargin}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <h6>Mercato</h6>
+                            <h3>${forecast.mercato}</h3>
+                        </div>
+                    </div>
+                </div>
+            `;
+            if (forecast.analysisData) {
+                detailHTML += `
+                    <div class="chart-container">
+                        <div id="saved-detail-grafico-prob"></div>
+                        <div id="saved-detail-grafico-quote"></div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Dettagli Analisi Originale</h5>
+                            <p><strong>Media Statistica:</strong> ${forecast.analysisData.media}</p>
+                            <p><strong>Soglia Bookmaker:</strong> ${forecast.analysisData.soglia}</p>
+                            <p><strong>Metodo Analisi:</strong> ${forecast.analysisData.metodo}</p>
+                            <p><strong>Successi Storici:</strong> ${forecast.analysisData.successiTxt}</p>
+                        </div>
+                    </div>
+
+                    <div class="ai-analysis-card">
+                        <h4 class="text-center mb-4">🧠 Analisi Dettagliata AI</h4>
+                        ${forecast.analysisData.analisiDettagliata}
+                    </div>
+
+                    ${forecast.analysisData.consiglio}
+                `;
             }
-            
-            savedForecasts = savedForecasts.filter(forecast => forecast.id !== id);
-            
+            content.innerHTML = detailHTML;
+
+            if (forecast.analysisData) {
+                setTimeout(() => {
+                    creaGraficoAnalisi(
+                        parseFloat(forecast.probabilita.replace('%', '')),
+                        forecast.analysisData.quota,
+                        forecast.analysisData.quotaTeo,
+                        forecast.sport === 'basket' ? 'Basket' : 'Calcio',
+                        "saved-detail-grafico"
+                    );
+                }, 100);
+            }
+            panel.classList.add('open');
+        }
+
+        function eliminaPronostico(id) {
+            if (!confirm('Sei sicuro di voler eliminare questo pronostico?')) return;
+            if (!Array.isArray(savedForecasts)) savedForecasts = [];
+            savedForecasts = savedForecasts.filter(f => f && f.id !== id);
             try {
                 localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
                 aggiornaPronosticiSalvati();
@@ -2760,8 +1903,64 @@
                 alert('Errore durante l\'eliminazione del pronostico');
             }
         }
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode', darkMode);
+            localStorage.setItem('darkMode', darkMode);
+        }
+
+        // INIZIALIZZAZIONE
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const saved = localStorage.getItem('savedForecasts');
+                savedForecasts = saved ? JSON.parse(saved) : [];
+                if (!Array.isArray(savedForecasts)) savedForecasts = [];
+
+                darkMode = localStorage.getItem('darkMode') === 'true';
+                if (darkMode) document.body.classList.add('dark-mode');
+
+                mostraSezione('basket');
+                aggiornaPronosticiSalvati();
+                aggiornaEsempiBasket();
+                aggiornaEsempiCalcio();
+                aggiornaSquadreGiocatore();
+
+                const toggleSavedPanelBtn = document.getElementById('toggleSavedPanel');
+                const closePanelBtn = document.getElementById('closePanel');
+                const closeDetailBtn = document.getElementById('closeDetail');
+                const overlayEl = document.getElementById('overlay');
+
+                if (toggleSavedPanelBtn) toggleSavedPanelBtn.addEventListener('click', toggleSavedPanel);
+                if (closePanelBtn) closePanelBtn.addEventListener('click', closeSavedPanel);
+                if (closeDetailBtn) closeDetailBtn.addEventListener('click', closeDetailPanel);
+                if (overlayEl) overlayEl.addEventListener('click', function() {
+                    closeSavedPanel();
+                    closeDetailPanel();
+                });
+            } catch (error) {
+                console.error('Errore nell\'inizializzazione:', error);
+                savedForecasts = [];
+                mostraSezione('basket');
+            }
+        });
+
+        function aggiornaSquadreGiocatore() {
+            try {
+                const squadra1 = document.getElementById('calcio-squadra1').value || 'Squadra 1';
+                const squadra2 = document.getElementById('calcio-squadra2').value || 'Squadra 2';
+                const select = document.getElementById('calcio-squadra-giocatore');
+                if (select && select.options.length > 2) {
+                    select.options[1].text = squadra1;
+                    select.options[2].text = squadra2;
+                }
+            } catch (error) {
+                console.error('Errore nell\'aggiornamento squadre giocatore:', error);
+            }
+        }
     </script>
 </body>
 </html>
+
 
 
