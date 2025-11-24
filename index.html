@@ -421,6 +421,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
         
         .saved-item {
@@ -501,6 +502,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
         
         .toggle-saved-panel {
@@ -994,25 +996,40 @@
                 document.body.classList.add('dark-mode');
             }
 
-            // Aggiungi gestori di eventi
+            // Aggiungi gestori di eventi per mobile
+            setupMobileEvents();
+        });
+
+        // CONFIGURAZIONE EVENTI MOBILE
+        function setupMobileEvents() {
+            // Pulsanti tema e pannelli
             document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
-            document.getElementById('toggleDarkMode').addEventListener('touchstart', toggleDarkMode);
+            document.getElementById('toggleDarkMode').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                toggleDarkMode();
+            });
             
             document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
-            document.getElementById('toggleSavedPanel').addEventListener('touchstart', toggleSavedPanel);
+            document.getElementById('toggleSavedPanel').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                toggleSavedPanel();
+            });
             
             document.getElementById('closePanel').addEventListener('click', closeSavedPanel);
-            document.getElementById('closePanel').addEventListener('touchstart', closeSavedPanel);
+            document.getElementById('closePanel').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                closeSavedPanel();
+            });
             
             document.getElementById('overlay').addEventListener('click', function() {
                 closeSavedPanel();
             });
-            
-            document.getElementById('overlay').addEventListener('touchstart', function() {
+            document.getElementById('overlay').addEventListener('touchstart', function(e) {
+                e.preventDefault();
                 closeSavedPanel();
             });
 
-            // Aggiungi gestori per i pulsanti sport
+            // Pulsanti sport
             document.querySelectorAll('.sport-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     cambiaSport(this);
@@ -1023,11 +1040,10 @@
                 });
             });
 
-            // Aggiungi gestore per l'analisi automatica del pronostico
+            // Analisi automatica pronostico
             document.getElementById('calcio-pronostico').addEventListener('blur', function() {
                 analizzaPronosticoAutomatico('calcio');
             });
-            
             document.getElementById('calcio-pronostico').addEventListener('change', function() {
                 analizzaPronosticoAutomatico('calcio');
             });
@@ -1035,12 +1051,11 @@
             document.getElementById('basket-pronostico').addEventListener('blur', function() {
                 analizzaPronosticoAutomatico('basket');
             });
-            
             document.getElementById('basket-pronostico').addEventListener('change', function() {
                 analizzaPronosticoAutomatico('basket');
             });
 
-            // Aggiungi gestori per i pulsanti principali
+            // Pulsanti principali
             document.getElementById('analyzeBtn').addEventListener('click', analizzaPronostico);
             document.getElementById('analyzeBtn').addEventListener('touchstart', function(e) {
                 e.preventDefault();
@@ -1066,7 +1081,7 @@
                 e.preventDefault();
                 window.print();
             });
-        });
+        }
 
         // FUNZIONE PER CAMBIARE SPORT
         function cambiaSport(btn) {
@@ -1094,9 +1109,6 @@
             
             // Mostra la sezione corretta
             document.getElementById(sport + '-section').classList.add('active');
-            
-            // Reset dei campi quando si cambia sport
-            resetCampiSport();
         }
 
         // FUNZIONE PER ANALIZZARE AUTOMATICAMENTE IL PRONOSTICO
@@ -1115,37 +1127,7 @@
             }
         }
 
-        // FUNZIONE PER RESETTARE I CAMPI QUANDO SI CAMBIA SPORT
-        function resetCampiSport() {
-            if (currentSport === 'calcio') {
-                document.getElementById('calcio-squadra1').value = '';
-                document.getElementById('calcio-squadra2').value = '';
-                document.getElementById('calcio-pronostico').value = '';
-                document.getElementById('calcio-media-gol').value = '';
-                document.getElementById('calcio-soglia').value = '';
-                document.getElementById('calcio-storico').value = '';
-                document.getElementById('calcio-quota').value = '';
-                document.getElementById('calcio-forma-recente').value = '';
-                document.getElementById('calcio-difficolta').value = 'media';
-            } else {
-                document.getElementById('basket-squadra1').value = '';
-                document.getElementById('basket-squadra2').value = '';
-                document.getElementById('basket-pronostico').value = '';
-                document.getElementById('basket-media-punti').value = '';
-                document.getElementById('basket-soglia').value = '';
-                document.getElementById('basket-storico').value = '';
-                document.getElementById('basket-quota').value = '';
-                document.getElementById('basket-forma-recente').value = '';
-                document.getElementById('basket-difficolta').value = 'media';
-            }
-            
-            document.getElementById('note-aggiuntive').value = '';
-            document.getElementById('result-section').style.display = 'none';
-            document.getElementById('saveBtn').disabled = true;
-            currentAnalysis = null;
-        }
-
-        // FUNZIONI PRINCIPALI
+        // FUNZIONI PRINCIPALI (restano uguali)
         function analizzaPronostico() {
             // Recupera i valori dal form in base allo sport selezionato
             let team1, team2, pronostico, media, soglia, storico, quota, formaRecente, difficoltaAvversario;
@@ -1517,7 +1499,8 @@
         
         function resetForm() {
             document.getElementById('result-section').style.display = 'none';
-            resetCampiSport();
+            document.getElementById('saveBtn').disabled = true;
+            currentAnalysis = null;
         }
 
         // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI
@@ -1641,6 +1624,7 @@
     </script>
 </body>
 </html>
+
 
 
 
