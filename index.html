@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Betting AI Ultra - Analisi Pronostici Calcio e Basket</title>
+    <meta name="description" content="Betting AI Ultra - Analisi intelligente per pronostici di Calcio e Basket">
+    <title>Betting AI Ultra - Analisi Pronostici</title>
     <style>
         :root {
             --primary: #2c5aa0;
@@ -44,6 +45,7 @@
             padding: 20px;
             transition: background-color 0.3s, color 0.3s;
             touch-action: manipulation;
+            min-height: 100vh;
         }
         
         .container {
@@ -58,15 +60,16 @@
             border-radius: 10px;
             margin-bottom: 25px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         
         h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
             margin-bottom: 10px;
         }
         
         .subtitle {
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 2vw, 1.1rem);
             opacity: 0.9;
         }
         
@@ -77,6 +80,7 @@
             padding: 25px;
             margin-bottom: 25px;
             transition: background-color 0.3s;
+            border: 1px solid var(--border-color);
         }
         
         .card-title {
@@ -137,15 +141,23 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
             text-align: center;
             min-height: 50px;
             line-height: 20px;
             touch-action: manipulation;
+            user-select: none;
         }
         
         .btn:hover, .btn:active {
             background-color: var(--secondary);
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
         }
         
         .btn-block {
@@ -178,17 +190,6 @@
             background-color: #c82333;
         }
         
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover, .btn-outline:active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
         .result-section {
             display: none;
         }
@@ -205,6 +206,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
         }
         
         .analysis-card h3 {
@@ -374,6 +376,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             touch-action: manipulation;
+            user-select: none;
         }
         
         /* Saved Forecasts Panel */
@@ -389,6 +392,7 @@
             z-index: 1050;
             overflow-y: auto;
             padding: 20px;
+            border-left: 1px solid var(--border-color);
         }
         
         .saved-panel.open {
@@ -523,6 +527,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             touch-action: manipulation;
+            user-select: none;
         }
         
         .overlay {
@@ -570,6 +575,7 @@
             align-items: center;
             justify-content: center;
             touch-action: manipulation;
+            user-select: none;
         }
         
         .sport-btn.active {
@@ -589,6 +595,27 @@
         
         .sport-section.active {
             display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         @media (max-width: 768px) {
@@ -632,6 +659,15 @@
             .sport-btn {
                 min-height: 55px;
             }
+            
+            .probability-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .probability-text {
+                font-size: 1.5rem;
+            }
         }
         
         @media (max-width: 480px) {
@@ -651,6 +687,10 @@
             
             .toggle-saved-panel {
                 bottom: 75px;
+            }
+            
+            header {
+                padding: 20px 15px;
             }
         }
     </style>
@@ -845,6 +885,11 @@
                 <textarea id="note-aggiuntive" rows="3" placeholder="Informazioni su forma, infortuni, motivazione..."></textarea>
             </div>
             
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analisi in corso...</p>
+            </div>
+            
             <div class="row">
                 <div class="col">
                     <button class="btn btn-block" id="analyzeBtn">Analizza Pronostico</button>
@@ -984,49 +1029,61 @@
 
         // INIZIALIZZAZIONE
         document.addEventListener('DOMContentLoaded', function() {
-            // Carica i pronostici salvati
-            const saved = localStorage.getItem('savedForecasts');
-            if (saved) {
-                savedForecasts = JSON.parse(saved);
-                aggiornaPronosticiSalvati();
-            }
+            console.log('Betting AI Ultra - Inizializzazione...');
+            
+            try {
+                // Carica i pronostici salvati
+                const saved = localStorage.getItem('savedForecasts');
+                if (saved) {
+                    savedForecasts = JSON.parse(saved);
+                    aggiornaPronosticiSalvati();
+                }
 
-            // Imposta la modalità scura se attiva
-            if (darkMode) {
-                document.body.classList.add('dark-mode');
-            }
+                // Imposta la modalità scura se attiva
+                if (darkMode) {
+                    document.body.classList.add('dark-mode');
+                }
 
-            // Aggiungi gestori di eventi per mobile
-            setupMobileEvents();
+                // Configura eventi
+                setupEventListeners();
+                
+                console.log('Betting AI Ultra - Inizializzazione completata');
+            } catch (error) {
+                console.error('Errore durante l\'inizializzazione:', error);
+                alert('Errore durante il caricamento dell\'applicazione. Ricarica la pagina.');
+            }
         });
 
-        // CONFIGURAZIONE EVENTI MOBILE
-        function setupMobileEvents() {
+        // CONFIGURAZIONE EVENTI
+        function setupEventListeners() {
             // Pulsanti tema e pannelli
-            document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
-            document.getElementById('toggleDarkMode').addEventListener('touchstart', function(e) {
+            const toggleDarkMode = document.getElementById('toggleDarkMode');
+            const toggleSavedPanel = document.getElementById('toggleSavedPanel');
+            const closePanel = document.getElementById('closePanel');
+            const overlay = document.getElementById('overlay');
+
+            toggleDarkMode.addEventListener('click', toggleDarkModeHandler);
+            toggleDarkMode.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                toggleDarkMode();
+                toggleDarkModeHandler();
             });
             
-            document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
-            document.getElementById('toggleSavedPanel').addEventListener('touchstart', function(e) {
+            toggleSavedPanel.addEventListener('click', toggleSavedPanelHandler);
+            toggleSavedPanel.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                toggleSavedPanel();
+                toggleSavedPanelHandler();
             });
             
-            document.getElementById('closePanel').addEventListener('click', closeSavedPanel);
-            document.getElementById('closePanel').addEventListener('touchstart', function(e) {
+            closePanel.addEventListener('click', closeSavedPanelHandler);
+            closePanel.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                closeSavedPanel();
+                closeSavedPanelHandler();
             });
             
-            document.getElementById('overlay').addEventListener('click', function() {
-                closeSavedPanel();
-            });
-            document.getElementById('overlay').addEventListener('touchstart', function(e) {
+            overlay.addEventListener('click', closeSavedPanelHandler);
+            overlay.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                closeSavedPanel();
+                closeSavedPanelHandler();
             });
 
             // Pulsanti sport
@@ -1038,21 +1095,6 @@
                     e.preventDefault();
                     cambiaSport(this);
                 });
-            });
-
-            // Analisi automatica pronostico
-            document.getElementById('calcio-pronostico').addEventListener('blur', function() {
-                analizzaPronosticoAutomatico('calcio');
-            });
-            document.getElementById('calcio-pronostico').addEventListener('change', function() {
-                analizzaPronosticoAutomatico('calcio');
-            });
-
-            document.getElementById('basket-pronostico').addEventListener('blur', function() {
-                analizzaPronosticoAutomatico('basket');
-            });
-            document.getElementById('basket-pronostico').addEventListener('change', function() {
-                analizzaPronosticoAutomatico('basket');
             });
 
             // Pulsanti principali
@@ -1081,21 +1123,34 @@
                 e.preventDefault();
                 window.print();
             });
+
+            // Analisi automatica pronostico
+            document.getElementById('calcio-pronostico').addEventListener('input', function() {
+                analizzaPronosticoAutomatico('calcio');
+            });
+
+            document.getElementById('basket-pronostico').addEventListener('input', function() {
+                analizzaPronosticoAutomatico('basket');
+            });
         }
 
         // FUNZIONE PER CAMBIARE SPORT
         function cambiaSport(btn) {
-            // Rimuovi la classe active da tutti i pulsanti
-            document.querySelectorAll('.sport-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            
-            // Aggiungi la classe active al pulsante cliccato
-            btn.classList.add('active');
-            
-            // Cambia sezione sport
-            const sport = btn.getAttribute('data-sport');
-            cambiaSezioneSport(sport);
+            try {
+                // Rimuovi la classe active da tutti i pulsanti
+                document.querySelectorAll('.sport-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Aggiungi la classe active al pulsante cliccato
+                btn.classList.add('active');
+                
+                // Cambia sezione sport
+                const sport = btn.getAttribute('data-sport');
+                cambiaSezioneSport(sport);
+            } catch (error) {
+                console.error('Errore nel cambio sport:', error);
+            }
         }
 
         // FUNZIONE PER CAMBIARE SEZIONE SPORT
@@ -1108,109 +1163,144 @@
             });
             
             // Mostra la sezione corretta
-            document.getElementById(sport + '-section').classList.add('active');
+            const targetSection = document.getElementById(sport + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
         }
 
         // FUNZIONE PER ANALIZZARE AUTOMATICAMENTE IL PRONOSTICO
         function analizzaPronosticoAutomatico(sport) {
-            const pronostico = document.getElementById(sport + '-pronostico').value;
-            if (pronostico) {
-                const analisi = analizzaMercato(pronostico, '', '');
-                
-                // Se viene identificata una soglia, la inseriamo automaticamente
-                if (analisi.elementi.some(e => e.includes('Soglia:'))) {
-                    const sogliaMatch = pronostico.match(/([0-9.]+)/);
-                    if (sogliaMatch) {
-                        document.getElementById(sport + '-soglia').value = sogliaMatch[1];
+            try {
+                const pronostico = document.getElementById(sport + '-pronostico').value;
+                if (pronostico) {
+                    const analisi = analizzaMercato(pronostico, '', '');
+                    
+                    // Se viene identificata una soglia, la inseriamo automaticamente
+                    if (analisi.elementi.some(e => e.includes('Soglia:'))) {
+                        const sogliaMatch = pronostico.match(/([0-9.]+)/);
+                        if (sogliaMatch) {
+                            document.getElementById(sport + '-soglia').value = sogliaMatch[1];
+                        }
                     }
                 }
+            } catch (error) {
+                console.error('Errore nell\'analisi automatica:', error);
             }
         }
 
-        // FUNZIONI PRINCIPALI (restano uguali)
+        // FUNZIONI PRINCIPALI
         function analizzaPronostico() {
-            // Recupera i valori dal form in base allo sport selezionato
-            let team1, team2, pronostico, media, soglia, storico, quota, formaRecente, difficoltaAvversario;
-            
-            if (currentSport === 'calcio') {
-                team1 = document.getElementById('calcio-squadra1').value;
-                team2 = document.getElementById('calcio-squadra2').value;
-                pronostico = document.getElementById('calcio-pronostico').value;
-                media = parseFloat(document.getElementById('calcio-media-gol').value) || 0;
-                soglia = parseFloat(document.getElementById('calcio-soglia').value) || 0;
-                storico = document.getElementById('calcio-storico').value;
-                quota = parseFloat(document.getElementById('calcio-quota').value) || 0;
-                formaRecente = document.getElementById('calcio-forma-recente').value;
-                difficoltaAvversario = document.getElementById('calcio-difficolta').value;
-            } else {
-                team1 = document.getElementById('basket-squadra1').value;
-                team2 = document.getElementById('basket-squadra2').value;
-                pronostico = document.getElementById('basket-pronostico').value;
-                media = parseFloat(document.getElementById('basket-media-punti').value) || 0;
-                soglia = parseFloat(document.getElementById('basket-soglia').value) || 0;
-                storico = document.getElementById('basket-storico').value;
-                quota = parseFloat(document.getElementById('basket-quota').value) || 0;
-                formaRecente = document.getElementById('basket-forma-recente').value;
-                difficoltaAvversario = document.getElementById('basket-difficolta').value;
+            try {
+                // Mostra loading
+                document.getElementById('loading').style.display = 'block';
+                
+                // Simula un piccolo delay per mostrare il loading
+                setTimeout(() => {
+                    eseguiAnalisi();
+                }, 100);
+                
+            } catch (error) {
+                console.error('Errore nell\'analisi:', error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Errore durante l\'analisi. Riprova.');
             }
-            
-            const noteAggiuntive = document.getElementById('note-aggiuntive').value;
-            
-            // Validazione base
-            if (!pronostico) {
-                alert('Inserisci un pronostico da analizzare');
-                return;
+        }
+
+        function eseguiAnalisi() {
+            try {
+                // Recupera i valori dal form in base allo sport selezionato
+                let team1, team2, pronostico, media, soglia, storico, quota, formaRecente, difficoltaAvversario;
+                
+                if (currentSport === 'calcio') {
+                    team1 = document.getElementById('calcio-squadra1').value;
+                    team2 = document.getElementById('calcio-squadra2').value;
+                    pronostico = document.getElementById('calcio-pronostico').value;
+                    media = parseFloat(document.getElementById('calcio-media-gol').value) || 0;
+                    soglia = parseFloat(document.getElementById('calcio-soglia').value) || 0;
+                    storico = document.getElementById('calcio-storico').value;
+                    quota = parseFloat(document.getElementById('calcio-quota').value) || 0;
+                    formaRecente = document.getElementById('calcio-forma-recente').value;
+                    difficoltaAvversario = document.getElementById('calcio-difficolta').value;
+                } else {
+                    team1 = document.getElementById('basket-squadra1').value;
+                    team2 = document.getElementById('basket-squadra2').value;
+                    pronostico = document.getElementById('basket-pronostico').value;
+                    media = parseFloat(document.getElementById('basket-media-punti').value) || 0;
+                    soglia = parseFloat(document.getElementById('basket-soglia').value) || 0;
+                    storico = document.getElementById('basket-storico').value;
+                    quota = parseFloat(document.getElementById('basket-quota').value) || 0;
+                    formaRecente = document.getElementById('basket-forma-recente').value;
+                    difficoltaAvversario = document.getElementById('basket-difficolta').value;
+                }
+                
+                const noteAggiuntive = document.getElementById('note-aggiuntive').value;
+                
+                // Validazione base
+                if (!pronostico) {
+                    alert('Inserisci un pronostico da analizzare');
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
+                // 1) ANALISI MERCATO
+                const analisiMercato = analizzaMercato(pronostico, team1, team2);
+                
+                // 2) STATISTICHE
+                const statistiche = calcolaStatistiche(media, soglia, storico, formaRecente, difficoltaAvversario, analisiMercato.tipo);
+                
+                // 3) CALCOLO PROBABILITÀ
+                const probabilita = calcolaProbabilita(statistiche, analisiMercato.tipo, noteAggiuntive);
+                
+                // 4) QUOTA TEORICA
+                const quotaTeorica = 100 / probabilita;
+                
+                // 5) VALUE BETTING
+                const valueMargin = quota > 0 ? (quota / quotaTeorica) - 1 : 0;
+                
+                // 6) SPIEGAZIONE AI
+                const spiegazione = generaSpiegazione(analisiMercato, statistiche, probabilita, valueMargin, noteAggiuntive, currentSport);
+                
+                // 7) VERDETTO FINALE
+                const verdetto = generaVerdetto(probabilita, valueMargin);
+                
+                // Salva l'analisi corrente
+                currentAnalysis = {
+                    sport: currentSport,
+                    team1,
+                    team2,
+                    pronostico,
+                    analisiMercato,
+                    statistiche,
+                    probabilita,
+                    quotaTeorica,
+                    quota,
+                    valueMargin,
+                    spiegazione,
+                    verdetto,
+                    timestamp: new Date().toLocaleString('it-IT')
+                };
+                
+                // Aggiorna l'interfaccia con i risultati
+                aggiornaInterfaccia(analisiMercato, statistiche, probabilita, quotaTeorica, quota, valueMargin, spiegazione, verdetto);
+                
+                // Abilita il pulsante di salvataggio
+                document.getElementById('saveBtn').disabled = false;
+                
+                // Nascondi loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Mostra la sezione risultati
+                document.getElementById('result-section').style.display = 'block';
+                
+                // Scrolla ai risultati
+                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('Errore nell\'esecuzione analisi:', error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Errore durante l\'analisi. Controlla i dati inseriti.');
             }
-            
-            // 1) ANALISI MERCATO
-            const analisiMercato = analizzaMercato(pronostico, team1, team2);
-            
-            // 2) STATISTICHE
-            const statistiche = calcolaStatistiche(media, soglia, storico, formaRecente, difficoltaAvversario, analisiMercato.tipo);
-            
-            // 3) CALCOLO PROBABILITÀ
-            const probabilita = calcolaProbabilita(statistiche, analisiMercato.tipo, noteAggiuntive);
-            
-            // 4) QUOTA TEORICA
-            const quotaTeorica = 100 / probabilita;
-            
-            // 5) VALUE BETTING
-            const valueMargin = (quota / quotaTeorica) - 1;
-            
-            // 6) SPIEGAZIONE AI
-            const spiegazione = generaSpiegazione(analisiMercato, statistiche, probabilita, valueMargin, noteAggiuntive, currentSport);
-            
-            // 7) VERDETTO FINALE
-            const verdetto = generaVerdetto(probabilita, valueMargin);
-            
-            // Salva l'analisi corrente
-            currentAnalysis = {
-                sport: currentSport,
-                team1,
-                team2,
-                pronostico,
-                analisiMercato,
-                statistiche,
-                probabilita,
-                quotaTeorica,
-                quota,
-                valueMargin,
-                spiegazione,
-                verdetto,
-                timestamp: new Date().toLocaleString('it-IT')
-            };
-            
-            // Aggiorna l'interfaccia con i risultati
-            aggiornaInterfaccia(analisiMercato, statistiche, probabilita, quotaTeorica, quota, valueMargin, spiegazione, verdetto);
-            
-            // Abilita il pulsante di salvataggio
-            document.getElementById('saveBtn').disabled = false;
-            
-            // Mostra la sezione risultati
-            document.getElementById('result-section').style.display = 'block';
-            
-            // Scrolla ai risultati
-            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
         }
         
         function analizzaMercato(pronostico, team1, team2) {
@@ -1319,9 +1409,9 @@
             if (tipoMercato === "Over/Under") {
                 aggiustamentoDifficolta = diffMediaSoglia > 0 ? 5 : -5;
             } else if (tipoMercato === "Marcatore") {
-                aggiustamentoDifficolta = -10; // I mercati di marcatore sono generalmente più difficili
+                aggiustamentoDifficolta = -10;
             } else if (tipoMercato === "BTTS") {
-                aggiustamentoDifficolta = 0; // Nessun aggiustamento specifico
+                aggiustamentoDifficolta = 0;
             }
             
             return {
@@ -1336,28 +1426,23 @@
         }
         
         function calcolaProbabilita(statistiche, tipoMercato, noteAggiuntive) {
-            let probabilitaBase = 50; // Probabilità base del 50%
+            let probabilitaBase = 50;
             
-            // Aggiustamento basato sulla differenza media-soglia
             if (statistiche.diffMediaSoglia !== 0) {
                 probabilitaBase += statistiche.diffMediaSoglia * 5;
             }
             
-            // Aggiustamento basato sulla frequenza storica
             if (statistiche.frequenzaStorica > 0) {
                 probabilitaBase = (probabilitaBase + statistiche.frequenzaStorica) / 2;
             }
             
-            // Aggiustamento basato sulla forma recente
             if (statistiche.formaRecenteValore > 0) {
                 probabilitaBase = (probabilitaBase + statistiche.formaRecenteValore) / 2;
             }
             
-            // Aggiustamento per difficoltà
             probabilitaBase += statistiche.pesoDifficolta;
             probabilitaBase += statistiche.aggiustamentoDifficolta;
             
-            // Aggiustamento per note aggiuntive (semplificato)
             if (noteAggiuntive) {
                 const note = noteAggiuntive.toLowerCase();
                 if (note.includes("infortun") || note.includes("squalif")) {
@@ -1368,14 +1453,12 @@
                 }
             }
             
-            // Limita la probabilità tra 1% e 99%
             return Math.max(1, Math.min(99, Math.round(probabilitaBase * 10) / 10));
         }
         
         function generaSpiegazione(analisiMercato, statistiche, probabilita, valueMargin, noteAggiuntive, sport) {
             let spiegazione = `<p>Analisi del pronostico <strong>${analisiMercato.pronosticoNormalizzato}</strong> (${sport === 'calcio' ? '⚽ Calcio' : '🏀 Basket'}):</p><ul>`;
             
-            // Fattori favorevoli
             spiegazione += `<li class="positive">Il mercato identificato è <strong>${analisiMercato.tipo}</strong>, che presenta caratteristiche analizzabili</li>`;
             
             if (statistiche.diffMediaSoglia > 0) {
@@ -1410,7 +1493,6 @@
                 spiegazione += `<li class="negative">Value margin negativo del ${(valueMargin * 100).toFixed(1)}% indica assenza di valore</li>`;
             }
             
-            // Rischio associato
             if (analisiMercato.tipo === "Marcatore") {
                 spiegazione += `<li class="negative">I mercati di marcatore presentano un rischio elevato per la variabilità individuale</li>`;
             } else if (analisiMercato.tipo === "Over/Under") {
@@ -1510,15 +1592,20 @@
                 return;
             }
             
-            const forecast = {
-                id: Date.now(),
-                ...currentAnalysis
-            };
-            
-            savedForecasts.push(forecast);
-            localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
-            aggiornaPronosticiSalvati();
-            alert('Pronostico salvato con successo!');
+            try {
+                const forecast = {
+                    id: Date.now(),
+                    ...currentAnalysis
+                };
+                
+                savedForecasts.push(forecast);
+                localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
+                aggiornaPronosticiSalvati();
+                alert('Pronostico salvato con successo!');
+            } catch (error) {
+                console.error('Errore nel salvataggio:', error);
+                alert('Errore nel salvataggio del pronostico.');
+            }
         }
         
         function aggiornaPronosticiSalvati() {
@@ -1534,7 +1621,6 @@
                 return;
             }
             
-            // Ordina i pronostici dal più recente al più vecchio
             savedForecasts.sort((a, b) => b.id - a.id);
             
             container.innerHTML = savedForecasts.map(forecast => `
@@ -1572,7 +1658,6 @@
             const forecast = savedForecasts.find(f => f.id === id);
             if (!forecast) return;
             
-            // Aggiorna l'interfaccia con i dettagli del pronostico
             aggiornaInterfaccia(
                 forecast.analisiMercato,
                 forecast.statistiche,
@@ -1584,12 +1669,10 @@
                 forecast.verdetto
             );
             
-            // Mostra la sezione risultati
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
             
-            // Chiudi il pannello dei pronostici salvati
-            closeSavedPanel();
+            closeSavedPanelHandler();
         }
         
         function eliminaPronostico(id) {
@@ -1601,21 +1684,21 @@
         }
 
         // FUNZIONI PER IL TEMA CHIARO/SCURO
-        function toggleDarkMode() {
+        function toggleDarkModeHandler() {
             darkMode = !darkMode;
             document.body.classList.toggle('dark-mode', darkMode);
             localStorage.setItem('darkMode', darkMode);
         }
 
         // FUNZIONI PER IL PANNELLO DEI PRONOSTICI SALVATI
-        function toggleSavedPanel() {
+        function toggleSavedPanelHandler() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
         
-        function closeSavedPanel() {
+        function closeSavedPanelHandler() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
             panel.classList.remove('open');
@@ -1624,6 +1707,7 @@
     </script>
 </body>
 </html>
+
 
 
 
