@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Betting AI Ultra - Analisi Pronostici Calcio e Basket</title>
     <style>
         :root {
@@ -34,6 +34,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -42,6 +43,7 @@
             line-height: 1.6;
             padding: 20px;
             transition: background-color 0.3s, color 0.3s;
+            touch-action: manipulation;
         }
         
         .container {
@@ -130,16 +132,19 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 15px 25px;
             border-radius: 6px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s;
             text-align: center;
+            min-height: 50px;
+            line-height: 20px;
+            touch-action: manipulation;
         }
         
-        .btn:hover {
+        .btn:hover, .btn:active {
             background-color: var(--secondary);
         }
         
@@ -152,7 +157,7 @@
             background-color: var(--success);
         }
         
-        .btn-success:hover {
+        .btn-success:hover, .btn-success:active {
             background-color: #218838;
         }
         
@@ -161,7 +166,7 @@
             color: var(--dark);
         }
         
-        .btn-warning:hover {
+        .btn-warning:hover, .btn-warning:active {
             background-color: #e0a800;
         }
         
@@ -169,7 +174,7 @@
             background-color: var(--danger);
         }
         
-        .btn-danger:hover {
+        .btn-danger:hover, .btn-danger:active {
             background-color: #c82333;
         }
         
@@ -179,7 +184,7 @@
             color: var(--primary);
         }
         
-        .btn-outline:hover {
+        .btn-outline:hover, .btn-outline:active {
             background-color: var(--primary);
             color: white;
         }
@@ -355,8 +360,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background-color: var(--primary);
             color: white;
@@ -365,9 +370,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+            touch-action: manipulation;
         }
         
         /* Saved Forecasts Panel */
@@ -410,6 +416,11 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .saved-item {
@@ -422,7 +433,7 @@
             transition: all 0.3s ease;
         }
         
-        .saved-item:hover {
+        .saved-item:hover, .saved-item:active {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
@@ -485,14 +496,19 @@
             color: var(--danger);
             cursor: pointer;
             font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .toggle-saved-panel {
             position: fixed;
-            bottom: 80px;
+            bottom: 90px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background-color: var(--primary);
             color: white;
@@ -501,9 +517,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+            touch-action: manipulation;
         }
         
         .overlay {
@@ -536,7 +553,7 @@
         }
         
         .sport-btn {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: 2px solid var(--primary);
             background-color: transparent;
             color: var(--primary);
@@ -544,6 +561,13 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
+            min-height: 50px;
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
         
         .sport-btn.active {
@@ -551,7 +575,7 @@
             color: white;
         }
         
-        .sport-btn:hover {
+        .sport-btn:hover, .sport-btn:active {
             background-color: var(--primary);
             color: white;
         }
@@ -566,6 +590,10 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             .row {
                 flex-direction: column;
             }
@@ -582,6 +610,45 @@
             .saved-panel {
                 width: 100%;
                 right: -100%;
+            }
+            
+            .toggle-dark-mode, .toggle-saved-panel {
+                width: 55px;
+                height: 55px;
+                bottom: 15px;
+            }
+            
+            .toggle-saved-panel {
+                bottom: 80px;
+            }
+            
+            .btn {
+                padding: 14px 20px;
+                min-height: 55px;
+            }
+            
+            .sport-btn {
+                min-height: 55px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .toggle-dark-mode, .toggle-saved-panel {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .toggle-saved-panel {
+                bottom: 75px;
             }
         }
     </style>
@@ -778,10 +845,10 @@
             
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-block" onclick="analizzaPronostico()">Analizza Pronostico</button>
+                    <button class="btn btn-block" id="analyzeBtn">Analizza Pronostico</button>
                 </div>
                 <div class="col">
-                    <button class="btn btn-success btn-block" id="saveBtn" onclick="salvaPronostico()" disabled>Salva Pronostico</button>
+                    <button class="btn btn-success btn-block" id="saveBtn" disabled>Salva Pronostico</button>
                 </div>
             </div>
         </div>
@@ -896,8 +963,8 @@
                 </div>
                 
                 <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn btn-warning" onclick="resetForm()">Nuova Analisi</button>
-                    <button class="btn" onclick="window.print()">Stampa Analisi</button>
+                    <button class="btn btn-warning" id="resetBtn">Nuova Analisi</button>
+                    <button class="btn" id="printBtn">Stampa Analisi</button>
                 </div>
             </div>
         </div>
@@ -929,60 +996,92 @@
 
             // Aggiungi gestori di eventi
             document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
+            document.getElementById('toggleDarkMode').addEventListener('touchstart', toggleDarkMode);
+            
             document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
+            document.getElementById('toggleSavedPanel').addEventListener('touchstart', toggleSavedPanel);
+            
             document.getElementById('closePanel').addEventListener('click', closeSavedPanel);
+            document.getElementById('closePanel').addEventListener('touchstart', closeSavedPanel);
+            
             document.getElementById('overlay').addEventListener('click', function() {
+                closeSavedPanel();
+            });
+            
+            document.getElementById('overlay').addEventListener('touchstart', function() {
                 closeSavedPanel();
             });
 
             // Aggiungi gestori per i pulsanti sport
             document.querySelectorAll('.sport-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Rimuovi la classe active da tutti i pulsanti
-                    document.querySelectorAll('.sport-btn').forEach(b => {
-                        b.classList.remove('active');
-                    });
-                    
-                    // Aggiungi la classe active al pulsante cliccato
-                    this.classList.add('active');
-                    
-                    // Cambia sezione sport
-                    const sport = this.getAttribute('data-sport');
-                    cambiaSezioneSport(sport);
+                    cambiaSport(this);
+                });
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    cambiaSport(this);
                 });
             });
 
             // Aggiungi gestore per l'analisi automatica del pronostico
             document.getElementById('calcio-pronostico').addEventListener('blur', function() {
-                const pronostico = this.value;
-                if (pronostico) {
-                    const analisi = analizzaMercato(pronostico, '', '');
-                    
-                    // Se viene identificata una soglia, la inseriamo automaticamente
-                    if (analisi.elementi.some(e => e.includes('Soglia:'))) {
-                        const sogliaMatch = pronostico.match(/([0-9.]+)/);
-                        if (sogliaMatch) {
-                            document.getElementById('calcio-soglia').value = sogliaMatch[1];
-                        }
-                    }
-                }
+                analizzaPronosticoAutomatico('calcio');
+            });
+            
+            document.getElementById('calcio-pronostico').addEventListener('change', function() {
+                analizzaPronosticoAutomatico('calcio');
             });
 
             document.getElementById('basket-pronostico').addEventListener('blur', function() {
-                const pronostico = this.value;
-                if (pronostico) {
-                    const analisi = analizzaMercato(pronostico, '', '');
-                    
-                    // Se viene identificata una soglia, la inseriamo automaticamente
-                    if (analisi.elementi.some(e => e.includes('Soglia:'))) {
-                        const sogliaMatch = pronostico.match(/([0-9.]+)/);
-                        if (sogliaMatch) {
-                            document.getElementById('basket-soglia').value = sogliaMatch[1];
-                        }
-                    }
-                }
+                analizzaPronosticoAutomatico('basket');
+            });
+            
+            document.getElementById('basket-pronostico').addEventListener('change', function() {
+                analizzaPronosticoAutomatico('basket');
+            });
+
+            // Aggiungi gestori per i pulsanti principali
+            document.getElementById('analyzeBtn').addEventListener('click', analizzaPronostico);
+            document.getElementById('analyzeBtn').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                analizzaPronostico();
+            });
+            
+            document.getElementById('saveBtn').addEventListener('click', salvaPronostico);
+            document.getElementById('saveBtn').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                salvaPronostico();
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', resetForm);
+            document.getElementById('resetBtn').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                resetForm();
+            });
+            
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            document.getElementById('printBtn').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                window.print();
             });
         });
+
+        // FUNZIONE PER CAMBIARE SPORT
+        function cambiaSport(btn) {
+            // Rimuovi la classe active da tutti i pulsanti
+            document.querySelectorAll('.sport-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            
+            // Aggiungi la classe active al pulsante cliccato
+            btn.classList.add('active');
+            
+            // Cambia sezione sport
+            const sport = btn.getAttribute('data-sport');
+            cambiaSezioneSport(sport);
+        }
 
         // FUNZIONE PER CAMBIARE SEZIONE SPORT
         function cambiaSezioneSport(sport) {
@@ -998,6 +1097,22 @@
             
             // Reset dei campi quando si cambia sport
             resetCampiSport();
+        }
+
+        // FUNZIONE PER ANALIZZARE AUTOMATICAMENTE IL PRONOSTICO
+        function analizzaPronosticoAutomatico(sport) {
+            const pronostico = document.getElementById(sport + '-pronostico').value;
+            if (pronostico) {
+                const analisi = analizzaMercato(pronostico, '', '');
+                
+                // Se viene identificata una soglia, la inseriamo automaticamente
+                if (analisi.elementi.some(e => e.includes('Soglia:'))) {
+                    const sogliaMatch = pronostico.match(/([0-9.]+)/);
+                    if (sogliaMatch) {
+                        document.getElementById(sport + '-soglia').value = sogliaMatch[1];
+                    }
+                }
+            }
         }
 
         // FUNZIONE PER RESETTARE I CAMPI QUANDO SI CAMBIA SPORT
@@ -1526,6 +1641,7 @@
     </script>
 </body>
 </html>
+
 
 
 
