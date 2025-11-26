@@ -1655,7 +1655,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI - FIXED
+        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI - COMPLETAMENTE RIVISTA
         function saveForecast() {
             console.log('💾 Tentativo di salvataggio pronostico...');
             
@@ -1666,22 +1666,28 @@
             }
             
             try {
+                // Crea una copia semplice dell'analisi corrente
                 const forecast = {
                     id: Date.now(),
-                    sport: currentAnalysis.sport,
-                    team1: currentAnalysis.team1,
-                    team2: currentAnalysis.team2,
-                    bet: currentAnalysis.bet,
-                    marketAnalysis: currentAnalysis.marketAnalysis,
-                    statistics: currentAnalysis.statistics,
-                    probability: currentAnalysis.probability,
-                    oddsAnalysis: currentAnalysis.oddsAnalysis,
-                    explanation: currentAnalysis.explanation,
-                    verdict: currentAnalysis.verdict,
+                    sport: currentAnalysis.sport || 'calcio',
+                    team1: currentAnalysis.team1 || '',
+                    team2: currentAnalysis.team2 || '',
+                    bet: currentAnalysis.bet || '',
+                    probability: currentAnalysis.probability || 0,
+                    oddsAnalysis: {
+                        theoreticalOdds: currentAnalysis.oddsAnalysis?.theoreticalOdds || '0',
+                        bookmakerOdds: currentAnalysis.oddsAnalysis?.bookmakerOdds || '0',
+                        valueMargin: currentAnalysis.oddsAnalysis?.valueMargin || 0
+                    },
                     timestamp: new Date().toLocaleString('it-IT')
                 };
                 
                 console.log('📝 Nuovo pronostico da salvare:', forecast);
+                
+                // Assicurati che savedForecasts sia un array
+                if (!Array.isArray(savedForecasts)) {
+                    savedForecasts = [];
+                }
                 
                 // Aggiungi ai pronostici salvati
                 savedForecasts.push(forecast);
@@ -1695,12 +1701,12 @@
                 updateSavedForecasts();
                 
                 // Mostra conferma
-                showAlert('Pronostico salvato con successo!', 'success');
+                showAlert('✅ Pronostico salvato con successo!', 'success');
                 console.log('✅ Pronostico salvato correttamente');
                 
             } catch (error) {
                 console.error('❌ Errore durante il salvataggio:', error);
-                showAlert('Errore nel salvataggio del pronostico: ' + error.message, 'error');
+                showAlert('❌ Errore nel salvataggio del pronostico', 'error');
             }
         }
         
@@ -1723,9 +1729,9 @@
             savedForecasts.sort((a, b) => b.id - a.id);
             
             container.innerHTML = savedForecasts.map(forecast => {
-                const valuePercent = (forecast.oddsAnalysis.valueMargin * 100).toFixed(1);
-                const valueClass = forecast.oddsAnalysis.valueMargin >= 0 ? 'value-positive' : 'value-negative';
-                const valueSign = forecast.oddsAnalysis.valueMargin >= 0 ? '+' : '';
+                const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
+                const valueClass = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? 'value-positive' : 'value-negative';
+                const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
                 
                 return `
                 <div class="saved-item" onclick="showForecastDetail(${forecast.id})">
@@ -1733,15 +1739,15 @@
                         <span class="saved-item-sport">${forecast.sport === 'calcio' ? '⚽ Calcio' : '🏀 Basket'}</span>
                         <span class="saved-item-date">${forecast.timestamp}</span>
                     </div>
-                    <div class="saved-item-match">${forecast.team1} vs ${forecast.team2}</div>
-                    <div class="saved-item-forecast">${forecast.bet}</div>
+                    <div class="saved-item-match">${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</div>
+                    <div class="saved-item-forecast">${forecast.bet || 'N/D'}</div>
                     <div class="saved-item-stats">
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.probability}%</div>
+                            <div class="saved-item-stat-value">${forecast.probability || 0}%</div>
                             <div class="saved-item-stat-label">Probabilità</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.oddsAnalysis.theoreticalOdds}</div>
+                            <div class="saved-item-stat-value">${forecast.oddsAnalysis?.theoreticalOdds || '0'}</div>
                             <div class="saved-item-stat-label">Quota Teorica</div>
                         </div>
                         <div class="saved-item-stat">
@@ -1771,14 +1777,42 @@
                 return;
             }
             
-            // Aggiorna l'interfaccia con i dettagli del pronostico
+            // Crea una versione semplificata per la visualizzazione
+            const simpleAnalysis = {
+                sport: forecast.sport,
+                team1: forecast.team1,
+                team2: forecast.team2,
+                bet: forecast.bet,
+                marketAnalysis: {
+                    type: "Salvato",
+                    normalizedBet: forecast.bet
+                },
+                statistics: {
+                    average: 0,
+                    threshold: 0,
+                    diffAverageThreshold: 0,
+                    historicalFrequency: 0,
+                    recentFormValue: 0,
+                    difficultyWeight: 0
+                },
+                probability: forecast.probability,
+                oddsAnalysis: forecast.oddsAnalysis,
+                explanation: `<p>Pronostico salvato: <strong>${forecast.bet}</strong></p><p>Probabilità calcolata: <strong>${forecast.probability}%</strong></p>`,
+                verdict: {
+                    text: "SALVATO",
+                    class: "verdict-caution",
+                    description: "Pronostico salvato precedentemente"
+                }
+            };
+            
+            // Aggiorna l'interfaccia
             updateInterface(
-                forecast.marketAnalysis,
-                forecast.statistics,
-                forecast.probability,
-                forecast.oddsAnalysis,
-                forecast.explanation,
-                forecast.verdict
+                simpleAnalysis.marketAnalysis,
+                simpleAnalysis.statistics,
+                simpleAnalysis.probability,
+                simpleAnalysis.oddsAnalysis,
+                simpleAnalysis.explanation,
+                simpleAnalysis.verdict
             );
             
             // Mostra la sezione risultati
@@ -1798,7 +1832,7 @@
             savedForecasts = savedForecasts.filter(f => f.id !== id);
             localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
             updateSavedForecasts();
-            showAlert('Pronostico eliminato', 'success');
+            showAlert('🗑️ Pronostico eliminato', 'success');
             console.log('✅ Pronostico eliminato');
         }
 
@@ -1832,6 +1866,7 @@
     </script>
 </body>
 </html>
+
 
 
 
