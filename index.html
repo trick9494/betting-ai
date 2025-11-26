@@ -2,366 +2,434 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="Betting AI Ultra - Analisi intelligente per pronostici di Calcio e Basket">
-    <title>Betting AI Ultra - Analisi Pronostici</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting AI Ultra - Analisi Intelligente Pronostici</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c5aa0;
-            --secondary: #1e3a5f;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --bg-color: #f5f7fa;
-            --card-bg: white;
-            --text-color: #333;
-            --border-color: #ddd;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7e22ce;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         .dark-mode {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #f0f0f0;
-            --border-color: #444;
-            --light-gray: #2a2a2a;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #a855f7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --light: #1e293b;
+            --dark: #f1f5f9;
+            --gray: #94a3b8;
+            --light-gray: #334155;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-        
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-            touch-action: manipulation;
-            min-height: 100vh;
+            transition: all 0.3s ease;
+            padding: 0;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
-        
+
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
         h1 {
-            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            font-size: 2.5rem;
             margin-bottom: 10px;
+            font-weight: 800;
         }
-        
+
         .subtitle {
-            font-size: clamp(1rem, 2vw, 1.1rem);
+            font-size: 1.2rem;
             opacity: 0.9;
+            margin-bottom: 15px;
         }
-        
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
         .card {
             background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-            margin-bottom: 25px;
-            transition: background-color 0.3s;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
             border: 1px solid var(--border-color);
         }
-        
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
         .card-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--primary);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .form-group {
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
-            color: var(--secondary);
+            color: var(--primary);
+            font-size: 1rem;
         }
-        
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             background-color: var(--card-bg);
             color: var(--text-color);
         }
-        
+
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(44, 90, 160, 0.2);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
-        
+
         .row {
             display: flex;
             flex-wrap: wrap;
             margin: 0 -10px;
         }
-        
+
         .col {
             flex: 1;
             padding: 0 10px;
             min-width: 250px;
         }
-        
+
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 6px;
+            padding: 16px 28px;
+            border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
-            min-height: 50px;
-            line-height: 20px;
-            touch-action: manipulation;
-            user-select: none;
+            min-height: 55px;
+            line-height: 1;
+            box-shadow: var(--shadow);
         }
-        
-        .btn:hover, .btn:active {
-            background-color: var(--secondary);
-            transform: translateY(-1px);
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
-        
-        .btn:disabled {
-            background-color: var(--gray);
-            cursor: not-allowed;
-            transform: none;
-        }
-        
+
         .btn-block {
-            display: block;
+            display: flex;
             width: 100%;
         }
-        
+
         .btn-success {
             background-color: var(--success);
         }
-        
-        .btn-success:hover, .btn-success:active {
-            background-color: #218838;
+
+        .btn-success:hover {
+            background-color: #0da271;
         }
-        
+
         .btn-warning {
             background-color: var(--warning);
             color: var(--dark);
         }
-        
-        .btn-warning:hover, .btn-warning:active {
-            background-color: #e0a800;
+
+        .btn-warning:hover {
+            background-color: #e5900b;
         }
-        
-        .btn-danger {
-            background-color: var(--danger);
-        }
-        
-        .btn-danger:hover, .btn-danger:active {
-            background-color: #c82333;
-        }
-        
+
         .result-section {
             display: none;
         }
-        
+
         .analysis-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            gap: 25px;
+            margin-top: 25px;
         }
-        
+
         .analysis-card {
             background: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary);
         }
-        
+
         .analysis-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--primary);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--light-gray);
         }
-        
+
         .metric {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 1px dashed var(--light-gray);
         }
-        
+
         .metric-value {
-            font-weight: 600;
+            font-weight: 700;
         }
-        
+
+        .probability-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
         .probability-circle {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background: conic-gradient(var(--success) 0% 70%, var(--light-gray) 70% 100%);
+            background: conic-gradient(var(--success) 0% 50%, var(--light-gray) 50% 100%);
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-lg);
         }
-        
+
         .probability-text {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             color: var(--primary);
         }
-        
+
+        .probability-label {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+
         .verdict-box {
-            padding: 20px;
-            border-radius: 8px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 1.2rem;
+            margin-top: 25px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow);
+            border: 3px solid;
         }
-        
+
         .verdict-strong {
-            background-color: rgba(40, 167, 69, 0.15);
+            background-color: rgba(16, 185, 129, 0.15);
             color: var(--success);
-            border: 2px solid var(--success);
+            border-color: var(--success);
         }
-        
+
         .verdict-recommended {
-            background-color: rgba(255, 193, 7, 0.15);
-            color: #856404;
-            border: 2px solid var(--warning);
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border-color: var(--warning);
         }
-        
+
         .verdict-caution {
-            background-color: rgba(253, 126, 20, 0.15);
-            color: #cc5500;
-            border: 2px solid #fd7e14;
-        }
-        
-        .verdict-not-recommended {
-            background-color: rgba(220, 53, 69, 0.15);
+            background-color: rgba(239, 68, 68, 0.15);
             color: var(--danger);
-            border: 2px solid var(--danger);
+            border-color: var(--danger);
         }
-        
+
+        .verdict-not-recommended {
+            background-color: rgba(100, 116, 139, 0.15);
+            color: var(--gray);
+            border-color: var(--gray);
+        }
+
         .explanation {
             background-color: var(--light-gray);
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid var(--primary);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            border-left: 5px solid var(--primary);
         }
-        
+
         .explanation h3 {
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
-        
+
         .explanation ul {
             padding-left: 20px;
         }
-        
+
         .explanation li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        
+
         .positive {
             color: var(--success);
             font-weight: 600;
         }
-        
+
         .negative {
             color: var(--danger);
             font-weight: 600;
         }
-        
+
         .neutral {
-            color: var(--gray);
+            color: var(--warning);
+            font-weight: 600;
         }
-        
+
         .value-positive {
             color: var(--success);
             font-weight: 700;
         }
-        
+
         .value-negative {
             color: var(--danger);
             font-weight: 700;
         }
-        
+
         .note {
             font-size: 0.85rem;
             color: var(--gray);
             font-style: italic;
-            margin-top: 5px;
+            margin-top: 8px;
         }
-        
+
         .formula-box {
             background-color: var(--light-gray);
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 4px solid var(--primary);
-            font-family: monospace;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 18px 0;
+            border-left: 5px solid var(--primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
         }
-        
+
         .analysis-step {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-gray);
         }
-        
+
         .analysis-step h3 {
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
-        
+
         .step-content {
-            padding-left: 15px;
+            padding-left: 20px;
         }
-        
+
         /* Toggle Dark Mode */
         .toggle-dark-mode {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -373,150 +441,170 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
-            touch-action: manipulation;
-            user-select: none;
+            transition: all 0.3s;
         }
-        
+
+        .toggle-dark-mode:hover {
+            transform: scale(1.1);
+        }
+
         /* Saved Forecasts Panel */
         .saved-panel {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
+            right: -450px;
+            width: 450px;
             height: 100vh;
             background-color: var(--card-bg);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-            transition: right 0.3s ease;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: right 0.4s ease;
             z-index: 1050;
             overflow-y: auto;
-            padding: 20px;
+            padding: 25px;
             border-left: 1px solid var(--border-color);
         }
-        
+
         .saved-panel.open {
             right: 0;
         }
-        
+
         .saved-panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-gray);
         }
-        
+
         .saved-panel-title {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 700;
             margin: 0;
+            color: var(--primary);
         }
-        
+
         .close-panel {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             color: var(--gray);
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
+            border-radius: 50%;
+            transition: all 0.3s;
         }
-        
+
+        .close-panel:hover {
+            background-color: var(--light-gray);
+        }
+
         .saved-item {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
             background-color: var(--light-gray);
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .saved-item:hover, .saved-item:active {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+        .saved-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
-        
+
         .saved-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
-        
+
         .saved-item-sport {
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary);
+            font-size: 1.1rem;
         }
-        
+
         .saved-item-date {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--gray);
         }
-        
+
         .saved-item-match {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
-        
+
         .saved-item-forecast {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: var(--text-color);
         }
-        
+
         .saved-item-stats {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 15px;
         }
-        
+
         .saved-item-stat {
             text-align: center;
+            flex: 1;
         }
-        
+
         .saved-item-stat-value {
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.2rem;
         }
-        
+
         .saved-item-stat-label {
             font-size: 0.8rem;
             color: var(--gray);
+            margin-top: 5px;
         }
-        
+
         .saved-item-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
+            margin-top: 15px;
         }
-        
+
         .delete-saved {
             background: none;
             border: none;
             color: var(--danger);
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
+            border-radius: 50%;
+            transition: all 0.3s;
         }
-        
+
+        .delete-saved:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
         .toggle-saved-panel {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
+            bottom: 100px;
+            right: 25px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: var(--primary);
+            background-color: var(--secondary);
             color: white;
             border: none;
             cursor: pointer;
@@ -524,12 +612,15 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
-            touch-action: manipulation;
-            user-select: none;
+            transition: all 0.3s;
         }
-        
+
+        .toggle-saved-panel:hover {
+            transform: scale(1.1);
+        }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -540,157 +631,183 @@
             z-index: 1040;
             display: none;
         }
-        
+
         .overlay.active {
             display: block;
         }
-        
+
         .no-saved {
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 25px;
             color: var(--gray);
+        }
+
+        .no-saved i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
         }
 
         /* Sport Selection */
         .sport-selection {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
-        
+
         .sport-btn {
-            padding: 12px 20px;
+            padding: 18px 25px;
             border: 2px solid var(--primary);
             background-color: transparent;
             color: var(--primary);
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
-            min-height: 50px;
+            min-height: 60px;
             flex: 1;
-            min-width: 120px;
+            min-width: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
-            user-select: none;
+            gap: 10px;
+            font-size: 1.1rem;
         }
-        
+
         .sport-btn.active {
             background-color: var(--primary);
             color: white;
         }
-        
-        .sport-btn:hover, .sport-btn:active {
+
+        .sport-btn:hover {
             background-color: var(--primary);
             color: white;
+            transform: translateY(-2px);
         }
-        
+
         /* Sport Sections */
         .sport-section {
             display: none;
         }
-        
+
         .sport-section.active {
             display: block;
         }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
+
+        /* Loading Spinner */
         .spinner {
-            border: 4px solid var(--light-gray);
-            border-left: 4px solid var(--primary);
-            border-radius: 50%;
+            display: none;
             width: 40px;
             height: 40px;
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 20px auto;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
+            .container {
+                padding: 15px;
             }
-            
+
             .row {
                 flex-direction: column;
             }
-            
+
             .col {
                 width: 100%;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
-            
+
             .analysis-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .saved-panel {
                 width: 100%;
                 right: -100%;
             }
-            
+
             .toggle-dark-mode, .toggle-saved-panel {
                 width: 55px;
                 height: 55px;
-                bottom: 15px;
+                bottom: 20px;
             }
-            
+
             .toggle-saved-panel {
-                bottom: 80px;
+                bottom: 90px;
             }
-            
+
             .btn {
-                padding: 14px 20px;
+                padding: 15px 20px;
                 min-height: 55px;
             }
-            
+
             .sport-btn {
                 min-height: 55px;
             }
-            
-            .probability-circle {
-                width: 120px;
-                height: 120px;
+
+            h1 {
+                font-size: 2rem;
             }
-            
-            .probability-text {
-                font-size: 1.5rem;
+
+            .card {
+                padding: 20px;
             }
         }
-        
+
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.8rem;
             }
-            
+
             .card {
                 padding: 15px;
             }
-            
+
             .toggle-dark-mode, .toggle-saved-panel {
                 width: 50px;
                 height: 50px;
                 font-size: 1.3rem;
             }
-            
+
             .toggle-saved-panel {
-                bottom: 75px;
+                bottom: 80px;
             }
-            
-            header {
-                padding: 20px 15px;
+
+            .sport-selection {
+                flex-direction: column;
             }
         }
     </style>
@@ -702,63 +819,81 @@
     <!-- Pannello dei pronostici salvati -->
     <div class="saved-panel" id="savedPanel">
         <div class="saved-panel-header">
-            <h3 class="saved-panel-title">Pronostici Salvati</h3>
-            <button class="close-panel" id="closePanel">✕</button>
+            <h3 class="saved-panel-title"><i class="fas fa-history"></i> Pronostici Salvati</h3>
+            <button class="close-panel" id="closePanel"><i class="fas fa-times"></i></button>
         </div>
         <div id="savedForecastsList"></div>
     </div>
 
     <div class="container">
         <header>
-            <h1>Betting AI Ultra</h1>
-            <p class="subtitle">Analisi intelligente per pronostici di Calcio e Basket</p>
+            <div class="header-content">
+                <h1><i class="fas fa-robot"></i> Betting AI Ultra</h1>
+                <p class="subtitle">Analisi predittiva avanzata per pronostici di Calcio e Basket</p>
+                <div class="badge"><i class="fas fa-star"></i> ALGORITMO MIGLIORATO</div>
+            </div>
         </header>
         
         <div class="card">
-            <h2 class="card-title">Seleziona Sport e Inserisci Dati</h2>
+            <h2 class="card-title"><i class="fas fa-sliders-h"></i> Configura Analisi</h2>
             
             <div class="sport-selection">
-                <button class="sport-btn active" data-sport="calcio">⚽ Calcio</button>
-                <button class="sport-btn" data-sport="basket">🏀 Basket</button>
+                <button class="sport-btn active" data-sport="calcio"><i class="fas fa-futbol"></i> Calcio</button>
+                <button class="sport-btn" data-sport="basket"><i class="fas fa-basketball-ball"></i> Basket</button>
             </div>
             
             <!-- SEZIONE CALCIO -->
             <div class="sport-section active" id="calcio-section">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">⚽ Dati Partita di Calcio</h3>
+                <h3 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-futbol"></i> Dati Partita di Calcio</h3>
                 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-squadra1">Squadra Casa</label>
-                            <input type="text" id="calcio-squadra1" placeholder="Es. Juventus">
+                            <label for="calcio-squadra1"><i class="fas fa-home"></i> Squadra Casa</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-flag"></i>
+                                <input type="text" id="calcio-squadra1" placeholder="Es. Juventus">
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-squadra2">Squadra Trasferta</label>
-                            <input type="text" id="calcio-squadra2" placeholder="Es. Inter">
+                            <label for="calcio-squadra2"><i class="fas fa-route"></i> Squadra Trasferta</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-flag"></i>
+                                <input type="text" id="calcio-squadra2" placeholder="Es. Inter">
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="calcio-pronostico">Pronostico Calcio</label>
-                    <input type="text" id="calcio-pronostico" placeholder="Es. Over 2.5, Juventus -1, Haaland marcatore">
+                    <label for="calcio-pronostico"><i class="fas fa-bullseye"></i> Pronostico Calcio</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-chart-line"></i>
+                        <input type="text" id="calcio-pronostico" placeholder="Es. Over 2.5, Juventus -1, Haaland marcatore">
+                    </div>
                     <div class="note">Esempi: "Over 2.5", "1X", "2-1", "Gol", "BTTS Sì", "Ronaldo marcatore"</div>
                 </div>
                 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-media-gol">Media Gol Partita</label>
-                            <input type="number" id="calcio-media-gol" step="0.1" placeholder="Es. 2.8">
+                            <label for="calcio-media-gol"><i class="fas fa-chart-bar"></i> Media Gol Partita</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-calculator"></i>
+                                <input type="number" id="calcio-media-gol" step="0.1" placeholder="Es. 2.8" min="0" max="10">
+                            </div>
                             <div class="note">Media gol totali per partita delle squadre</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-soglia">Soglia Pronostico</label>
-                            <input type="number" id="calcio-soglia" step="0.1" placeholder="Es. 2.5">
+                            <label for="calcio-soglia"><i class="fas fa-bullseye"></i> Soglia Pronostico</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-sliders-h"></i>
+                                <input type="number" id="calcio-soglia" step="0.1" placeholder="Es. 2.5" min="0" max="10">
+                            </div>
                             <div class="note">Soglia Over/Under o Handicap</div>
                         </div>
                     </div>
@@ -767,15 +902,21 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-storico">Successi Storici</label>
-                            <input type="text" id="calcio-storico" placeholder="Es. 7 su 10 o 70%">
+                            <label for="calcio-storico"><i class="fas fa-history"></i> Successi Storici</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-chart-pie"></i>
+                                <input type="text" id="calcio-storico" placeholder="Es. 7 su 10 o 70%">
+                            </div>
                             <div class="note">Frequenza storica dell'evento</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-quota">Quota Bookmaker</label>
-                            <input type="number" id="calcio-quota" step="0.01" placeholder="Es. 1.85">
+                            <label for="calcio-quota"><i class="fas fa-coins"></i> Quota Bookmaker</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <input type="number" id="calcio-quota" step="0.01" placeholder="Es. 1.85" min="1" max="100">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -783,19 +924,25 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-forma-recente">Forma Recente</label>
-                            <input type="text" id="calcio-forma-recente" placeholder="Es. 3 vittorie su 5">
+                            <label for="calcio-forma-recente"><i class="fas fa-chart-line"></i> Forma Recente</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-running"></i>
+                                <input type="text" id="calcio-forma-recente" placeholder="Es. 3 vittorie su 5">
+                            </div>
                             <div class="note">Ultime prestazioni della squadra/giocatore</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="calcio-difficolta">Difficoltà Avversario</label>
-                            <select id="calcio-difficolta">
-                                <option value="bassa">Bassa</option>
-                                <option value="media" selected>Media</option>
-                                <option value="alta">Alta</option>
-                            </select>
+                            <label for="calcio-difficolta"><i class="fas fa-shield-alt"></i> Difficoltà Avversario</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-skull-crossbones"></i>
+                                <select id="calcio-difficolta">
+                                    <option value="bassa">Bassa</option>
+                                    <option value="media" selected>Media</option>
+                                    <option value="alta">Alta</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -803,41 +950,56 @@
             
             <!-- SEZIONE BASKET -->
             <div class="sport-section" id="basket-section">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">🏀 Dati Partita di Basket</h3>
+                <h3 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-basketball-ball"></i> Dati Partita di Basket</h3>
                 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-squadra1">Squadra Casa</label>
-                            <input type="text" id="basket-squadra1" placeholder="Es. Los Angeles Lakers">
+                            <label for="basket-squadra1"><i class="fas fa-home"></i> Squadra Casa</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-flag"></i>
+                                <input type="text" id="basket-squadra1" placeholder="Es. Los Angeles Lakers">
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-squadra2">Squadra Trasferta</label>
-                            <input type="text" id="basket-squadra2" placeholder="Es. Golden State Warriors">
+                            <label for="basket-squadra2"><i class="fas fa-route"></i> Squadra Trasferta</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-flag"></i>
+                                <input type="text" id="basket-squadra2" placeholder="Es. Golden State Warriors">
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="basket-pronostico">Pronostico Basket</label>
-                    <input type="text" id="basket-pronostico" placeholder="Es. Over 220.5, Lakers -5.5, LeBron Over 27.5 punti">
+                    <label for="basket-pronostico"><i class="fas fa-bullseye"></i> Pronostico Basket</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-chart-line"></i>
+                        <input type="text" id="basket-pronostico" placeholder="Es. Over 220.5, Lakers -5.5, LeBron Over 27.5 punti">
+                    </div>
                     <div class="note">Esempi: "Over 220.5", "Lakers -5.5", "LeBron Over 27.5 punti", "Jokic Over 9.5 rimbalzi"</div>
                 </div>
                 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-media-punti">Media Punti Partita</label>
-                            <input type="number" id="basket-media-punti" step="0.1" placeholder="Es. 215.5">
+                            <label for="basket-media-punti"><i class="fas fa-chart-bar"></i> Media Punti Partita</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-calculator"></i>
+                                <input type="number" id="basket-media-punti" step="0.1" placeholder="Es. 215.5" min="0" max="300">
+                            </div>
                             <div class="note">Media punti totali per partita delle squadre</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-soglia">Soglia Pronostico</label>
-                            <input type="number" id="basket-soglia" step="0.1" placeholder="Es. 220.5">
+                            <label for="basket-soglia"><i class="fas fa-bullseye"></i> Soglia Pronostico</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-sliders-h"></i>
+                                <input type="number" id="basket-soglia" step="0.1" placeholder="Es. 220.5" min="0" max="300">
+                            </div>
                             <div class="note">Soglia Over/Under o Handicap</div>
                         </div>
                     </div>
@@ -846,15 +1008,21 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-storico">Successi Storici</label>
-                            <input type="text" id="basket-storico" placeholder="Es. 6 su 10 o 60%">
+                            <label for="basket-storico"><i class="fas fa-history"></i> Successi Storici</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-chart-pie"></i>
+                                <input type="text" id="basket-storico" placeholder="Es. 6 su 10 o 60%">
+                            </div>
                             <div class="note">Frequenza storica dell'evento</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-quota">Quota Bookmaker</label>
-                            <input type="number" id="basket-quota" step="0.01" placeholder="Es. 1.80">
+                            <label for="basket-quota"><i class="fas fa-coins"></i> Quota Bookmaker</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <input type="number" id="basket-quota" step="0.01" placeholder="Es. 1.80" min="1" max="100">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -862,58 +1030,60 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-forma-recente">Forma Recente</label>
-                            <input type="text" id="basket-forma-recente" placeholder="Es. 4 vittorie su 6">
+                            <label for="basket-forma-recente"><i class="fas fa-chart-line"></i> Forma Recente</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-running"></i>
+                                <input type="text" id="basket-forma-recente" placeholder="Es. 4 vittorie su 6">
+                            </div>
                             <div class="note">Ultime prestazioni della squadra/giocatore</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-difficolta">Difficoltà Avversario</label>
-                            <select id="basket-difficolta">
-                                <option value="bassa">Bassa</option>
-                                <option value="media" selected>Media</option>
-                                <option value="alta">Alta</option>
-                            </select>
+                            <label for="basket-difficolta"><i class="fas fa-shield-alt"></i> Difficoltà Avversario</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-skull-crossbones"></i>
+                                <select id="basket-difficolta">
+                                    <option value="bassa">Bassa</option>
+                                    <option value="media" selected>Media</option>
+                                    <option value="alta">Alta</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="form-group">
-                <label for="note-aggiuntive">Note Aggiuntive (opzionale)</label>
-                <textarea id="note-aggiuntive" rows="3" placeholder="Informazioni su forma, infortuni, motivazione..."></textarea>
-            </div>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Analisi in corso...</p>
+                <label for="note-aggiuntive"><i class="fas fa-sticky-note"></i> Note Aggiuntive (opzionale)</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-edit"></i>
+                    <textarea id="note-aggiuntive" rows="3" placeholder="Informazioni su forma, infortuni, motivazione..."></textarea>
+                </div>
             </div>
             
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-block" id="analyzeBtn">Analizza Pronostico</button>
+                    <button class="btn btn-block" id="analyzeBtn"><i class="fas fa-brain"></i> Analisi Avanzata</button>
                 </div>
                 <div class="col">
-                    <button class="btn btn-success btn-block" id="saveBtn" disabled>Salva Pronostico</button>
+                    <button class="btn btn-success btn-block" id="saveBtn" disabled><i class="fas fa-save"></i> Salva Pronostico</button>
                 </div>
             </div>
+            
+            <div class="spinner" id="loadingSpinner"></div>
         </div>
         
         <div class="result-section" id="result-section">
             <div class="card">
-                <h2 class="card-title">Risultati Analisi</h2>
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> Risultati Analisi Predittiva</h2>
                 
                 <div class="analysis-step">
-                    <h3>1) ANALISI MERCATO</h3>
+                    <h3><i class="fas fa-cogs"></i> 1) ANALISI MERCATO</h3>
                     <div class="step-content">
                         <div class="metric">
-                            <span>Tipo mercato:</span>
+                            <span>Tipo mercato identificato:</span>
                             <span class="metric-value" id="market-type">-</span>
-                        </div>
-                        <div class="metric">
-                            <span>Elementi identificati:</span>
-                            <span class="metric-value" id="market-elements">-</span>
                         </div>
                         <div class="metric">
                             <span>Pronostico normalizzato:</span>
@@ -923,7 +1093,7 @@
                 </div>
                 
                 <div class="analysis-step">
-                    <h3>2) STATISTICHE</h3>
+                    <h3><i class="fas fa-chart-bar"></i> 2) ANALISI STATISTICA</h3>
                     <div class="step-content">
                         <div class="metric">
                             <span>Media statistica:</span>
@@ -941,27 +1111,23 @@
                             <span>Forma recente:</span>
                             <span class="metric-value" id="recent-form">-</span>
                         </div>
-                        <div class="metric">
-                            <span>Difficoltà avversario:</span>
-                            <span class="metric-value" id="opponent-difficulty">-</span>
-                        </div>
                     </div>
                 </div>
                 
                 <div class="analysis-step">
-                    <h3>3) CALCOLO PROBABILITÀ</h3>
+                    <h3><i class="fas fa-calculator"></i> 3) CALCOLO PROBABILITÀ</h3>
                     <div class="step-content">
-                        <div class="probability-circle">
-                            <div class="probability-text" id="probability-value">-</div>
-                        </div>
-                        <div class="formula-box">
-                            Probabilità = Base (rapporto media-soglia) + Aggiustamento forma + Aggiustamento storico + Aggiustamento difficoltà
+                        <div class="probability-container">
+                            <div class="probability-circle" id="probability-circle">
+                                <div class="probability-text" id="probability-value">-</div>
+                            </div>
+                            <div class="probability-label" id="probability-label">Probabilità di Successo</div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="analysis-step">
-                    <h3>4) QUOTA TEORICA</h3>
+                    <h3><i class="fas fa-money-bill-wave"></i> 4) ANALISI QUOTE E VALUE</h3>
                     <div class="step-content">
                         <div class="metric">
                             <span>Quota teorica:</span>
@@ -971,35 +1137,15 @@
                             <span>Quota bookmaker:</span>
                             <span class="metric-value" id="bookmaker-odds">-</span>
                         </div>
-                        <div class="formula-box">
-                            Quota teorica = 100 / Probabilità
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="analysis-step">
-                    <h3>5) VALUE BETTING</h3>
-                    <div class="step-content">
                         <div class="metric">
                             <span>Value margin:</span>
                             <span class="metric-value" id="value-margin">-</span>
-                        </div>
-                        <div class="metric">
-                            <span>Valutazione:</span>
-                            <span class="metric-value" id="value-assessment">-</span>
-                        </div>
-                        <div class="metric">
-                            <span>Rischio:</span>
-                            <span class="metric-value" id="risk-level">-</span>
-                        </div>
-                        <div class="formula-box">
-                            Value margin = (Quota bookmaker / Quota teorica) - 1
                         </div>
                     </div>
                 </div>
                 
                 <div class="explanation">
-                    <h3>6) SPIEGAZIONE AI</h3>
+                    <h3><i class="fas fa-robot"></i> 5) SPIEGAZIONE AI</h3>
                     <div id="ai-explanation">
                         <!-- Il contenuto verrà popolato dinamicamente -->
                     </div>
@@ -1009,16 +1155,15 @@
                     <!-- Il verdetto verrà popolato dinamicamente -->
                 </div>
                 
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn btn-warning" id="resetBtn">Nuova Analisi</button>
-                    <button class="btn" id="printBtn">Stampa Analisi</button>
+                <div style="margin-top: 25px; text-align: center;">
+                    <button class="btn btn-warning" id="resetBtn"><i class="fas fa-redo"></i> Nuova Analisi</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <button class="toggle-dark-mode" id="toggleDarkMode">🌓</button>
-    <button class="toggle-saved-panel" id="toggleSavedPanel">📋</button>
+    <button class="toggle-dark-mode" id="toggleDarkMode"><i class="fas fa-moon"></i></button>
+    <button class="toggle-saved-panel" id="toggleSavedPanel"><i class="fas fa-clipboard-list"></i></button>
 
     <script>
         // VARIABILI GLOBALI
@@ -1029,554 +1174,452 @@
 
         // INIZIALIZZAZIONE
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Betting AI Ultra - Inizializzazione...');
-            
-            try {
-                // Carica i pronostici salvati
-                const saved = localStorage.getItem('savedForecasts');
-                if (saved) {
-                    savedForecasts = JSON.parse(saved);
-                    aggiornaPronosticiSalvati();
-                }
-
-                // Imposta la modalità scura se attiva
-                if (darkMode) {
-                    document.body.classList.add('dark-mode');
-                }
-
-                // Configura eventi
-                setupEventListeners();
-                
-                console.log('Betting AI Ultra - Inizializzazione completata');
-            } catch (error) {
-                console.error('Errore durante l\'inizializzazione:', error);
-                alert('Errore durante il caricamento dell\'applicazione. Ricarica la pagina.');
-            }
+            initializeApp();
         });
 
-        // CONFIGURAZIONE EVENTI
+        function initializeApp() {
+            // Carica i pronostici salvati
+            const saved = localStorage.getItem('savedForecasts');
+            if (saved) {
+                savedForecasts = JSON.parse(saved);
+                updateSavedForecasts();
+            }
+
+            // Imposta la modalità scura se attiva
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('toggleDarkMode').innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            setupEventListeners();
+        }
+
         function setupEventListeners() {
             // Pulsanti tema e pannelli
-            const toggleDarkMode = document.getElementById('toggleDarkMode');
-            const toggleSavedPanel = document.getElementById('toggleSavedPanel');
-            const closePanel = document.getElementById('closePanel');
-            const overlay = document.getElementById('overlay');
-
-            toggleDarkMode.addEventListener('click', toggleDarkModeHandler);
-            toggleDarkMode.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleDarkModeHandler();
-            });
-            
-            toggleSavedPanel.addEventListener('click', toggleSavedPanelHandler);
-            toggleSavedPanel.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleSavedPanelHandler();
-            });
-            
-            closePanel.addEventListener('click', closeSavedPanelHandler);
-            closePanel.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                closeSavedPanelHandler();
-            });
-            
-            overlay.addEventListener('click', closeSavedPanelHandler);
-            overlay.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                closeSavedPanelHandler();
-            });
+            document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
+            document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
+            document.getElementById('closePanel').addEventListener('click', closeSavedPanel);
+            document.getElementById('overlay').addEventListener('click', closeSavedPanel);
 
             // Pulsanti sport
             document.querySelectorAll('.sport-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    cambiaSport(this);
-                });
-                btn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    cambiaSport(this);
+                    switchSport(this);
                 });
             });
 
             // Pulsanti principali
-            document.getElementById('analyzeBtn').addEventListener('click', analizzaPronostico);
-            document.getElementById('analyzeBtn').addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                analizzaPronostico();
-            });
-            
-            document.getElementById('saveBtn').addEventListener('click', salvaPronostico);
-            document.getElementById('saveBtn').addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                salvaPronostico();
-            });
-            
+            document.getElementById('analyzeBtn').addEventListener('click', analyzeBet);
+            document.getElementById('saveBtn').addEventListener('click', saveForecast);
             document.getElementById('resetBtn').addEventListener('click', resetForm);
-            document.getElementById('resetBtn').addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                resetForm();
-            });
-            
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
-            document.getElementById('printBtn').addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                window.print();
-            });
-
-            // Analisi automatica pronostico
-            document.getElementById('calcio-pronostico').addEventListener('input', function() {
-                analizzaPronosticoAutomatico('calcio');
-            });
-
-            document.getElementById('basket-pronostico').addEventListener('input', function() {
-                analizzaPronosticoAutomatico('basket');
-            });
         }
 
         // FUNZIONE PER CAMBIARE SPORT
-        function cambiaSport(btn) {
-            try {
-                // Rimuovi la classe active da tutti i pulsanti
-                document.querySelectorAll('.sport-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                
-                // Aggiungi la classe active al pulsante cliccato
-                btn.classList.add('active');
-                
-                // Cambia sezione sport
-                const sport = btn.getAttribute('data-sport');
-                cambiaSezioneSport(sport);
-            } catch (error) {
-                console.error('Errore nel cambio sport:', error);
-            }
+        function switchSport(btn) {
+            document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const sport = btn.getAttribute('data-sport');
+            switchSportSection(sport);
         }
 
-        // FUNZIONE PER CAMBIARE SEZIONE SPORT
-        function cambiaSezioneSport(sport) {
+        function switchSportSection(sport) {
             currentSport = sport;
             
-            // Nascondi tutte le sezioni
             document.querySelectorAll('.sport-section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Mostra la sezione corretta
-            const targetSection = document.getElementById(sport + '-section');
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
+            document.getElementById(sport + '-section').classList.add('active');
         }
 
-        // FUNZIONE PER ANALIZZARE AUTOMATICAMENTE IL PRONOSTICO
-        function analizzaPronosticoAutomatico(sport) {
-            try {
-                const pronostico = document.getElementById(sport + '-pronostico').value;
-                if (pronostico) {
-                    const analisi = analizzaMercato(pronostico, '', '');
+        // FUNZIONE PRINCIPALE DI ANALISI
+        function analyzeBet() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                try {
+                    // Recupera i valori dal form
+                    const formData = getFormData();
                     
-                    // Se viene identificata una soglia, la inseriamo automaticamente
-                    if (analisi.elementi.some(e => e.includes('Soglia:'))) {
-                        const sogliaMatch = pronostico.match(/([0-9.]+)/);
-                        if (sogliaMatch) {
-                            document.getElementById(sport + '-soglia').value = sogliaMatch[1];
-                        }
+                    // Validazione
+                    if (!validateFormData(formData)) {
+                        showLoading(false);
+                        return;
                     }
+                    
+                    // 1) ANALISI MERCATO
+                    const marketAnalysis = analyzeMarket(formData.bet, formData.team1, formData.team2);
+                    
+                    // 2) ELABORAZIONE STATISTICA
+                    const statistics = processStatistics(
+                        formData.average, 
+                        formData.threshold, 
+                        formData.historical, 
+                        formData.recentForm, 
+                        formData.difficulty,
+                        formData.additionalNotes
+                    );
+                    
+                    // 3) CALCOLO PROBABILITÀ
+                    const probability = calculateProbability(statistics, marketAnalysis.type);
+                    
+                    // 4) ANALISI QUOTE
+                    const oddsAnalysis = analyzeOdds(probability, formData.odds);
+                    
+                    // 5) GENERAZIONE SPIEGAZIONE
+                    const explanation = generateExplanation(
+                        marketAnalysis, 
+                        statistics, 
+                        probability, 
+                        oddsAnalysis
+                    );
+                    
+                    // 6) VERDETTO FINALE
+                    const verdict = generateVerdict(probability, oddsAnalysis.valueMargin);
+                    
+                    // Salva l'analisi corrente
+                    currentAnalysis = {
+                        sport: currentSport,
+                        team1: formData.team1,
+                        team2: formData.team2,
+                        bet: formData.bet,
+                        marketAnalysis,
+                        statistics,
+                        probability,
+                        oddsAnalysis,
+                        explanation,
+                        verdict,
+                        timestamp: new Date().toLocaleString('it-IT')
+                    };
+                    
+                    // Aggiorna l'interfaccia
+                    updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict);
+                    
+                    // Abilita il pulsante di salvataggio
+                    document.getElementById('saveBtn').disabled = false;
+                    
+                    // Mostra la sezione risultati
+                    document.getElementById('result-section').style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Errore durante l\'analisi:', error);
+                    showAlert('Si è verificato un errore durante l\'analisi. Riprova.', 'error');
+                } finally {
+                    showLoading(false);
                 }
-            } catch (error) {
-                console.error('Errore nell\'analisi automatica:', error);
-            }
-        }
-
-        // FUNZIONI PRINCIPALI
-        function analizzaPronostico() {
-            try {
-                // Mostra loading
-                document.getElementById('loading').style.display = 'block';
-                
-                // Simula un piccolo delay per mostrare il loading
-                setTimeout(() => {
-                    eseguiAnalisi();
-                }, 100);
-                
-            } catch (error) {
-                console.error('Errore nell\'analisi:', error);
-                document.getElementById('loading').style.display = 'none';
-                alert('Errore durante l\'analisi. Riprova.');
-            }
-        }
-
-        function eseguiAnalisi() {
-            try {
-                // Recupera i valori dal form in base allo sport selezionato
-                let team1, team2, pronostico, media, soglia, storico, quota, formaRecente, difficoltaAvversario;
-                
-                if (currentSport === 'calcio') {
-                    team1 = document.getElementById('calcio-squadra1').value;
-                    team2 = document.getElementById('calcio-squadra2').value;
-                    pronostico = document.getElementById('calcio-pronostico').value;
-                    media = parseFloat(document.getElementById('calcio-media-gol').value) || 0;
-                    soglia = parseFloat(document.getElementById('calcio-soglia').value) || 0;
-                    storico = document.getElementById('calcio-storico').value;
-                    quota = parseFloat(document.getElementById('calcio-quota').value) || 0;
-                    formaRecente = document.getElementById('calcio-forma-recente').value;
-                    difficoltaAvversario = document.getElementById('calcio-difficolta').value;
-                } else {
-                    team1 = document.getElementById('basket-squadra1').value;
-                    team2 = document.getElementById('basket-squadra2').value;
-                    pronostico = document.getElementById('basket-pronostico').value;
-                    media = parseFloat(document.getElementById('basket-media-punti').value) || 0;
-                    soglia = parseFloat(document.getElementById('basket-soglia').value) || 0;
-                    storico = document.getElementById('basket-storico').value;
-                    quota = parseFloat(document.getElementById('basket-quota').value) || 0;
-                    formaRecente = document.getElementById('basket-forma-recente').value;
-                    difficoltaAvversario = document.getElementById('basket-difficolta').value;
-                }
-                
-                const noteAggiuntive = document.getElementById('note-aggiuntive').value;
-                
-                // Validazione base
-                if (!pronostico) {
-                    alert('Inserisci un pronostico da analizzare');
-                    document.getElementById('loading').style.display = 'none';
-                    return;
-                }
-                
-                // 1) ANALISI MERCATO
-                const analisiMercato = analizzaMercato(pronostico, team1, team2);
-                
-                // 2) STATISTICHE
-                const statistiche = calcolaStatistiche(media, soglia, storico, formaRecente, difficoltaAvversario, analisiMercato.tipo);
-                
-                // 3) CALCOLO PROBABILITÀ
-                const probabilita = calcolaProbabilita(statistiche, analisiMercato.tipo, noteAggiuntive);
-                
-                // 4) QUOTA TEORICA
-                const quotaTeorica = 100 / probabilita;
-                
-                // 5) VALUE BETTING
-                const valueMargin = quota > 0 ? (quota / quotaTeorica) - 1 : 0;
-                
-                // 6) SPIEGAZIONE AI
-                const spiegazione = generaSpiegazione(analisiMercato, statistiche, probabilita, valueMargin, noteAggiuntive, currentSport);
-                
-                // 7) VERDETTO FINALE
-                const verdetto = generaVerdetto(probabilita, valueMargin);
-                
-                // Salva l'analisi corrente
-                currentAnalysis = {
-                    sport: currentSport,
-                    team1,
-                    team2,
-                    pronostico,
-                    analisiMercato,
-                    statistiche,
-                    probabilita,
-                    quotaTeorica,
-                    quota,
-                    valueMargin,
-                    spiegazione,
-                    verdetto,
-                    timestamp: new Date().toLocaleString('it-IT')
-                };
-                
-                // Aggiorna l'interfaccia con i risultati
-                aggiornaInterfaccia(analisiMercato, statistiche, probabilita, quotaTeorica, quota, valueMargin, spiegazione, verdetto);
-                
-                // Abilita il pulsante di salvataggio
-                document.getElementById('saveBtn').disabled = false;
-                
-                // Nascondi loading
-                document.getElementById('loading').style.display = 'none';
-                
-                // Mostra la sezione risultati
-                document.getElementById('result-section').style.display = 'block';
-                
-                // Scrolla ai risultati
-                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
-                
-            } catch (error) {
-                console.error('Errore nell\'esecuzione analisi:', error);
-                document.getElementById('loading').style.display = 'none';
-                alert('Errore durante l\'analisi. Controlla i dati inseriti.');
-            }
+            }, 1000);
         }
         
-        function analizzaMercato(pronostico, team1, team2) {
-            const testo = pronostico.toLowerCase().trim();
-            let tipo = "Sconosciuto";
-            let elementi = [];
-            let pronosticoNormalizzato = pronostico;
+        function getFormData() {
+            let team1, team2, bet, average, threshold, historical, odds, recentForm, difficulty;
             
-            // Correzione errori comuni
-            pronosticoNormalizzato = pronosticoNormalizzato.replace(/over/g, "Over").replace(/under/g, "Under");
-            
-            // Identificazione tipo mercato
-            if (testo.includes("over") || testo.includes("under")) {
-                tipo = "Over/Under";
-                const match = testo.match(/(over|under)\s*([0-9.]+)/);
-                if (match) {
-                    elementi.push(`Direzione: ${match[1]}`);
-                    elementi.push(`Soglia: ${match[2]}`);
-                }
-            } else if (testo.includes("marcatore") || testo.includes("goalscorer") || testo.includes("segna")) {
-                tipo = "Marcatore";
-                const giocatore = testo.replace(/(marcatore|goalscorer|segna)/gi, "").trim();
-                if (giocatore) {
-                    elementi.push(`Giocatore: ${giocatore}`);
-                    pronosticoNormalizzato = `${giocatore} marcatore`;
-                }
-            } else if (testo.includes("btts") || testo.includes("both teams to score")) {
-                tipo = "BTTS";
-                pronosticoNormalizzato = "Both Teams To Score";
-            } else if (testo.includes("1x2") || testo.includes("doppia chance")) {
-                tipo = "1X2/Double Chance";
-                if (testo.includes("1x")) elementi.push("Esito: 1X");
-                else if (testo.includes("x2")) elementi.push("Esito: X2");
-                else if (testo.includes("12")) elementi.push("Esito: 12");
-            } else if (testo.includes("-") || testo.includes("+")) {
-                tipo = "Handicap";
-                const match = testo.match(/(.+?)\s*([+-]\s*[0-9.]+)/);
-                if (match) {
-                    elementi.push(`Squadra: ${match[1].trim()}`);
-                    elementi.push(`Handicap: ${match[2].replace(/\s+/g, '')}`);
-                }
-            } else if (testo === "1" || testo === "x" || testo === "2") {
-                tipo = "1X2";
-                elementi.push(`Esito: ${testo.toUpperCase()}`);
+            if (currentSport === 'calcio') {
+                team1 = document.getElementById('calcio-squadra1').value;
+                team2 = document.getElementById('calcio-squadra2').value;
+                bet = document.getElementById('calcio-pronostico').value;
+                average = parseFloat(document.getElementById('calcio-media-gol').value) || 0;
+                threshold = parseFloat(document.getElementById('calcio-soglia').value) || 0;
+                historical = document.getElementById('calcio-storico').value;
+                odds = parseFloat(document.getElementById('calcio-quota').value) || 0;
+                recentForm = document.getElementById('calcio-forma-recente').value;
+                difficulty = document.getElementById('calcio-difficolta').value;
             } else {
-                tipo = "Personalizzato";
+                team1 = document.getElementById('basket-squadra1').value;
+                team2 = document.getElementById('basket-squadra2').value;
+                bet = document.getElementById('basket-pronostico').value;
+                average = parseFloat(document.getElementById('basket-media-punti').value) || 0;
+                threshold = parseFloat(document.getElementById('basket-soglia').value) || 0;
+                historical = document.getElementById('basket-storico').value;
+                odds = parseFloat(document.getElementById('basket-quota').value) || 0;
+                recentForm = document.getElementById('basket-forma-recente').value;
+                difficulty = document.getElementById('basket-difficolta').value;
             }
             
-            // Aggiungi squadre se disponibili
-            if (team1 && team2) {
-                elementi.push(`Partita: ${team1} vs ${team2}`);
-            }
+            const additionalNotes = document.getElementById('note-aggiuntive').value;
             
             return {
-                tipo,
-                elementi,
-                pronosticoNormalizzato
+                team1, team2, bet, average, threshold, historical, odds, recentForm, difficulty, additionalNotes
             };
         }
         
-        function calcolaStatistiche(media, soglia, storico, formaRecente, difficoltaAvversario, tipoMercato) {
-            const diffMediaSoglia = media - soglia;
+        function validateFormData(data) {
+            if (!data.bet) {
+                showAlert('Inserisci un pronostico da analizzare', 'error');
+                return false;
+            }
+            
+            if (data.average <= 0) {
+                showAlert('Inserisci una media statistica valida', 'error');
+                return false;
+            }
+            
+            if (data.odds < 1) {
+                showAlert('La quota bookmaker deve essere almeno 1.00', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function showAlert(message, type) {
+            // Rimuovi alert esistenti
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            
+            // Crea nuovo alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i>
+                ${message}
+            `;
+            
+            // Inserisci l'alert prima del form
+            const card = document.querySelector('.card');
+            card.insertBefore(alert, card.firstChild);
+            
+            // Rimuovi l'alert dopo 5 secondi
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+        
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            
+            if (show) {
+                spinner.style.display = 'block';
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = '<i class="fas fa-cog fa-spin"></i> Analisi in corso...';
+            } else {
+                spinner.style.display = 'none';
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '<i class="fas fa-brain"></i> Analisi Avanzata';
+            }
+        }
+        
+        function analyzeMarket(bet, team1, team2) {
+            const text = bet.toLowerCase().trim();
+            let type = "Personalizzato";
+            let normalizedBet = bet;
+            
+            if (text.includes("over") || text.includes("under")) {
+                type = "Over/Under";
+            } else if (text.includes("marcatore") || text.includes("goalscorer") || text.includes("segna")) {
+                type = "Marcatore";
+            } else if (text.includes("btts") || text.includes("both teams to score")) {
+                type = "BTTS";
+            } else if (text.includes("1x2") || text.includes("doppia chance")) {
+                type = "1X2/Double Chance";
+            } else if (text.includes("-") || text.includes("+")) {
+                type = "Handicap";
+            } else if (text === "1" || text === "x" || text === "2") {
+                type = "1X2";
+            }
+            
+            return {
+                type,
+                normalizedBet
+            };
+        }
+        
+        function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes) {
+            const diffAverageThreshold = average - threshold;
             
             // Calcolo frequenza storica
-            let frequenzaStorica = 0;
-            if (storico) {
-                if (storico.includes("su")) {
-                    const parti = storico.split("su");
-                    const successi = parseFloat(parti[0]) || 0;
-                    const totale = parseFloat(parti[1]) || 1;
-                    frequenzaStorica = (successi / totale) * 100;
-                } else if (storico.includes("%")) {
-                    frequenzaStorica = parseFloat(storico.replace("%", "")) || 0;
+            let historicalFrequency = 0;
+            if (historical) {
+                if (historical.includes("su")) {
+                    const parts = historical.split("su");
+                    const successes = parseFloat(parts[0]) || 0;
+                    const total = parseFloat(parts[1]) || 1;
+                    historicalFrequency = (successes / total) * 100;
+                } else if (historical.includes("%")) {
+                    historicalFrequency = parseFloat(historical.replace("%", "")) || 0;
                 }
             }
             
             // Calcolo forma recente
-            let formaRecenteValore = 0;
-            if (formaRecente) {
-                if (formaRecente.includes("su")) {
-                    const parti = formaRecente.split("su");
-                    const successi = parseFloat(parti[0]) || 0;
-                    const totale = parseFloat(parti[1]) || 1;
-                    formaRecenteValore = (successi / totale) * 100;
-                } else if (formaRecente.includes("%")) {
-                    formaRecenteValore = parseFloat(formaRecente.replace("%", "")) || 0;
+            let recentFormValue = 0;
+            if (recentForm) {
+                if (recentForm.includes("su")) {
+                    const parts = recentForm.split("su");
+                    const successes = parseFloat(parts[0]) || 0;
+                    const total = parseFloat(parts[1]) || 1;
+                    recentFormValue = (successes / total) * 100;
+                } else if (recentForm.includes("%")) {
+                    recentFormValue = parseFloat(recentForm.replace("%", "")) || 0;
                 }
             }
             
             // Calcolo difficoltà avversario
-            let pesoDifficolta = 0;
-            switch(difficoltaAvversario) {
+            let difficultyWeight = 0;
+            switch(difficulty) {
                 case "bassa":
-                    pesoDifficolta = 5;
+                    difficultyWeight = 5;
                     break;
                 case "media":
-                    pesoDifficolta = 0;
+                    difficultyWeight = 0;
                     break;
                 case "alta":
-                    pesoDifficolta = -10;
+                    difficultyWeight = -10;
                     break;
-            }
-            
-            // Aggiustamento per tipo di mercato
-            let aggiustamentoDifficolta = 0;
-            if (tipoMercato === "Over/Under") {
-                aggiustamentoDifficolta = diffMediaSoglia > 0 ? 5 : -5;
-            } else if (tipoMercato === "Marcatore") {
-                aggiustamentoDifficolta = -10;
-            } else if (tipoMercato === "BTTS") {
-                aggiustamentoDifficolta = 0;
             }
             
             return {
-                media,
-                soglia,
-                diffMediaSoglia,
-                frequenzaStorica,
-                formaRecenteValore,
-                pesoDifficolta,
-                aggiustamentoDifficolta
+                average,
+                threshold,
+                diffAverageThreshold,
+                historicalFrequency,
+                recentFormValue,
+                difficultyWeight
             };
         }
         
-        function calcolaProbabilita(statistiche, tipoMercato, noteAggiuntive) {
-            let probabilitaBase = 50;
+        function calculateProbability(statistics, marketType) {
+            let baseProbability = 50; // Probabilità base
             
-            if (statistiche.diffMediaSoglia !== 0) {
-                probabilitaBase += statistiche.diffMediaSoglia * 5;
+            // Aggiustamento basato sulla differenza media-soglia
+            if (statistics.diffAverageThreshold !== 0) {
+                baseProbability += statistics.diffAverageThreshold * 5;
             }
             
-            if (statistiche.frequenzaStorica > 0) {
-                probabilitaBase = (probabilitaBase + statistiche.frequenzaStorica) / 2;
+            // Aggiustamento basato sulla frequenza storica
+            if (statistics.historicalFrequency > 0) {
+                baseProbability = (baseProbability + statistics.historicalFrequency) / 2;
             }
             
-            if (statistiche.formaRecenteValore > 0) {
-                probabilitaBase = (probabilitaBase + statistiche.formaRecenteValore) / 2;
+            // Aggiustamento basato sulla forma recente
+            if (statistics.recentFormValue > 0) {
+                baseProbability = (baseProbability + statistics.recentFormValue) / 2;
             }
             
-            probabilitaBase += statistiche.pesoDifficolta;
-            probabilitaBase += statistiche.aggiustamentoDifficolta;
+            // Aggiustamento per difficoltà
+            baseProbability += statistics.difficultyWeight;
             
-            if (noteAggiuntive) {
-                const note = noteAggiuntive.toLowerCase();
-                if (note.includes("infortun") || note.includes("squalif")) {
-                    probabilitaBase -= 10;
-                }
-                if (note.includes("motivat") || note.includes("importante")) {
-                    probabilitaBase += 5;
-                }
-            }
-            
-            return Math.max(1, Math.min(99, Math.round(probabilitaBase * 10) / 10));
+            // Limita la probabilità tra 1% e 95%
+            return Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
         }
         
-        function generaSpiegazione(analisiMercato, statistiche, probabilita, valueMargin, noteAggiuntive, sport) {
-            let spiegazione = `<p>Analisi del pronostico <strong>${analisiMercato.pronosticoNormalizzato}</strong> (${sport === 'calcio' ? '⚽ Calcio' : '🏀 Basket'}):</p><ul>`;
+        function analyzeOdds(probability, bookmakerOdds) {
+            const theoreticalOdds = (100 / probability).toFixed(2);
+            const valueMargin = ((bookmakerOdds / theoreticalOdds) - 1).toFixed(3);
             
-            spiegazione += `<li class="positive">Il mercato identificato è <strong>${analisiMercato.tipo}</strong>, che presenta caratteristiche analizzabili</li>`;
+            return {
+                theoreticalOdds: theoreticalOdds,
+                bookmakerOdds: bookmakerOdds.toFixed(2),
+                valueMargin: parseFloat(valueMargin)
+            };
+        }
+        
+        function generateExplanation(marketAnalysis, statistics, probability, oddsAnalysis) {
+            let explanation = `<p>Analisi del pronostico <strong>${marketAnalysis.normalizedBet}</strong>:</p><ul>`;
             
-            if (statistiche.diffMediaSoglia > 0) {
-                spiegazione += `<li class="positive">La media statistica (${statistiche.media}) supera la soglia (${statistiche.soglia}) di ${statistiche.diffMediaSoglia.toFixed(1)}, fattore positivo</li>`;
-            } else if (statistiche.diffMediaSoglia < 0) {
-                spiegazione += `<li class="negative">La media statistica (${statistiche.media}) è inferiore alla soglia (${statistiche.soglia}) di ${Math.abs(statistiche.diffMediaSoglia).toFixed(1)}, fattore negativo</li>`;
+            if (statistics.diffAverageThreshold > 0) {
+                explanation += `<li class="positive">La media statistica (${statistics.average}) supera la soglia (${statistics.threshold}) di ${statistics.diffAverageThreshold.toFixed(1)}, fattore positivo</li>`;
+            } else if (statistics.diffAverageThreshold < 0) {
+                explanation += `<li class="negative">La media statistica (${statistics.average}) è inferiore alla soglia (${statistics.threshold}) di ${Math.abs(statistics.diffAverageThreshold).toFixed(1)}, fattore negativo</li>`;
             }
             
-            if (statistiche.frequenzaStorica > 0) {
-                if (statistiche.frequenzaStorica > 60) {
-                    spiegazione += `<li class="positive">I dati storici (${statistiche.frequenzaStorica.toFixed(1)}%) supportano il pronostico</li>`;
-                } else if (statistiche.frequenzaStorica < 40) {
-                    spiegazione += `<li class="negative">I dati storici (${statistiche.frequenzaStorica.toFixed(1)}%) non supportano il pronostico</li>`;
-                } else {
-                    spiegazione += `<li class="neutral">I dati storici (${statistiche.frequenzaStorica.toFixed(1)}%) sono neutrali</li>`;
+            if (statistics.historicalFrequency > 0) {
+                if (statistics.historicalFrequency > 60) {
+                    explanation += `<li class="positive">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano il pronostico</li>`;
+                } else if (statistics.historicalFrequency < 40) {
+                    explanation += `<li class="negative">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) non supportano il pronostico</li>`;
                 }
             }
             
-            if (statistiche.formaRecenteValore > 0) {
-                if (statistiche.formaRecenteValore > 60) {
-                    spiegazione += `<li class="positive">La forma recente (${statistiche.formaRecenteValore.toFixed(1)}%) è favorevole</li>`;
-                } else if (statistiche.formaRecenteValore < 40) {
-                    spiegazione += `<li class="negative">La forma recente (${statistiche.formaRecenteValore.toFixed(1)}%) è sfavorevole</li>`;
-                } else {
-                    spiegazione += `<li class="neutral">La forma recente (${statistiche.formaRecenteValore.toFixed(1)}%) è neutrale</li>`;
+            if (statistics.recentFormValue > 0) {
+                if (statistics.recentFormValue > 60) {
+                    explanation += `<li class="positive">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è favorevole</li>`;
+                } else if (statistics.recentFormValue < 40) {
+                    explanation += `<li class="negative">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è sfavorevole</li>`;
                 }
             }
             
-            if (valueMargin > 0) {
-                spiegazione += `<li class="positive">Value margin positivo del ${(valueMargin * 100).toFixed(1)}% indica potenziale valore</li>`;
+            if (oddsAnalysis.valueMargin > 0) {
+                explanation += `<li class="positive">Value margin positivo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica potenziale valore</li>`;
             } else {
-                spiegazione += `<li class="negative">Value margin negativo del ${(valueMargin * 100).toFixed(1)}% indica assenza di valore</li>`;
+                explanation += `<li class="negative">Value margin negativo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica assenza di valore</li>`;
             }
             
-            if (analisiMercato.tipo === "Marcatore") {
-                spiegazione += `<li class="negative">I mercati di marcatore presentano un rischio elevato per la variabilità individuale</li>`;
-            } else if (analisiMercato.tipo === "Over/Under") {
-                spiegazione += `<li class="neutral">I mercati Over/Under offrono generalmente un buon equilibrio rischio/rendimento</li>`;
-            }
+            explanation += `</ul>`;
             
-            spiegazione += `</ul>`;
-            
-            return spiegazione;
+            return explanation;
         }
         
-        function generaVerdetto(probabilita, valueMargin) {
-            const score = probabilita + (valueMargin > 0 ? valueMargin * 100 : 0);
+        function generateVerdict(probability, valueMargin) {
+            const score = probability + (valueMargin > 0 ? valueMargin * 100 : 0);
             
             if (score > 80 && valueMargin > 0.1) {
                 return {
-                    testo: "CONSIGLIO FORTE",
-                    classe: "verdict-strong",
-                    descrizione: "Alta probabilità combinata con value positivo significativo"
+                    text: "CONSIGLIO FORTE",
+                    class: "verdict-strong",
+                    description: "Alta probabilità combinata con value positivo significativo"
                 };
             } else if (score > 65 && valueMargin > 0) {
                 return {
-                    testo: "CONSIGLIATO",
-                    classe: "verdict-recommended",
-                    descrizione: "Buona probabilità con value positivo"
+                    text: "CONSIGLIATO",
+                    class: "verdict-recommended",
+                    description: "Buona probabilità con value positivo"
                 };
             } else if (score > 50 || valueMargin > 0) {
                 return {
-                    testo: "VALUTABILE CON CAUTELA",
-                    classe: "verdict-caution",
-                    descrizione: "Probabilità moderata o value marginale"
+                    text: "VALUTABILE",
+                    class: "verdict-caution",
+                    description: "Probabilità moderata o value marginale"
                 };
             } else {
                 return {
-                    testo: "SCONSIGLIATO",
-                    classe: "verdict-not-recommended",
-                    descrizione: "Probabilità bassa e/o value negativo"
+                    text: "SCONSIGLIATO",
+                    class: "verdict-not-recommended",
+                    description: "Probabilità bassa e/o value negativo"
                 };
             }
         }
         
-        function aggiornaInterfaccia(analisiMercato, statistiche, probabilita, quotaTeorica, quotaBookmaker, valueMargin, spiegazione, verdetto) {
+        function updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict) {
             // Aggiorna analisi mercato
-            document.getElementById('market-type').textContent = analisiMercato.tipo;
-            document.getElementById('market-elements').innerHTML = analisiMercato.elementi.join('<br>');
-            document.getElementById('normalized-bet').textContent = analisiMercato.pronosticoNormalizzato;
+            document.getElementById('market-type').textContent = marketAnalysis.type;
+            document.getElementById('normalized-bet').textContent = marketAnalysis.normalizedBet;
             
             // Aggiorna statistiche
-            document.getElementById('stat-avg').textContent = statistiche.media.toFixed(1);
-            document.getElementById('diff-avg-threshold').textContent = statistiche.diffMediaSoglia.toFixed(1);
-            document.getElementById('historical-freq').textContent = statistiche.frequenzaStorica > 0 ? 
-                `${statistiche.frequenzaStorica.toFixed(1)}%` : "N/D";
-            document.getElementById('recent-form').textContent = statistiche.formaRecenteValore > 0 ? 
-                `${statistiche.formaRecenteValore.toFixed(1)}%` : "N/D";
-            document.getElementById('opponent-difficulty').textContent = statistiche.pesoDifficolta > 0 ? 
-                "Bassa" : (statistiche.pesoDifficolta < 0 ? "Alta" : "Media");
+            document.getElementById('stat-avg').textContent = statistics.average.toFixed(1);
+            document.getElementById('diff-avg-threshold').textContent = statistics.diffAverageThreshold.toFixed(1);
+            document.getElementById('historical-freq').textContent = statistics.historicalFrequency > 0 ? 
+                `${statistics.historicalFrequency.toFixed(1)}%` : "N/D";
+            document.getElementById('recent-form').textContent = statistics.recentFormValue > 0 ? 
+                `${statistics.recentFormValue.toFixed(1)}%` : "N/D";
             
             // Aggiorna probabilità e quote
-            document.getElementById('probability-value').textContent = `${probabilita}%`;
-            document.getElementById('theoretical-odds').textContent = quotaTeorica.toFixed(2);
-            document.getElementById('bookmaker-odds').textContent = quotaBookmaker.toFixed(2);
+            document.getElementById('probability-value').textContent = `${probability}%`;
+            document.getElementById('theoretical-odds').textContent = oddsAnalysis.theoreticalOdds;
+            document.getElementById('bookmaker-odds').textContent = oddsAnalysis.bookmakerOdds;
             
             // Aggiorna value betting
-            const valuePercent = (valueMargin * 100).toFixed(1);
-            document.getElementById('value-margin').innerHTML = valueMargin >= 0 ? 
+            const valuePercent = (oddsAnalysis.valueMargin * 100).toFixed(1);
+            document.getElementById('value-margin').innerHTML = oddsAnalysis.valueMargin >= 0 ? 
                 `<span class="value-positive">+${valuePercent}%</span>` : 
                 `<span class="value-negative">${valuePercent}%</span>`;
             
-            document.getElementById('value-assessment').textContent = valueMargin >= 0 ? "Value positivo" : "Value negativo";
-            document.getElementById('risk-level').textContent = probabilita > 70 ? "Basso" : (probabilita > 50 ? "Medio" : "Alto");
-            
             // Aggiorna spiegazione AI
-            document.getElementById('ai-explanation').innerHTML = spiegazione;
+            document.getElementById('ai-explanation').innerHTML = explanation;
             
             // Aggiorna verdetto
             const verdictBox = document.getElementById('verdict-box');
-            verdictBox.textContent = verdetto.testo;
-            verdictBox.className = `verdict-box ${verdetto.classe}`;
-            verdictBox.title = verdetto.descrizione;
+            verdictBox.textContent = verdict.text;
+            verdictBox.className = `verdict-box ${verdict.class}`;
+            verdictBox.title = verdict.description;
             
             // Aggiorna il cerchio della probabilità
-            const probabilityCircle = document.querySelector('.probability-circle');
-            const probabilityValue = probabilita;
-            probabilityCircle.style.background = `conic-gradient(var(--success) 0% ${probabilityValue}%, var(--light-gray) ${probabilityValue}% 100%)`;
+            const probabilityCircle = document.getElementById('probability-circle');
+            probabilityCircle.style.background = `conic-gradient(var(--success) 0% ${probability}%, var(--light-gray) ${probability}% 100%)`;
         }
         
         function resetForm() {
@@ -1586,34 +1629,30 @@
         }
 
         // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI
-        function salvaPronostico() {
+        function saveForecast() {
             if (!currentAnalysis) {
-                alert('Prima devi effettuare un\'analisi per salvare il pronostico!');
+                showAlert('Prima devi effettuare un\'analisi per salvare il pronostico!', 'error');
                 return;
             }
             
-            try {
-                const forecast = {
-                    id: Date.now(),
-                    ...currentAnalysis
-                };
-                
-                savedForecasts.push(forecast);
-                localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
-                aggiornaPronosticiSalvati();
-                alert('Pronostico salvato con successo!');
-            } catch (error) {
-                console.error('Errore nel salvataggio:', error);
-                alert('Errore nel salvataggio del pronostico.');
-            }
+            const forecast = {
+                id: Date.now(),
+                ...currentAnalysis
+            };
+            
+            savedForecasts.push(forecast);
+            localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
+            updateSavedForecasts();
+            showAlert('Pronostico salvato con successo!', 'success');
         }
         
-        function aggiornaPronosticiSalvati() {
+        function updateSavedForecasts() {
             const container = document.getElementById('savedForecastsList');
             
             if (savedForecasts.length === 0) {
                 container.innerHTML = `
                     <div class="no-saved">
+                        <i class="fas fa-inbox"></i>
                         <p>Nessun pronostico salvato</p>
                         <small>I tuoi pronostici salvati appariranno qui</small>
                     </div>
@@ -1621,84 +1660,93 @@
                 return;
             }
             
+            // Ordina i pronostici dal più recente al più vecchio
             savedForecasts.sort((a, b) => b.id - a.id);
             
             container.innerHTML = savedForecasts.map(forecast => `
-                <div class="saved-item" onclick="mostraDettaglioPronostico(${forecast.id})">
+                <div class="saved-item" onclick="showForecastDetail(${forecast.id})">
                     <div class="saved-item-header">
                         <span class="saved-item-sport">${forecast.sport === 'calcio' ? '⚽ Calcio' : '🏀 Basket'}</span>
                         <span class="saved-item-date">${forecast.timestamp}</span>
                     </div>
                     <div class="saved-item-match">${forecast.team1} vs ${forecast.team2}</div>
-                    <div class="saved-item-forecast">${forecast.pronostico}</div>
+                    <div class="saved-item-forecast">${forecast.bet}</div>
                     <div class="saved-item-stats">
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.probabilita}%</div>
+                            <div class="saved-item-stat-value">${forecast.probability}%</div>
                             <div class="saved-item-stat-label">Probabilità</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.quotaTeorica.toFixed(2)}</div>
+                            <div class="saved-item-stat-value">${forecast.oddsAnalysis.theoreticalOdds}</div>
                             <div class="saved-item-stat-label">Quota Teorica</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value ${forecast.valueMargin >= 0 ? 'value-positive' : 'value-negative'}">
-                                ${forecast.valueMargin >= 0 ? '+' : ''}${(forecast.valueMargin * 100).toFixed(1)}%
+                            <div class="saved-item-stat-value ${forecast.oddsAnalysis.valueMargin >= 0 ? 'value-positive' : 'value-negative'}">
+                                ${forecast.oddsAnalysis.valueMargin >= 0 ? '+' : ''}${(forecast.oddsAnalysis.valueMargin * 100).toFixed(1)}%
                             </div>
                             <div class="saved-item-stat-label">Value</div>
                         </div>
                     </div>
                     <div class="saved-item-actions">
-                        <button class="delete-saved" onclick="event.stopPropagation(); eliminaPronostico(${forecast.id})">🗑️</button>
+                        <button class="delete-saved" onclick="event.stopPropagation(); deleteForecast(${forecast.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
         
-        function mostraDettaglioPronostico(id) {
+        function showForecastDetail(id) {
             const forecast = savedForecasts.find(f => f.id === id);
             if (!forecast) return;
             
-            aggiornaInterfaccia(
-                forecast.analisiMercato,
-                forecast.statistiche,
-                forecast.probabilita,
-                forecast.quotaTeorica,
-                forecast.quota,
-                forecast.valueMargin,
-                forecast.spiegazione,
-                forecast.verdetto
+            // Aggiorna l'interfaccia con i dettagli del pronostico
+            updateInterface(
+                forecast.marketAnalysis,
+                forecast.statistics,
+                forecast.probability,
+                forecast.oddsAnalysis,
+                forecast.explanation,
+                forecast.verdict
             );
             
+            // Mostra la sezione risultati
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
             
-            closeSavedPanelHandler();
+            // Chiudi il pannello dei pronostici salvati
+            closeSavedPanel();
         }
         
-        function eliminaPronostico(id) {
+        function deleteForecast(id) {
             if (!confirm('Sei sicuro di voler eliminare questo pronostico?')) return;
             
             savedForecasts = savedForecasts.filter(f => f.id !== id);
             localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
-            aggiornaPronosticiSalvati();
+            updateSavedForecasts();
+            showAlert('Pronostico eliminato', 'success');
         }
 
         // FUNZIONI PER IL TEMA CHIARO/SCURO
-        function toggleDarkModeHandler() {
+        function toggleDarkMode() {
             darkMode = !darkMode;
             document.body.classList.toggle('dark-mode', darkMode);
             localStorage.setItem('darkMode', darkMode);
+            
+            // Cambia l'icona
+            const icon = document.getElementById('toggleDarkMode');
+            icon.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         }
 
         // FUNZIONI PER IL PANNELLO DEI PRONOSTICI SALVATI
-        function toggleSavedPanelHandler() {
+        function toggleSavedPanel() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
         
-        function closeSavedPanelHandler() {
+        function closeSavedPanel() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
             panel.classList.remove('open');
@@ -1707,6 +1755,7 @@
     </script>
 </body>
 </html>
+
 
 
 
