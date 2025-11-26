@@ -798,7 +798,7 @@
 
             .toggle-dark-mode, .toggle-saved-panel {
                 width: 50px;
-                height: 50px;
+            height: 50px;
                 font-size: 1.3rem;
             }
 
@@ -1172,17 +1172,24 @@
         let darkMode = localStorage.getItem('darkMode') === 'true';
         let currentSport = 'calcio';
 
-        // INIZIALIZZAZIONE
+        // INIZIALIZZAZIONE - FIXED VERSION
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM caricato - Inizializzazione iniziata');
             initializeApp();
         });
 
         function initializeApp() {
+            console.log('🚀 Inizializzazione app');
+            
             // Carica i pronostici salvati
-            const saved = localStorage.getItem('savedForecasts');
-            if (saved) {
-                savedForecasts = JSON.parse(saved);
-                updateSavedForecasts();
+            try {
+                const saved = localStorage.getItem('savedForecasts');
+                if (saved) {
+                    savedForecasts = JSON.parse(saved);
+                    updateSavedForecasts();
+                }
+            } catch (e) {
+                console.log('❌ Nessun pronostico salvato trovato');
             }
 
             // Imposta la modalità scura se attiva
@@ -1192,18 +1199,22 @@
             }
 
             setupEventListeners();
+            console.log('✅ App inizializzata correttamente');
         }
 
         function setupEventListeners() {
+            console.log('🔧 Configurazione event listeners');
+            
             // Pulsanti tema e pannelli
             document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
             document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
             document.getElementById('closePanel').addEventListener('click', closeSavedPanel);
             document.getElementById('overlay').addEventListener('click', closeSavedPanel);
 
-            // Pulsanti sport
+            // Pulsanti sport - FIXED
             document.querySelectorAll('.sport-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
+                    console.log('⚽ Cliccato sport:', this.dataset.sport);
                     switchSport(this);
                 });
             });
@@ -1212,35 +1223,43 @@
             document.getElementById('analyzeBtn').addEventListener('click', analyzeBet);
             document.getElementById('saveBtn').addEventListener('click', saveForecast);
             document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+            console.log('✅ Event listeners configurati');
         }
 
-        // FUNZIONE PER CAMBIARE SPORT
+        // FUNZIONE PER CAMBIARE SPORT - FIXED
         function switchSport(btn) {
+            console.log('🔄 Cambio sport a:', btn.dataset.sport);
+            
             document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
             const sport = btn.getAttribute('data-sport');
-            switchSportSection(sport);
-        }
-
-        function switchSportSection(sport) {
             currentSport = sport;
             
             document.querySelectorAll('.sport-section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            document.getElementById(sport + '-section').classList.add('active');
+            const targetSection = document.getElementById(sport + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+                console.log('✅ Sezione sport attivata:', sport);
+            } else {
+                console.error('❌ Sezione non trovata:', sport + '-section');
+            }
         }
 
-        // FUNZIONE PRINCIPALE DI ANALISI
+        // FUNZIONE PRINCIPALE DI ANALISI - FIXED
         function analyzeBet() {
+            console.log('🔍 Avvio analisi...');
             showLoading(true);
             
             setTimeout(() => {
                 try {
                     // Recupera i valori dal form
                     const formData = getFormData();
+                    console.log('📊 Dati form:', formData);
                     
                     // Validazione
                     if (!validateFormData(formData)) {
@@ -1301,9 +1320,12 @@
                     
                     // Mostra la sezione risultati
                     document.getElementById('result-section').style.display = 'block';
+                    document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+                    
+                    console.log('✅ Analisi completata con successo');
                     
                 } catch (error) {
-                    console.error('Errore durante l\'analisi:', error);
+                    console.error('❌ Errore durante l\'analisi:', error);
                     showAlert('Si è verificato un errore durante l\'analisi. Riprova.', 'error');
                 } finally {
                     showLoading(false);
@@ -1344,7 +1366,7 @@
         }
         
         function validateFormData(data) {
-            if (!data.bet) {
+            if (!data.bet || data.bet.trim() === '') {
                 showAlert('Inserisci un pronostico da analizzare', 'error');
                 return false;
             }
@@ -1628,7 +1650,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI
+        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI - FIXED
         function saveForecast() {
             if (!currentAnalysis) {
                 showAlert('Prima devi effettuare un\'analisi per salvare il pronostico!', 'error');
@@ -1641,9 +1663,15 @@
             };
             
             savedForecasts.push(forecast);
-            localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
-            updateSavedForecasts();
-            showAlert('Pronostico salvato con successo!', 'success');
+            try {
+                localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
+                updateSavedForecasts();
+                showAlert('Pronostico salvato con successo!', 'success');
+                console.log('💾 Pronostico salvato:', forecast);
+            } catch (e) {
+                console.error('❌ Errore salvataggio:', e);
+                showAlert('Errore nel salvataggio del pronostico', 'error');
+            }
         }
         
         function updateSavedForecasts() {
@@ -1727,7 +1755,7 @@
             showAlert('Pronostico eliminato', 'success');
         }
 
-        // FUNZIONI PER IL TEMA CHIARO/SCURO
+        // FUNZIONI PER IL TEMA CHIARO/SCURO - FIXED
         function toggleDarkMode() {
             darkMode = !darkMode;
             document.body.classList.toggle('dark-mode', darkMode);
@@ -1736,14 +1764,16 @@
             // Cambia l'icona
             const icon = document.getElementById('toggleDarkMode');
             icon.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            console.log('🎨 Dark mode:', darkMode);
         }
 
-        // FUNZIONI PER IL PANNELLO DEI PRONOSTICI SALVATI
+        // FUNZIONI PER IL PANNELLO DEI PRONOSTICI SALVATI - FIXED
         function toggleSavedPanel() {
             const panel = document.getElementById('savedPanel');
             const overlay = document.getElementById('overlay');
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
+            console.log('📋 Pannello salvati:', panel.classList.contains('open'));
         }
         
         function closeSavedPanel() {
@@ -1755,6 +1785,7 @@
     </script>
 </body>
 </html>
+
 
 
 
