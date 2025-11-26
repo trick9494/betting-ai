@@ -1308,6 +1308,13 @@
                         team1: formData.team1,
                         team2: formData.team2,
                         bet: formData.bet,
+                        average: formData.average,
+                        threshold: formData.threshold,
+                        historical: formData.historical,
+                        odds: formData.odds,
+                        recentForm: formData.recentForm,
+                        difficulty: formData.difficulty,
+                        additionalNotes: formData.additionalNotes,
                         marketAnalysis,
                         statistics,
                         probability,
@@ -1655,7 +1662,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI - COMPLETAMENTE RIVISTA
+        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI - MODIFICATA PER SALVARE TUTTI I DATI
         function saveForecast() {
             console.log('💾 Tentativo di salvataggio pronostico...');
             
@@ -1666,19 +1673,30 @@
             }
             
             try {
-                // Crea una copia semplice dell'analisi corrente
+                // Crea una copia completa dell'analisi corrente
                 const forecast = {
                     id: Date.now(),
                     sport: currentAnalysis.sport || 'calcio',
                     team1: currentAnalysis.team1 || '',
                     team2: currentAnalysis.team2 || '',
                     bet: currentAnalysis.bet || '',
+                    average: currentAnalysis.average || 0,
+                    threshold: currentAnalysis.threshold || 0,
+                    historical: currentAnalysis.historical || '',
+                    odds: currentAnalysis.odds || 0,
+                    recentForm: currentAnalysis.recentForm || '',
+                    difficulty: currentAnalysis.difficulty || 'media',
+                    additionalNotes: currentAnalysis.additionalNotes || '',
                     probability: currentAnalysis.probability || 0,
                     oddsAnalysis: {
                         theoreticalOdds: currentAnalysis.oddsAnalysis?.theoreticalOdds || '0',
                         bookmakerOdds: currentAnalysis.oddsAnalysis?.bookmakerOdds || '0',
                         valueMargin: currentAnalysis.oddsAnalysis?.valueMargin || 0
                     },
+                    marketAnalysis: currentAnalysis.marketAnalysis || {},
+                    statistics: currentAnalysis.statistics || {},
+                    explanation: currentAnalysis.explanation || '',
+                    verdict: currentAnalysis.verdict || {},
                     timestamp: new Date().toLocaleString('it-IT')
                 };
                 
@@ -1777,47 +1795,85 @@
                 return;
             }
             
-            // Crea una versione semplificata per la visualizzazione
-            const simpleAnalysis = {
-                sport: forecast.sport,
-                team1: forecast.team1,
-                team2: forecast.team2,
-                bet: forecast.bet,
-                marketAnalysis: {
-                    type: "Salvato",
-                    normalizedBet: forecast.bet
-                },
-                statistics: {
-                    average: 0,
-                    threshold: 0,
-                    diffAverageThreshold: 0,
-                    historicalFrequency: 0,
-                    recentFormValue: 0,
-                    difficultyWeight: 0
-                },
-                probability: forecast.probability,
-                oddsAnalysis: forecast.oddsAnalysis,
-                explanation: `<p>Pronostico salvato: <strong>${forecast.bet}</strong></p><p>Probabilità calcolata: <strong>${forecast.probability}%</strong></p>`,
-                verdict: {
-                    text: "SALVATO",
-                    class: "verdict-caution",
-                    description: "Pronostico salvato precedentemente"
-                }
-            };
+            // Popola il form con i dati del pronostico salvato
+            if (forecast.sport === 'calcio') {
+                // Attiva la sezione calcio
+                document.querySelectorAll('.sport-btn').forEach(btn => {
+                    if (btn.dataset.sport === 'calcio') {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                document.querySelectorAll('.sport-section').forEach(section => {
+                    if (section.id === 'calcio-section') {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                
+                // Popola i campi del calcio
+                document.getElementById('calcio-squadra1').value = forecast.team1 || '';
+                document.getElementById('calcio-squadra2').value = forecast.team2 || '';
+                document.getElementById('calcio-pronostico').value = forecast.bet || '';
+                document.getElementById('calcio-media-gol').value = forecast.average || '';
+                document.getElementById('calcio-soglia').value = forecast.threshold || '';
+                document.getElementById('calcio-storico').value = forecast.historical || '';
+                document.getElementById('calcio-quota').value = forecast.odds || '';
+                document.getElementById('calcio-forma-recente').value = forecast.recentForm || '';
+                document.getElementById('calcio-difficolta').value = forecast.difficulty || 'media';
+            } else {
+                // Attiva la sezione basket
+                document.querySelectorAll('.sport-btn').forEach(btn => {
+                    if (btn.dataset.sport === 'basket') {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                document.querySelectorAll('.sport-section').forEach(section => {
+                    if (section.id === 'basket-section') {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                
+                // Popola i campi del basket
+                document.getElementById('basket-squadra1').value = forecast.team1 || '';
+                document.getElementById('basket-squadra2').value = forecast.team2 || '';
+                document.getElementById('basket-pronostico').value = forecast.bet || '';
+                document.getElementById('basket-media-punti').value = forecast.average || '';
+                document.getElementById('basket-soglia').value = forecast.threshold || '';
+                document.getElementById('basket-storico').value = forecast.historical || '';
+                document.getElementById('basket-quota').value = forecast.odds || '';
+                document.getElementById('basket-forma-recente').value = forecast.recentForm || '';
+                document.getElementById('basket-difficolta').value = forecast.difficulty || 'media';
+            }
             
-            // Aggiorna l'interfaccia
+            // Popola le note aggiuntive
+            document.getElementById('note-aggiuntive').value = forecast.additionalNotes || '';
+            
+            // Aggiorna l'analisi corrente
+            currentAnalysis = forecast;
+            
+            // Aggiorna l'interfaccia con i risultati dell'analisi
             updateInterface(
-                simpleAnalysis.marketAnalysis,
-                simpleAnalysis.statistics,
-                simpleAnalysis.probability,
-                simpleAnalysis.oddsAnalysis,
-                simpleAnalysis.explanation,
-                simpleAnalysis.verdict
+                forecast.marketAnalysis,
+                forecast.statistics,
+                forecast.probability,
+                forecast.oddsAnalysis,
+                forecast.explanation,
+                forecast.verdict
             );
             
             // Mostra la sezione risultati
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Abilita il pulsante di salvataggio
+            document.getElementById('saveBtn').disabled = false;
             
             // Chiudi il pannello dei pronostici salvati
             closeSavedPanel();
@@ -1866,6 +1922,7 @@
     </script>
 </body>
 </html>
+
 
 
 
