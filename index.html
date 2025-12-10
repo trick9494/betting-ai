@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -1434,50 +1432,84 @@
             }
         }
         
-        // FUNZIONE CORRETTA PER ANALISI MERCATO - DISTINGUE OVER/UNDER
+        // FUNZIONE MIGLIORATA PER ANALISI MERCATO
         function analyzeMarket(bet, team1, team2) {
-            const text = bet.toLowerCase().trim();
-            let type = "Personalizzato";
-            let normalizedBet = bet;
-            
-            // Analisi per OVER
-            if (text.includes("over")) {
-                type = "Over";
-                const match = bet.match(/over\s+([\d\.]+)/i);
-                if (match) {
-                    // Se contiene "punti [squadra]", mantieni quella struttura
-                    if (text.includes("punti")) {
-                        const teamMatch = bet.match(/punti\s+([a-zA-Z\s]+)/i);
-                        normalizedBet = `Over ${match[1]} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
-                    } else {
-                        normalizedBet = `Over ${match[1]}`;
-                    }
-                }
-            } 
-            // Analisi per UNDER
-            else if (text.includes("under")) {
-                type = "Under";
-                const match = bet.match(/under\s+([\d\.]+)/i);
-                if (match) {
-                    // Se contiene "punti [squadra]", mantieni quella struttura
-                    if (text.includes("punti")) {
-                        const teamMatch = bet.match(/punti\s+([a-zA-Z\s]+)/i);
-                        normalizedBet = `Under ${match[1]} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
-                    } else {
-                        normalizedBet = `Under ${match[1]}`;
-                    }
-                }
-            } else if (text.includes("marcatore") || text.includes("goalscorer") || text.includes("segna")) {
-                type = "Marcatore";
-            } else if (text.includes("btts") || text.includes("both teams to score")) {
-                type = "BTTS";
-            } else if (text.includes("1x2") || text.includes("doppia chance")) {
-                type = "1X2/Double Chance";
-            } else if (text.includes("-") || text.includes("+")) {
-                type = "Handicap";
-            } else if (text === "1" || text === "x" || text === "2") {
-                type = "1X2";
+            if (!bet || typeof bet !== 'string') {
+                return { type: "Personalizzato", normalizedBet: bet || "" };
             }
+            
+            // PULIZIA COMPLETA DEL TESTO
+            let cleanText = bet
+                .trim()
+                .replace(/\s+/g, ' ')
+                .replace(/[\u200B-\u200D\uFEFF]/g, '')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            
+            // Versione per matching (case-insensitive)
+            const matchText = cleanText.toLowerCase();
+            
+            let type = "Personalizzato";
+            let normalizedBet = cleanText;
+            
+            console.log("🔍 Analisi mercato - Originale:", bet);
+            console.log("🔍 Analisi mercato - Pulito:", cleanText);
+            console.log("🔍 Analisi mercato - Per matching:", matchText);
+            
+            // CONTROLLO CASE-INSENSITIVE ROBUSTO
+            const isOver = /\bover\b/i.test(cleanText);
+            const isUnder = /\bunder\b/i.test(cleanText);
+            
+            if (isOver) {
+                type = "Over";
+                const match = cleanText.match(/over\s+([\d\.,]+)/i);
+                if (match) {
+                    const number = match[1].replace(',', '.');
+                    if (/\bpunti\b/i.test(cleanText)) {
+                        const teamMatch = cleanText.match(/punti\s+([^,\.]+)/i);
+                        normalizedBet = `Over ${number} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
+                    } else {
+                        normalizedBet = `Over ${number}`;
+                    }
+                }
+                console.log("✅ Riconosciuto come: Over");
+            } 
+            else if (isUnder) {
+                type = "Under";
+                const match = cleanText.match(/under\s+([\d\.,]+)/i);
+                if (match) {
+                    const number = match[1].replace(',', '.');
+                    if (/\bpunti\b/i.test(cleanText)) {
+                        const teamMatch = cleanText.match(/punti\s+([^,\.]+)/i);
+                        normalizedBet = `Under ${number} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
+                    } else {
+                        normalizedBet = `Under ${number}`;
+                    }
+                }
+                console.log("✅ Riconosciuto come: Under");
+            }
+            else if (matchText.includes("marcatore") || matchText.includes("goalscorer") || matchText.includes("segna")) {
+                type = "Marcatore";
+                console.log("✅ Riconosciuto come: Marcatore");
+            } 
+            else if (matchText.includes("btts") || matchText.includes("both teams to score")) {
+                type = "BTTS";
+                console.log("✅ Riconosciuto come: BTTS");
+            } 
+            else if (matchText.includes("1x2") || matchText.includes("doppia chance")) {
+                type = "1X2/Double Chance";
+                console.log("✅ Riconosciuto come: 1X2/Double Chance");
+            } 
+            else if (cleanText.includes("-") || cleanText.includes("+")) {
+                type = "Handicap";
+                console.log("✅ Riconosciuto come: Handicap");
+            } 
+            else if (matchText === "1" || matchText === "x" || matchText === "2") {
+                type = "1X2";
+                console.log("✅ Riconosciuto come: 1X2");
+            }
+            
+            console.log("✅ Tipo finale:", type);
+            console.log("✅ Pronostico normalizzato:", normalizedBet);
             
             return {
                 type,
@@ -1489,29 +1521,60 @@
         function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes, marketType) {
             const diffAverageThreshold = average - threshold;
             
-            // Calcolo frequenza storica
+            // CALCOLO FREQUENZA STORICA MIGLIORATO
             let historicalFrequency = 0;
-            if (historical) {
-                if (historical.includes("su")) {
-                    const parts = historical.split("su");
-                    const successes = parseFloat(parts[0]) || 0;
-                    const total = parseFloat(parts[1]) || 1;
-                    historicalFrequency = (successes / total) * 100;
-                } else if (historical.includes("%")) {
-                    historicalFrequency = parseFloat(historical.replace("%", "")) || 0;
+            if (historical && historical.toString().trim() !== '') {
+                const histStr = historical.toString().trim();
+                console.log("📊 Storico originale:", histStr);
+                
+                // Supporta: "21 su 233", "21/233", "9%"
+                if (histStr.includes('su')) {
+                    const parts = histStr.split('su');
+                    if (parts.length === 2) {
+                        const successes = parseFloat(parts[0].trim()) || 0;
+                        const total = parseFloat(parts[1].trim()) || 1;
+                        historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
+                        console.log(`📊 Storico calcolato: ${successes}/${total} = ${historicalFrequency}%`);
+                    }
+                } else if (histStr.includes('/')) {
+                    const parts = histStr.split('/');
+                    if (parts.length === 2) {
+                        const successes = parseFloat(parts[0].trim()) || 0;
+                        const total = parseFloat(parts[1].trim()) || 1;
+                        historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
+                        console.log(`📊 Storico calcolato: ${successes}/${total} = ${historicalFrequency}%`);
+                    }
+                } else if (histStr.includes('%')) {
+                    historicalFrequency = parseFloat(histStr.replace('%', '').trim()) || 0;
+                    console.log(`📊 Storico diretto: ${historicalFrequency}%`);
                 }
             }
             
-            // Calcolo forma recente
+            // CALCOLO FORMA RECENTE MIGLIORATO
             let recentFormValue = 0;
-            if (recentForm) {
-                if (recentForm.includes("su")) {
-                    const parts = recentForm.split("su");
-                    const successes = parseFloat(parts[0]) || 0;
-                    const total = parseFloat(parts[1]) || 1;
-                    recentFormValue = (successes / total) * 100;
-                } else if (recentForm.includes("%")) {
-                    recentFormValue = parseFloat(recentForm.replace("%", "")) || 0;
+            if (recentForm && recentForm.toString().trim() !== '') {
+                const formStr = recentForm.toString().trim();
+                console.log("📈 Forma originale:", formStr);
+                
+                if (formStr.includes('su')) {
+                    const parts = formStr.split('su');
+                    if (parts.length === 2) {
+                        const successes = parseFloat(parts[0].trim()) || 0;
+                        const total = parseFloat(parts[1].trim()) || 1;
+                        recentFormValue = total > 0 ? (successes / total) * 100 : 0;
+                        console.log(`📈 Forma calcolata: ${successes}/${total} = ${recentFormValue}%`);
+                    }
+                } else if (formStr.includes('/')) {
+                    const parts = formStr.split('/');
+                    if (parts.length === 2) {
+                        const successes = parseFloat(parts[0].trim()) || 0;
+                        const total = parseFloat(parts[1].trim()) || 1;
+                        recentFormValue = total > 0 ? (successes / total) * 100 : 0;
+                        console.log(`📈 Forma calcolata: ${successes}/${total} = ${recentFormValue}%`);
+                    }
+                } else if (formStr.includes('%')) {
+                    recentFormValue = parseFloat(formStr.replace('%', '').trim()) || 0;
+                    console.log(`📈 Forma diretta: ${recentFormValue}%`);
                 }
             }
             
@@ -1540,53 +1603,65 @@
             };
         }
         
-        // FUNZIONE MIGLIORATA PER CALCOLO PROBABILITÀ - GESTISCE OVER/UNDER CORRETTAMENTE
+        // FUNZIONE MIGLIORATA PER CALCOLO PROBABILITÀ
         function calculateProbability(statistics, marketType) {
-            let baseProbability = 50; // Probabilità base
+            let baseProbability = 50;
+            
+            console.log("🧮 Calcolo probabilità - Tipo:", marketType);
+            console.log("🧮 Calcolo probabilità - Diff:", statistics.diffAverageThreshold);
+            console.log("🧮 Calcolo probabilità - Storico:", statistics.historicalFrequency);
+            console.log("🧮 Calcolo probabilità - Forma:", statistics.recentFormValue);
             
             // Gestione speciale per Over/Under
-            if (marketType === "Over" || marketType === "Under") {
-                // Per UNDER: se la media è MINORE della soglia, è un segnale POSITIVO
-                // Per OVER: se la media è MAGGIORE della soglia, è un segnale POSITIVO
-                
-                if (marketType === "Under") {
-                    // Per UNDER, vogliamo che la media sia INFERIORE alla soglia
-                    // Quindi una differenza NEGATIVA è positiva per Under
-                    const underAdjustment = -statistics.diffAverageThreshold * 3; // Moltiplicatore più basso per Under
-                    baseProbability += underAdjustment;
-                } else if (marketType === "Over") {
-                    // Per OVER, vogliamo che la media sia SUPERIORE alla soglia
-                    // Quindi una differenza POSITIVA è positiva per Over
-                    const overAdjustment = statistics.diffAverageThreshold * 3;
-                    baseProbability += overAdjustment;
-                }
+            if (marketType === "Under") {
+                // Per UNDER: differenza NEGATIVA è positiva
+                const underAdjustment = -statistics.diffAverageThreshold * 2.5;
+                baseProbability += underAdjustment;
+                console.log(`🧮 Under adjustment: ${underAdjustment.toFixed(1)}`);
+            } else if (marketType === "Over") {
+                // Per OVER: differenza POSITIVA è positiva
+                const overAdjustment = statistics.diffAverageThreshold * 2.5;
+                baseProbability += overAdjustment;
+                console.log(`🧮 Over adjustment: ${overAdjustment.toFixed(1)}`);
             } else {
-                // Logica standard per altri tipi di pronostico
+                // Logica standard
                 if (statistics.diffAverageThreshold !== 0) {
-                    baseProbability += statistics.diffAverageThreshold * 5;
+                    baseProbability += statistics.diffAverageThreshold * 3;
                 }
             }
             
             // Aggiustamento basato sulla frequenza storica
             if (statistics.historicalFrequency > 0) {
                 baseProbability = (baseProbability + statistics.historicalFrequency) / 2;
+                console.log(`🧮 Dopo storico: ${baseProbability.toFixed(1)}`);
             }
             
             // Aggiustamento basato sulla forma recente
             if (statistics.recentFormValue > 0) {
                 baseProbability = (baseProbability + statistics.recentFormValue) / 2;
+                console.log(`🧮 Dopo forma: ${baseProbability.toFixed(1)}`);
             }
             
             // Aggiustamento per difficoltà
             baseProbability += statistics.difficultyWeight;
+            console.log(`🧮 Dopo difficoltà: ${baseProbability.toFixed(1)}`);
             
             // Limita la probabilità tra 1% e 95%
-            return Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
+            const finalProbability = Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
+            console.log(`🧮 Probabilità finale: ${finalProbability}%`);
+            
+            return finalProbability;
         }
         
         function analyzeOdds(probability, bookmakerOdds) {
             const theoreticalOdds = (100 / probability).toFixed(2);
             const valueMargin = ((bookmakerOdds / theoreticalOdds) - 1).toFixed(3);
+            
+            console.log("💰 Analisi quote:");
+            console.log("💰 Probabilità:", probability + "%");
+            console.log("💰 Quota teorica:", theoreticalOdds);
+            console.log("💰 Quota bookmaker:", bookmakerOdds);
+            console.log("💰 Value margin:", (valueMargin * 100).toFixed(1) + "%");
             
             return {
                 theoreticalOdds: theoreticalOdds,
@@ -1605,6 +1680,8 @@
                     explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Under</li>`;
                 } else if (statistics.diffAverageThreshold > 0) {
                     explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Under</li>`;
+                } else {
+                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
                 }
             } 
             // Logica specifica per Over
@@ -1613,6 +1690,8 @@
                     explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Over</li>`;
                 } else if (statistics.diffAverageThreshold < 0) {
                     explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Over</li>`;
+                } else {
+                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
                 }
             } 
             // Logica standard per altri tipi
@@ -1621,6 +1700,8 @@
                     explanation += `<li class="positive">La media statistica (${statistics.average}) supera la soglia (${statistics.threshold}) di ${statistics.diffAverageThreshold.toFixed(1)}, fattore positivo</li>`;
                 } else if (statistics.diffAverageThreshold < 0) {
                     explanation += `<li class="negative">La media statistica (${statistics.average}) è inferiore alla soglia (${statistics.threshold}) di ${Math.abs(statistics.diffAverageThreshold).toFixed(1)}, fattore negativo</li>`;
+                } else {
+                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold})</li>`;
                 }
             }
             
@@ -1696,13 +1777,13 @@
             // Mostra la differenza con segno appropriato
             const diffElement = document.getElementById('diff-avg-threshold');
             const diffValue = statistics.diffAverageThreshold;
-            if (diffValue >= 0) {
-                diffElement.textContent = `+${diffValue.toFixed(1)}`;
-                diffElement.className = "metric-value positive";
-            } else {
-                diffElement.textContent = diffValue.toFixed(1);
-                diffElement.className = "metric-value negative";
-            }
+            diffElement.textContent = diffValue >= 0 ? `+${diffValue.toFixed(1)}` : diffValue.toFixed(1);
+            diffElement.className = "metric-value " + (
+                (marketAnalysis.type === "Under" && diffValue < 0) || 
+                (marketAnalysis.type === "Over" && diffValue > 0) || 
+                (marketAnalysis.type !== "Under" && marketAnalysis.type !== "Over" && diffValue > 0) ? "positive" : 
+                (diffValue < 0 ? "negative" : "neutral")
+            );
             
             document.getElementById('historical-freq').textContent = statistics.historicalFrequency > 0 ? 
                 `${statistics.historicalFrequency.toFixed(1)}%` : "N/D";
@@ -1737,11 +1818,11 @@
             let probabilityColor;
             
             if (probability >= 70) {
-                probabilityColor = 'var(--success)'; // Verde
+                probabilityColor = 'var(--success)';
             } else if (probability >= 50) {
-                probabilityColor = 'var(--warning)'; // Arancione
+                probabilityColor = 'var(--warning)';
             } else {
-                probabilityColor = 'var(--danger)'; // Rosso
+                probabilityColor = 'var(--danger)';
             }
             
             probabilityCircle.style.background = `conic-gradient(${probabilityColor} 0% ${probability}%, var(--light-gray) ${probability}% 100%)`;
@@ -1753,7 +1834,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONI PER IL SALVATAGGIO DEI PRONOSTICI
+        // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI - CORRETTA (USA QUOTA TEORICA)
         function saveForecast() {
             console.log('💾 Tentativo di salvataggio pronostico...');
             
@@ -1773,6 +1854,7 @@
                     bet: currentAnalysis.bet || '',
                     marketType: currentAnalysis.marketAnalysis?.type || '',
                     probability: currentAnalysis.probability || 0,
+                    // CORREZIONE: usa la QUOTA TEORICA invece della bookmaker
                     oddsAnalysis: {
                         theoreticalOdds: currentAnalysis.oddsAnalysis?.theoreticalOdds || '0',
                         bookmakerOdds: currentAnalysis.oddsAnalysis?.bookmakerOdds || '0',
@@ -1782,6 +1864,8 @@
                 };
                 
                 console.log('📝 Nuovo pronostico da salvare:', forecast);
+                console.log('💰 Quota teorica salvata:', forecast.oddsAnalysis.theoreticalOdds);
+                console.log('💰 Quota bookmaker:', forecast.oddsAnalysis.bookmakerOdds);
                 
                 // Assicurati che savedForecasts sia un array
                 if (!Array.isArray(savedForecasts)) {
@@ -1809,6 +1893,7 @@
             }
         }
         
+        // FUNZIONE AGGIORNATA PER MOSTRARE QUOTA TEORICA
         function updateSavedForecasts() {
             const container = document.getElementById('savedForecastsList');
             console.log('🔄 Aggiornamento lista pronostici salvati');
@@ -1835,6 +1920,9 @@
                                     forecast.marketType === 'Over' ? '📈' : 
                                     forecast.sport === 'calcio' ? '⚽' : '🏀';
                 
+                // CORREZIONE: mostra la QUOTA TEORICA invece della bookmaker
+                const quotaToShow = forecast.oddsAnalysis?.theoreticalOdds || '0';
+                
                 return `
                 <div class="saved-item" onclick="showForecastDetail(${forecast.id})">
                     <div class="saved-item-header">
@@ -1849,8 +1937,8 @@
                             <div class="saved-item-stat-label">Probabilità</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${forecast.oddsAnalysis?.bookmakerOdds || '0'}</div>
-                            <div class="saved-item-stat-label">Quota</div>
+                            <div class="saved-item-stat-value">${quotaToShow}</div>
+                            <div class="saved-item-stat-label">Quota Teorica</div>
                         </div>
                         <div class="saved-item-stat">
                             <div class="saved-item-stat-value ${valueClass}">
@@ -1902,6 +1990,7 @@
                 explanation: `<p>Pronostico salvato: <strong>${forecast.bet}</strong></p>
                              <p>Tipo: <strong>${forecast.marketType || 'N/D'}</strong></p>
                              <p>Probabilità calcolata: <strong>${forecast.probability}%</strong></p>
+                             <p>Quota teorica: <strong>${forecast.oddsAnalysis?.theoreticalOdds || '0'}</strong></p>
                              <p>Quota bookmaker: <strong>${forecast.oddsAnalysis?.bookmakerOdds || '0'}</strong></p>`,
                 verdict: {
                     text: forecast.marketType === 'Under' ? "UNDER SALVATO" : 
@@ -1972,6 +2061,7 @@
     </script>
 </body>
 </html>
+
 
 
 
