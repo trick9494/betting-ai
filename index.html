@@ -1303,7 +1303,7 @@
                     // 6) VERDETTO FINALE
                     const verdict = generateVerdict(probability, oddsAnalysis.valueMargin);
                     
-                    // Salva l'analisi corrente
+                    // Salva l'analisi corrente CON TUTTI I DATI
                     currentAnalysis = {
                         sport: currentSport,
                         team1: formData.team1,
@@ -1315,6 +1315,7 @@
                         oddsAnalysis,
                         explanation,
                         verdict,
+                        formData: formData, // SALVA TUTTI I DATI ORIGINALI
                         timestamp: new Date().toLocaleString('it-IT')
                     };
                     
@@ -1834,7 +1835,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI - CORRETTA (USA QUOTA TEORICA)
+        // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI - MODIFICATA PER SALVARE TUTTI I DATI
         function saveForecast() {
             console.log('💾 Tentativo di salvataggio pronostico...');
             
@@ -1845,27 +1846,24 @@
             }
             
             try {
-                // Crea una copia semplice dell'analisi corrente
+                // Crea una copia COMPLETA dell'analisi corrente CON TUTTI I DATI
                 const forecast = {
                     id: Date.now(),
                     sport: currentAnalysis.sport || 'calcio',
                     team1: currentAnalysis.team1 || '',
                     team2: currentAnalysis.team2 || '',
                     bet: currentAnalysis.bet || '',
-                    marketType: currentAnalysis.marketAnalysis?.type || '',
+                    marketAnalysis: currentAnalysis.marketAnalysis || {},
+                    statistics: currentAnalysis.statistics || {},
                     probability: currentAnalysis.probability || 0,
-                    // CORREZIONE: usa la QUOTA TEORICA invece della bookmaker
-                    oddsAnalysis: {
-                        theoreticalOdds: currentAnalysis.oddsAnalysis?.theoreticalOdds || '0',
-                        bookmakerOdds: currentAnalysis.oddsAnalysis?.bookmakerOdds || '0',
-                        valueMargin: currentAnalysis.oddsAnalysis?.valueMargin || 0
-                    },
+                    oddsAnalysis: currentAnalysis.oddsAnalysis || {},
+                    explanation: currentAnalysis.explanation || '',
+                    verdict: currentAnalysis.verdict || {},
+                    formData: currentAnalysis.formData || {}, // SALVA TUTTI I DATI ORIGINALI DEL FORM
                     timestamp: new Date().toLocaleString('it-IT')
                 };
                 
-                console.log('📝 Nuovo pronostico da salvare:', forecast);
-                console.log('💰 Quota teorica salvata:', forecast.oddsAnalysis.theoreticalOdds);
-                console.log('💰 Quota bookmaker:', forecast.oddsAnalysis.bookmakerOdds);
+                console.log('📝 Nuovo pronostico da salvare con TUTTI i dati:', forecast);
                 
                 // Assicurati che savedForecasts sia un array
                 if (!Array.isArray(savedForecasts)) {
@@ -1885,7 +1883,7 @@
                 
                 // Mostra conferma
                 showAlert('✅ Pronostico salvato con successo!', 'success');
-                console.log('✅ Pronostico salvato correttamente');
+                console.log('✅ Pronostico salvato correttamente con tutti i dati');
                 
             } catch (error) {
                 console.error('❌ Errore durante il salvataggio:', error);
@@ -1893,7 +1891,7 @@
             }
         }
         
-        // FUNZIONE AGGIORNATA PER MOSTRARE QUOTA TEORICA
+        // FUNZIONE AGGIORNATA PER MOSTRARE I PRONOSTICI SALVATI
         function updateSavedForecasts() {
             const container = document.getElementById('savedForecastsList');
             console.log('🔄 Aggiornamento lista pronostici salvati');
@@ -1916,17 +1914,14 @@
                 const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
                 const valueClass = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? 'value-positive' : 'value-negative';
                 const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
-                const marketTypeIcon = forecast.marketType === 'Under' ? '📉' : 
-                                    forecast.marketType === 'Over' ? '📈' : 
+                const marketTypeIcon = forecast.marketAnalysis?.type === 'Under' ? '📉' : 
+                                    forecast.marketAnalysis?.type === 'Over' ? '📈' : 
                                     forecast.sport === 'calcio' ? '⚽' : '🏀';
-                
-                // CORREZIONE: mostra la QUOTA TEORICA invece della bookmaker
-                const quotaToShow = forecast.oddsAnalysis?.theoreticalOdds || '0';
                 
                 return `
                 <div class="saved-item" onclick="showForecastDetail(${forecast.id})">
                     <div class="saved-item-header">
-                        <span class="saved-item-sport">${marketTypeIcon} ${forecast.marketType || forecast.sport}</span>
+                        <span class="saved-item-sport">${marketTypeIcon} ${forecast.marketAnalysis?.type || forecast.sport}</span>
                         <span class="saved-item-date">${forecast.timestamp}</span>
                     </div>
                     <div class="saved-item-match">${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</div>
@@ -1937,7 +1932,7 @@
                             <div class="saved-item-stat-label">Probabilità</div>
                         </div>
                         <div class="saved-item-stat">
-                            <div class="saved-item-stat-value">${quotaToShow}</div>
+                            <div class="saved-item-stat-value">${forecast.oddsAnalysis?.theoreticalOdds || '0'}</div>
                             <div class="saved-item-stat-label">Quota Teorica</div>
                         </div>
                         <div class="saved-item-stat">
@@ -1959,6 +1954,7 @@
             console.log('✅ Lista pronostici aggiornata');
         }
         
+        // FUNZIONE AGGIORNATA PER MOSTRARE TUTTI I DATI DEL PRONOSTICO SALVATO
         function showForecastDetail(id) {
             console.log('🔍 Mostra dettaglio pronostico:', id);
             const forecast = savedForecasts.find(f => f.id === id);
@@ -1967,57 +1963,70 @@
                 return;
             }
             
-            // Crea una versione semplificata per la visualizzazione
-            const simpleAnalysis = {
-                sport: forecast.sport,
-                team1: forecast.team1,
-                team2: forecast.team2,
-                bet: forecast.bet,
-                marketAnalysis: {
-                    type: forecast.marketType || "Salvato",
-                    normalizedBet: forecast.bet
-                },
-                statistics: {
-                    average: 0,
-                    threshold: 0,
-                    diffAverageThreshold: 0,
-                    historicalFrequency: 0,
-                    recentFormValue: 0,
-                    difficultyWeight: 0
-                },
-                probability: forecast.probability,
-                oddsAnalysis: forecast.oddsAnalysis,
-                explanation: `<p>Pronostico salvato: <strong>${forecast.bet}</strong></p>
-                             <p>Tipo: <strong>${forecast.marketType || 'N/D'}</strong></p>
-                             <p>Probabilità calcolata: <strong>${forecast.probability}%</strong></p>
-                             <p>Quota teorica: <strong>${forecast.oddsAnalysis?.theoreticalOdds || '0'}</strong></p>
-                             <p>Quota bookmaker: <strong>${forecast.oddsAnalysis?.bookmakerOdds || '0'}</strong></p>`,
-                verdict: {
-                    text: forecast.marketType === 'Under' ? "UNDER SALVATO" : 
-                          forecast.marketType === 'Over' ? "OVER SALVATO" : "SALVATO",
-                    class: "verdict-caution",
-                    description: "Pronostico salvato precedentemente"
-                }
-            };
+            console.log('📋 Dettagli pronostico trovato:', forecast);
             
-            // Aggiorna l'interfaccia
+            // AGGIORNA IL FORM CON I DATI ORIGINALI
+            if (forecast.sport === 'calcio') {
+                // Cambia a calcio se necessario
+                if (currentSport !== 'calcio') {
+                    document.querySelector('.sport-btn[data-sport="calcio"]').click();
+                }
+                
+                // Popola i campi calcio con i dati ORIGINALI
+                document.getElementById('calcio-squadra1').value = forecast.team1 || '';
+                document.getElementById('calcio-squadra2').value = forecast.team2 || '';
+                document.getElementById('calcio-pronostico').value = forecast.bet || '';
+                document.getElementById('calcio-media-gol').value = forecast.formData?.average || '';
+                document.getElementById('calcio-soglia').value = forecast.formData?.threshold || '';
+                document.getElementById('calcio-storico').value = forecast.formData?.historical || '';
+                document.getElementById('calcio-quota').value = forecast.formData?.odds || '';
+                document.getElementById('calcio-forma-recente').value = forecast.formData?.recentForm || '';
+                document.getElementById('calcio-difficolta').value = forecast.formData?.difficulty || 'media';
+            } else {
+                // Cambia a basket se necessario
+                if (currentSport !== 'basket') {
+                    document.querySelector('.sport-btn[data-sport="basket"]').click();
+                }
+                
+                // Popola i campi basket con i dati ORIGINALI
+                document.getElementById('basket-squadra1').value = forecast.team1 || '';
+                document.getElementById('basket-squadra2').value = forecast.team2 || '';
+                document.getElementById('basket-pronostico').value = forecast.bet || '';
+                document.getElementById('basket-media-punti').value = forecast.formData?.average || '';
+                document.getElementById('basket-soglia').value = forecast.formData?.threshold || '';
+                document.getElementById('basket-storico').value = forecast.formData?.historical || '';
+                document.getElementById('basket-quota').value = forecast.formData?.odds || '';
+                document.getElementById('basket-forma-recente').value = forecast.formData?.recentForm || '';
+                document.getElementById('basket-difficolta').value = forecast.formData?.difficulty || 'media';
+            }
+            
+            // Popola note aggiuntive
+            document.getElementById('note-aggiuntive').value = forecast.formData?.additionalNotes || '';
+            
+            // Imposta currentAnalysis con i dati COMPLETI salvati
+            currentAnalysis = forecast;
+            
+            // Aggiorna l'interfaccia con TUTTI i dati
             updateInterface(
-                simpleAnalysis.marketAnalysis,
-                simpleAnalysis.statistics,
-                simpleAnalysis.probability,
-                simpleAnalysis.oddsAnalysis,
-                simpleAnalysis.explanation,
-                simpleAnalysis.verdict
+                forecast.marketAnalysis,
+                forecast.statistics,
+                forecast.probability,
+                forecast.oddsAnalysis,
+                forecast.explanation,
+                forecast.verdict
             );
             
             // Mostra la sezione risultati
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
             
+            // Abilita il pulsante di salvataggio
+            document.getElementById('saveBtn').disabled = false;
+            
             // Chiudi il pannello dei pronostici salvati
             closeSavedPanel();
             
-            console.log('✅ Dettaglio pronostico mostrato');
+            console.log('✅ Dettaglio pronostico mostrato e form popolato con TUTTI i dati');
         }
         
         function deleteForecast(id) {
@@ -2061,6 +2070,7 @@
     </script>
 </body>
 </html>
+
 
 
 
