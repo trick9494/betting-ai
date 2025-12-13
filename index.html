@@ -1065,6 +1065,86 @@
             margin-top: 10px;
         }
 
+        /* Chatbot Controls */
+        .chatbot-controls {
+            padding: 10px 20px;
+            background: var(--light-gray);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .chatbot-control-btn {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chatbot-control-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .chatbot-control-btn.danger {
+            background: var(--danger);
+        }
+
+        .chatbot-control-btn.danger:hover {
+            background: #dc2626;
+        }
+
+        /* Data Requirements Modal */
+        .data-requirements {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 20px;
+            z-index: 10;
+            border: 2px solid var(--primary);
+            display: none;
+        }
+
+        .data-requirements.show {
+            display: block;
+        }
+
+        .data-requirements h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-requirements ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .data-requirements li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-requirements li i {
+            color: var(--success);
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .chatbot-container {
@@ -1141,6 +1221,12 @@
             .card {
                 padding: 20px;
             }
+
+            .data-requirements {
+                top: 50px;
+                left: 10px;
+                right: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1179,6 +1265,16 @@
                 overflow-x: auto;
                 padding-bottom: 10px;
             }
+
+            .chatbot-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .chatbot-control-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -1200,6 +1296,50 @@
         <div class="chatbot-header">
             <h3><i class="fas fa-robot"></i> AI Betting Assistant</h3>
             <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Controlli chatbot -->
+        <div class="chatbot-controls">
+            <button class="chatbot-control-btn" id="dataRequirementsBtn">
+                <i class="fas fa-info-circle"></i> Dati necessari
+            </button>
+            <button class="chatbot-control-btn danger" id="clearChatBtn">
+                <i class="fas fa-trash"></i> Cancella chat
+            </button>
+        </div>
+        
+        <!-- Pannello requisiti dati -->
+        <div class="data-requirements" id="dataRequirements">
+            <h4><i class="fas fa-clipboard-list"></i> Dati necessari per l'analisi</h4>
+            <div id="calcioRequirements" class="sport-requirements">
+                <h5><i class="fas fa-futbol"></i> Calcio</h5>
+                <ul>
+                    <li><i class="fas fa-check"></i> Squadra Casa e Trasferta</li>
+                    <li><i class="fas fa-check"></i> Pronostico specifico</li>
+                    <li><i class="fas fa-check"></i> Media gol partita</li>
+                    <li><i class="fas fa-check"></i> Soglia pronostico</li>
+                    <li><i class="fas fa-check"></i> Successi storici</li>
+                    <li><i class="fas fa-check"></i> Quota bookmaker</li>
+                    <li><i class="fas fa-check"></i> Forma recente</li>
+                    <li><i class="fas fa-check"></i> Difficoltà avversario</li>
+                </ul>
+            </div>
+            <div id="basketRequirements" class="sport-requirements" style="display: none;">
+                <h5><i class="fas fa-basketball-ball"></i> Basket</h5>
+                <ul>
+                    <li><i class="fas fa-check"></i> Squadra Casa e Trasferta</li>
+                    <li><i class="fas fa-check"></i> Pronostico specifico</li>
+                    <li><i class="fas fa-check"></i> Media punti partita</li>
+                    <li><i class="fas fa-check"></i> Soglia pronostico</li>
+                    <li><i class="fas fa-check"></i> Successi storici</li>
+                    <li><i class="fas fa-check"></i> Quota bookmaker</li>
+                    <li><i class="fas fa-check"></i> Forma recente</li>
+                    <li><i class="fas fa-check"></i> Difficoltà avversario</li>
+                </ul>
+            </div>
+            <button class="chatbot-control-btn" id="closeRequirementsBtn" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Chiudi
+            </button>
         </div>
         
         <div class="chatbot-messages" id="chatbotMessages">
@@ -1412,7 +1552,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-storico"><i class="fas fa-history"></i> Successi Storici</label>
+                            <label for="basket-storico"><i class="fas fa-history"></i> Successis Storici</label>
                             <div class="input-with-icon">
                                 <i class="fas fa-chart-pie"></i>
                                 <input type="text" id="basket-storico" placeholder="Es. 6 su 10 o 60%">
@@ -1602,6 +1742,8 @@
         let currentSport = 'calcio';
         let chatHistory = [];
         let hasUnreadMessages = false;
+        let currentSessionId = null;
+        let pendingSessionState = null;
 
         // DATABASE MERCATI DI SCOMMESSA
         const bettingMarkets = {
@@ -1656,17 +1798,32 @@
                 savedForecasts = [];
             }
 
-            // Carica la cronologia chat
+            // Carica la cronologia chat salvata
             try {
                 const chat = localStorage.getItem('chatHistory');
                 if (chat) {
                     chatHistory = JSON.parse(chat);
                     console.log('💬 Cronologia chat caricata:', chatHistory.length);
-                    loadChatHistory();
                 }
             } catch (e) {
                 console.error('❌ Errore nel caricamento della chat:', e);
                 chatHistory = [];
+            }
+
+            // Carica lo stato della sessione corrente
+            try {
+                const sessionState = localStorage.getItem('currentChatSession');
+                if (sessionState) {
+                    pendingSessionState = JSON.parse(sessionState);
+                    console.log('💾 Sessione precedente trovata');
+                    // Mostra notifica che c'è una conversazione in sospeso
+                    if (pendingSessionState && pendingSessionState.messages && pendingSessionState.messages.length > 0) {
+                        document.getElementById('chatbotToggle').classList.add('unread');
+                        hasUnreadMessages = true;
+                    }
+                }
+            } catch (e) {
+                console.error('❌ Errore nel caricamento della sessione:', e);
             }
 
             // Imposta la modalità scura se attiva
@@ -1676,11 +1833,6 @@
             }
 
             setupEventListeners();
-            
-            // Invia messaggio di benvenuto
-            setTimeout(() => {
-                addBotMessage("Ciao! Sono il tuo assistente AI per il betting. Posso aiutarti a: 🔍 Analizzare i tuoi pronostici salvati 🎯 Consigliarti i migliori pronostici 💡 Fornirti strategie di betting ❓ Rispondere alle tue domande");
-            }, 1000);
             
             console.log('✅ App inizializzata correttamente');
         }
@@ -1696,8 +1848,13 @@
 
             // Chatbot event listeners
             document.getElementById('chatbotToggle').addEventListener('click', toggleChatbot);
-            document.getElementById('chatbotClose').addEventListener('click', closeChatbot);
+            document.getElementById('chatbotClose').addEventListener('click', closeChatbotAndClear);
             document.getElementById('chatbotForm').addEventListener('submit', handleChatSubmit);
+            
+            // Nuovi controlli chatbot
+            document.getElementById('dataRequirementsBtn').addEventListener('click', toggleDataRequirements);
+            document.getElementById('closeRequirementsBtn').addEventListener('click', closeDataRequirements);
+            document.getElementById('clearChatBtn').addEventListener('click', clearChatHistory);
             
             // Pulsanti rapidi chatbot
             document.querySelectorAll('.quick-action-btn').forEach(btn => {
@@ -1723,6 +1880,7 @@
                 btn.addEventListener('click', function() {
                     console.log('⚽ Cliccato sport:', this.dataset.sport);
                     switchSport(this);
+                    updateDataRequirements();
                 });
             });
 
@@ -1742,7 +1900,7 @@
             console.log('✅ Event listeners configurati');
         }
 
-        // FUNZIONI CHATBOT
+        // FUNZIONI CHATBOT - AGGIORNATE
         function toggleChatbot() {
             const chatbot = document.getElementById('chatbotContainer');
             const toggleBtn = document.getElementById('chatbotToggle');
@@ -1752,15 +1910,37 @@
                 // Rimuovi notifica non letta
                 toggleBtn.classList.remove('unread');
                 hasUnreadMessages = false;
+                
+                // Carica la chat
+                loadChatForCurrentSession();
+                
                 // Focus sull'input
                 setTimeout(() => {
                     document.getElementById('chatbotInput').focus();
                 }, 300);
+            } else {
+                // Salva lo stato della chat quando si chiude
+                saveCurrentChatSession();
             }
         }
 
-        function closeChatbot() {
+        function closeChatbotAndClear() {
+            // Chiedi conferma se ci sono messaggi
+            const messagesContainer = document.getElementById('chatbotMessages');
+            if (messagesContainer.children.length > 0) {
+                if (confirm('Vuoi cancellare la conversazione corrente?')) {
+                    clearChatHistory();
+                }
+            }
+            
+            // Salva lo stato prima di chiudere
+            saveCurrentChatSession();
+            
+            // Chiudi il chatbot
             document.getElementById('chatbotContainer').classList.remove('open');
+            
+            // Chiudi anche i pannelli dei requisiti dati se aperti
+            closeDataRequirements();
         }
 
         function handleChatSubmit(e) {
@@ -1784,6 +1964,127 @@
             };
             
             sendUserMessage(messages[action]);
+        }
+
+        // NUOVE FUNZIONI PER LA GESTIONE DELLA CHAT
+        function startNewChatSession() {
+            currentSessionId = 'session_' + Date.now();
+            console.log('💬 Nuova sessione chat:', currentSessionId);
+            
+            // Pulisci i messaggi
+            document.getElementById('chatbotMessages').innerHTML = '';
+            
+            // Invia messaggio di benvenuto
+            setTimeout(() => {
+                addBotMessage("Ciao! Sono il tuo assistente AI per il betting. Posso aiutarti a:<br>🔍 Analizzare i tuoi pronostici salvati<br>🎯 Consigliarti i migliori pronostici<br>💡 Fornirti strategie di betting<br>❓ Rispondere alle tue domande<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi!");
+            }, 500);
+            
+            // Salva la sessione
+            saveCurrentChatSession();
+        }
+
+        function saveCurrentChatSession() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messages = [];
+            
+            // Raccogli tutti i messaggi dalla chat
+            messagesContainer.querySelectorAll('.message').forEach(msg => {
+                const isUser = msg.classList.contains('message-user');
+                messages.push({
+                    text: msg.innerHTML,
+                    isUser: isUser,
+                    timestamp: new Date().toISOString()
+                });
+            });
+            
+            // Salva solo se ci sono messaggi
+            if (messages.length > 0) {
+                const sessionState = {
+                    sessionId: currentSessionId || 'session_' + Date.now(),
+                    messages: messages,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('currentChatSession', JSON.stringify(sessionState));
+                console.log('💾 Sessione chat salvata:', messages.length, 'messaggi');
+            } else {
+                // Se non ci sono messaggi, rimuovi la sessione salvata
+                localStorage.removeItem('currentChatSession');
+            }
+        }
+
+        function loadChatForCurrentSession() {
+            // Controlla se c'è una sessione salvata
+            if (pendingSessionState) {
+                // Carica la sessione salvata
+                loadChatSession(pendingSessionState);
+                pendingSessionState = null;
+            } else {
+                // Inizia una nuova sessione
+                startNewChatSession();
+            }
+        }
+
+        function loadChatSession(sessionState) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            messagesContainer.innerHTML = '';
+            
+            currentSessionId = sessionState.sessionId;
+            
+            sessionState.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.isUser ? 'message-user' : 'message-bot'}`;
+                messageDiv.innerHTML = msg.text;
+                messagesContainer.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            console.log('💬 Sessione caricata:', sessionState.messages.length, 'messaggi');
+        }
+
+        function clearChatHistory() {
+            if (confirm('Sei sicuro di voler cancellare tutta la conversazione corrente?')) {
+                // Pulisci l'interfaccia
+                document.getElementById('chatbotMessages').innerHTML = '';
+                
+                // Rimuovi la sessione salvata
+                localStorage.removeItem('currentChatSession');
+                pendingSessionState = null;
+                
+                // Inizia una nuova sessione
+                startNewChatSession();
+                
+                showAlert('Conversazione cancellata', 'success');
+                console.log('🗑️ Chat cancellata');
+            }
+        }
+
+        // FUNZIONI PER I REQUISITI DATI
+        function toggleDataRequirements() {
+            const requirementsPanel = document.getElementById('dataRequirements');
+            requirementsPanel.classList.toggle('show');
+            
+            // Aggiorna i requisiti in base allo sport corrente
+            updateDataRequirements();
+        }
+
+        function closeDataRequirements() {
+            document.getElementById('dataRequirements').classList.remove('show');
+        }
+
+        function updateDataRequirements() {
+            const calcioReq = document.getElementById('calcioRequirements');
+            const basketReq = document.getElementById('basketRequirements');
+            
+            if (currentSport === 'calcio') {
+                calcioReq.style.display = 'block';
+                basketReq.style.display = 'none';
+            } else {
+                calcioReq.style.display = 'none';
+                basketReq.style.display = 'block';
+            }
         }
 
         function sendUserMessage(text) {
@@ -1823,6 +2124,9 @@
                 input.disabled = false;
                 input.focus();
                 
+                // Salva la sessione dopo ogni scambio di messaggi
+                saveCurrentChatSession();
+                
             }, 1000 + Math.random() * 500);
         }
 
@@ -1838,16 +2142,16 @@
             // Scroll to bottom
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
-            // Salva nella cronologia
+            // Salva nella cronologia globale
             chatHistory.push({
                 text: text,
                 isUser: isUser,
                 timestamp: new Date().toISOString()
             });
             
-            // Limita la cronologia a 50 messaggi
-            if (chatHistory.length > 50) {
-                chatHistory = chatHistory.slice(-50);
+            // Limita la cronologia a 100 messaggi
+            if (chatHistory.length > 100) {
+                chatHistory = chatHistory.slice(-100);
             }
             
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
@@ -1863,342 +2167,17 @@
             addMessage(text, false);
         }
 
-        function generateAIResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            // ANALISI PRONOSTICI SALVATI
-            if (lowerMessage.includes('miglior') || lowerMessage.includes('consigli') || 
-                lowerMessage.includes('top') || lowerMessage.includes('analizza')) {
-                return analyzeSavedForecasts();
-            }
-            
-            // STATISTICHE E REPORT
-            if (lowerMessage.includes('statistic') || lowerMessage.includes('report') || 
-                lowerMessage.includes('dati') || lowerMessage.includes('informazioni')) {
-                return generateStatsReport();
-            }
-            
-            // STRATEGIE DI BETTING
-            if (lowerMessage.includes('strateg') || lowerMessage.includes('consigli') || 
-                lowerMessage.includes('suggeriment') || lowerMessage.includes('come')) {
-                return generateBettingStrategy();
-            }
-            
-            // DOMANDE GENERALI SUL SISTEMA
-            if (lowerMessage.includes('come funziona') || lowerMessage.includes('aiuto') || 
-                lowerMessage.includes('help') || lowerMessage.includes('cosa')) {
-                return generateSystemExplanation();
-            }
-            
-            // DOMANDA SUI PRONOSTICI ATTUALI
-            if (lowerMessage.includes('pronostico') && (lowerMessage.includes('attuale') || 
-                lowerMessage.includes('corrente') || lowerMessage.includes('questo'))) {
-                return analyzeCurrentForecast();
-            }
-            
-            // RISPONDI CON ANALISI INTELLIGENTE
-            return generateIntelligentResponse(message);
-        }
-
-        function analyzeSavedForecasts() {
-            if (savedForecasts.length === 0) {
-                return {
-                    text: "📭 Non hai ancora salvato nessun pronostico. Per iniziare, analizza e salva alcuni pronostici utilizzando il form principale. Poi potrò aiutarti a scegliere i migliori!"
-                };
-            }
-            
-            // Ordina i pronostici per punteggio
-            const scoredForecasts = savedForecasts.map(forecast => {
-                const score = calculateForecastScore(forecast);
-                return { ...forecast, score };
-            }).sort((a, b) => b.score - a.score);
-            
-            // Prendi i top 3
-            const topForecasts = scoredForecasts.slice(0, 3);
-            
-            let response = `📊 <strong>ANALISI PRONOSTICI SALVATI</strong><br><br>`;
-            response += `Hai <strong>${savedForecasts.length}</strong> pronostici salvati. Ecco i migliori:<br><br>`;
-            
-            topForecasts.forEach((forecast, index) => {
-                const scoreClass = getScoreClass(forecast.score);
-                const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
-                const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
-                
-                response += `<strong>${index + 1}. ${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</strong><br>`;
-                response += `🎯 ${forecast.bet || 'N/D'}<br>`;
-                response += `📈 Probabilità: ${forecast.probability || 0}%<br>`;
-                response += `💰 Value: ${valueSign}${valuePercent}%<br>`;
-                response += `⭐ Punteggio: <span class="forecast-score ${scoreClass}">${forecast.score.toFixed(1)}/100</span><br><br>`;
-            });
-            
-            // Aggiungi raccomandazioni
-            if (topForecasts.length > 0) {
-                const bestForecast = topForecasts[0];
-                
-                response += `💡 <strong>RACCOMANDAZIONE PRINCIPALE:</strong><br>`;
-                response += `Consiglio di puntare su <strong>${bestForecast.bet}</strong> in ${bestForecast.team1} vs ${bestForecast.team2}<br>`;
-                response += `Motivo: ${getRecommendationReason(bestForecast)}<br><br>`;
-                
-                response += `⚠️ <strong>AVVERTENZE:</strong><br>`;
-                response += `• Diversifica sempre le tue scommesse<br>`;
-                response += `• Non puntare più del 5% del tuo bankroll su una singola scommessa<br>`;
-                response += `• Considera sempre il value betting (quota > probabilità)<br>`;
-            }
-            
-            return {
-                text: response
-            };
-        }
-
-        function calculateForecastScore(forecast) {
-            let score = 0;
-            
-            // Punteggio base dalla probabilità (0-50 punti)
-            score += (forecast.probability || 0) * 0.5;
-            
-            // Bonus per value positivo (0-30 punti)
-            const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
-            if (valueMargin > 0) {
-                score += Math.min(30, valueMargin * 100 * 3);
-            } else if (valueMargin < -0.1) {
-                score -= 20; // Penalità per value negativo
-            }
-            
-            // Bonus per frequenza storica (0-10 punti)
-            const historical = forecast.statistics?.historicalFrequency || 0;
-            if (historical > 60) score += 10;
-            else if (historical > 40) score += 5;
-            
-            // Bonus per forma recente (0-10 punti)
-            const recentForm = forecast.statistics?.recentFormValue || 0;
-            if (recentForm > 60) score += 10;
-            else if (recentForm > 40) score += 5;
-            
-            return Math.max(0, Math.min(100, score));
-        }
-
-        function getScoreClass(score) {
-            if (score >= 80) return 'score-excellent';
-            if (score >= 60) return 'score-good';
-            if (score >= 40) return 'score-average';
-            return 'score-poor';
-        }
-
-        function getRecommendationReason(forecast) {
-            const reasons = [];
-            
-            if (forecast.probability >= 70) {
-                reasons.push('probabilità molto alta');
-            } else if (forecast.probability >= 50) {
-                reasons.push('buona probabilità');
-            }
-            
-            const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
-            if (valueMargin > 0.1) {
-                reasons.push('value betting eccellente');
-            } else if (valueMargin > 0) {
-                reasons.push('value betting positivo');
-            }
-            
-            if (forecast.statistics?.historicalFrequency > 60) {
-                reasons.push('storico positivo');
-            }
-            
-            if (forecast.statistics?.recentFormValue > 60) {
-                reasons.push('forma recente eccellente');
-            }
-            
-            return reasons.length > 0 ? reasons.join(', ') : 'analisi complessiva positiva';
-        }
-
-        function generateStatsReport() {
-            if (savedForecasts.length === 0) {
-                return {
-                    text: "📊 Non ci sono ancora dati da analizzare. Salva alcuni pronostici per generare statistiche!"
-                };
-            }
-            
-            let report = `📈 <strong>REPORT STATISTICO COMPLETO</strong><br><br>`;
-            
-            // Statistiche generali
-            const totalForecasts = savedForecasts.length;
-            const avgProbability = savedForecasts.reduce((sum, f) => sum + (f.probability || 0), 0) / totalForecasts;
-            const avgValue = savedForecasts.reduce((sum, f) => sum + ((f.oddsAnalysis?.valueMargin || 0) * 100), 0) / totalForecasts;
-            
-            report += `<strong>Statistiche Generali:</strong><br>`;
-            report += `• Pronostici totali: ${totalForecasts}<br>`;
-            report += `• Probabilità media: ${avgProbability.toFixed(1)}%<br>`;
-            report += `• Value medio: ${avgValue.toFixed(1)}%<br><br>`;
-            
-            // Distribuzione per sport
-            const sports = {};
-            savedForecasts.forEach(f => {
-                sports[f.sport] = (sports[f.sport] || 0) + 1;
-            });
-            
-            report += `<strong>Distribuzione per Sport:</strong><br>`;
-            Object.entries(sports).forEach(([sport, count]) => {
-                const percentage = (count / totalForecasts * 100).toFixed(1);
-                report += `• ${sport}: ${count} (${percentage}%)<br>`;
-            });
-            report += `<br>`;
-            
-            // Consigli basati sui dati
-            report += `💡 <strong>INSIGHTS E CONSIGLI:</strong><br>`;
-            
-            if (avgValue > 0) {
-                report += `✅ Stai trovando value positivo nei tuoi pronostici! Continua così.<br>`;
-            } else {
-                report += `⚠️ Il value medio è negativo. Cerca pronostici con quote più alte rispetto alla probabilità reale.<br>`;
-            }
-            
-            if (avgProbability > 60) {
-                report += `✅ La tua selezione è prudente (alta probabilità media).<br>`;
-            } else if (avgProbability < 40) {
-                report += `⚠️ Stai selezionando molti pronostici rischiosi (bassa probabilità).<br>`;
-            }
-            
-            return {
-                text: report
-            };
-        }
-
-        function generateBettingStrategy() {
-            let strategy = `🎯 <strong>STRATEGIE DI BETTING INTELLIGENTE</strong><br><br>`;
-            
-            strategy += `<strong>1. VALUE BETTING (Fondamentale)</strong><br>`;
-            strategy += `Cerca sempre quote che offrano value positivo:<br>`;
-            strategy += `Formula: Value = (Quota × Probabilità / 100) - 1<br>`;
-            strategy += `Esempio: Quota 2.00, Probabilità 55% → Value = +10%<br><br>`;
-            
-            strategy += `<strong>2. GESTIONE DEL BANKROLL</strong><br>`;
-            strategy += `• Kelly Criterion: Puntata = (Quota × Probabilità - 1) / (Quota - 1)<br>`;
-            strategy += `• Metodo conservativo: 1-2% del bankroll per scommessa<br>`;
-            strategy += `• Mai puntare più del 5% su una singola scommessa<br><br>`;
-            
-            strategy += `<strong>3. SELEZIONE PRONOSTICI</strong><br>`;
-            strategy += `• Focus su 1-2 sport che conosci bene<br>`;
-            strategy += `• Evita le emozioni, segui i dati<br>`;
-            strategy += `• Cerca mercati con meno competizione (es: gol/no gol, under/over)<br><br>`;
-            
-            strategy += `<strong>4. ANALISI PRE-PARTITA</strong><br>`;
-            strategy += `• Controlla infortuni e squalifiche<br>`;
-            strategy += `• Considera motivazione e contesto<br>`;
-            strategy += `• Analizza scontri diretti storici<br><br>`;
-            
-            strategy += `<strong>5. TENERE TRACCIA</strong><br>`;
-            strategy += `• Registra tutte le tue scommesse<br>`;
-            strategy += `• Analizza performance per mercato/sport<br>`;
-            strategy += `• Adatta la strategia in base ai risultati<br>`;
-            
-            return {
-                text: strategy
-            };
-        }
-
-        function generateSystemExplanation() {
-            let explanation = `🤖 <strong>COME FUNZIONA BETTING AI ULTRA</strong><br><br>`;
-            
-            explanation += `<strong>1. ANALISI PREDITTIVA AVANZATA</strong><br>`;
-            explanation += `• Riconoscimento automatico di 20+ tipi di mercato<br>`;
-            explanation += `• Calcolo probabilità con algoritmi specifici per mercato<br>`;
-            explanation += `• Analisi value betting in tempo reale<br><br>`;
-            
-            explanation += `<strong>2. ASSISTENTE AI INTEGRATO</strong><br>`;
-            explanation += `• Analisi intelligente dei tuoi pronostici salvati<br>`;
-            explanation += `• Raccomandazioni personalizzate<br>`;
-            explanation += `• Risposte contestuali alle tue domande<br><br>`;
-            
-            explanation += `<strong>3. FEATURES PRINCIPALI</strong><br>`;
-            explanation += `• Supporto Calcio e Basket<br>`;
-            explanation += `• Salvataggio e confronto pronostici<br>`;
-            explanation += `• Dark/Light mode<br>`;
-            explanation += `• Interfaccia responsive<br><br>`;
-            
-            explanation += `<strong>COME USARE AL MEGLIO:</strong><br>`;
-            explanation += `1. Inserisci i dati della partita<br>`;
-            explanation += `2. Analizza il pronostico<br>`;
-            explanation += `3. Salva i migliori pronostici<br>`;
-            explanation += `4. Chiedi all'AI consigli personalizzati<br>`;
-            explanation += `5. Monitora le tue performance<br>`;
-            
-            return {
-                text: explanation
-            };
-        }
-
-        function analyzeCurrentForecast() {
-            if (!currentAnalysis) {
-                return {
-                    text: "⚠️ Non c'è nessun pronostico corrente da analizzare. Prima inserisci i dati e fai l'analisi!"
-                };
-            }
-            
-            let analysis = `🔍 <strong>ANALISI PRONOSTICO CORRENTE</strong><br><br>`;
-            
-            analysis += `<strong>Partita:</strong> ${currentAnalysis.team1} vs ${currentAnalysis.team2}<br>`;
-            analysis += `<strong>Pronostico:</strong> ${currentAnalysis.bet}<br>`;
-            analysis += `<strong>Probabilità:</strong> ${currentAnalysis.probability}%<br>`;
-            analysis += `<strong>Quota:</strong> ${currentAnalysis.oddsAnalysis?.bookmakerOdds || 'N/D'}<br>`;
-            analysis += `<strong>Value:</strong> ${((currentAnalysis.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1)}%<br><br>`;
-            
-            analysis += `💡 <strong>VALUTAZIONE AI:</strong><br>`;
-            
-            if (currentAnalysis.probability >= 70 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0.1) {
-                analysis += `✅ <strong>ECCELLENTE OPPORTUNITÀ</strong><br>`;
-                analysis += `Alta probabilità combinata con value positivo significativo. Consiglio FORTE di puntare.<br>`;
-            } else if (currentAnalysis.probability >= 50 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0) {
-                analysis += `👍 <strong>BUON PRONOSTICO</strong><br>`;
-                analysis += `Probabilità decente con value positivo. Può essere considerato per una puntata moderata.<br>`;
-            } else if (currentAnalysis.probability >= 40 || (currentAnalysis.oddsAnalysis?.valueMargin || 0) > -0.05) {
-                analysis += `🤔 <strong>VALUTABILE</strong><br>`;
-                analysis += `Probabilità moderata o value marginale. Potrebbe valere una piccola puntata.<br>`;
-            } else {
-                analysis += `⚠️ <strong>SCONSIGLIATO</strong><br>`;
-                analysis += `Probabilità bassa e/o value negativo. Meglio evitare.<br>`;
-            }
-            
-            analysis += `<br><strong>SUGGERIMENTI:</strong><br>`;
-            if (currentAnalysis.statistics?.historicalFrequency > 0) {
-                analysis += `• Storico positivo: ${currentAnalysis.statistics.historicalFrequency.toFixed(1)}%<br>`;
-            }
-            if (currentAnalysis.statistics?.recentFormValue > 0) {
-                analysis += `• Forma recente: ${currentAnalysis.statistics.recentFormValue.toFixed(1)}%<br>`;
-            }
-            
-            return {
-                text: analysis
-            };
-        }
-
-        function generateIntelligentResponse(message) {
-            const responses = [
-                "Ho analizzato la tua domanda. Per darti una risposta precisa, potresti specificare se ti riferisci a pronostici di calcio o basket? Oppure chiedimi direttamente di analizzare i tuoi pronostici salvati!",
-                "Come assistente AI per il betting, posso aiutarti a: 1) Analizzare i tuoi pronostici salvati 2) Consigliarti strategie di betting 3) Spiegarti come funziona il sistema 4) Rispondere a domande specifiche sui pronostici. Cosa preferisci?",
-                "Per fornirti il miglior aiuto possibile, ho bisogno di più contesto. Stai cercando consigli su pronostici specifici? Vuoi analizzare le tue performance? O hai bisogno di spiegazioni sul sistema?",
-                "Il successo nel betting dipende da: analisi accurata, gestione del bankroll e value betting. Posso aiutarti in tutti questi aspetti! Dimmi cosa ti interessa di più.",
-                "Ricorda: nel betting a lungo termine, ciò che conta è trovare value positivo (quota > probabilità reale). Posso aiutarti a identificare queste opportunità nei tuoi pronostici!"
-            ];
-            
-            return {
-                text: responses[Math.floor(Math.random() * responses.length)]
-            };
-        }
-
-        function loadChatHistory() {
-            const messagesContainer = document.getElementById('chatbotMessages');
-            messagesContainer.innerHTML = '';
-            
-            chatHistory.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${msg.isUser ? 'message-user' : 'message-bot'}`;
-                messageDiv.innerHTML = msg.text;
-                messagesContainer.appendChild(messageDiv);
-            });
-            
-            // Scroll to bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+        // Le restanti funzioni rimangono invariate...
+        // ... (tutto il resto del codice JavaScript rimane uguale)
+        // Includi qui tutte le altre funzioni dal codice originale:
+        // generateAIResponse, analyzeSavedForecasts, calculateForecastScore, 
+        // getScoreClass, getRecommendationReason, generateStatsReport,
+        // generateBettingStrategy, generateSystemExplanation, analyzeCurrentForecast,
+        // generateIntelligentResponse, switchSport, analyzeBet, getFormData,
+        // validateFormData, showAlert, showLoading, identifyMarket, getAnalysisTypeForMarket,
+        // processStatistics, calculateProbability, analyzeOdds, generateExplanation,
+        // generateVerdict, updateInterface, resetForm, saveForecast, updateSavedForecasts,
+        // showForecastDetail, deleteForecast, toggleDarkMode, toggleSavedPanel, closeSavedPanel
 
         // FUNZIONE PER CAMBIARE SPORT
         function switchSport(btn) {
@@ -2959,7 +2938,9 @@
                 
                 // Notifica l'AI che è stato salvato un nuovo pronostico
                 setTimeout(() => {
-                    addBotMessage(`📥 Ho visto che hai salvato un nuovo pronostico: "${forecast.bet}"! Ora hai ${savedForecasts.length} pronostici salvati. Chiedimi "Quali sono i migliori pronostici?" per avere una raccomandazione personalizzata!`);
+                    if (document.getElementById('chatbotContainer').classList.contains('open')) {
+                        addBotMessage(`📥 Ho visto che hai salvato un nuovo pronostico: "${forecast.bet}"! Ora hai ${savedForecasts.length} pronostici salvati. Chiedimi "Quali sono i migliori pronostici?" per avere una raccomandazione personalizzata!`);
+                    }
                 }, 500);
                 
             } catch (error) {
@@ -3152,9 +3133,336 @@
             panel.classList.remove('open');
             overlay.classList.remove('active');
         }
+
+        // FUNZIONI AI RIMASTE (generateAIResponse, ecc.)
+        // ... (mantieni tutte le funzioni AI esistenti)
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // ANALISI PRONOSTICI SALVATI
+            if (lowerMessage.includes('miglior') || lowerMessage.includes('consigli') || 
+                lowerMessage.includes('top') || lowerMessage.includes('analizza')) {
+                return analyzeSavedForecasts();
+            }
+            
+            // STATISTICHE E REPORT
+            if (lowerMessage.includes('statistic') || lowerMessage.includes('report') || 
+                lowerMessage.includes('dati') || lowerMessage.includes('informazioni')) {
+                return generateStatsReport();
+            }
+            
+            // STRATEGIE DI BETTING
+            if (lowerMessage.includes('strateg') || lowerMessage.includes('consigli') || 
+                lowerMessage.includes('suggeriment') || lowerMessage.includes('come')) {
+                return generateBettingStrategy();
+            }
+            
+            // DOMANDE GENERALI SUL SISTEMA
+            if (lowerMessage.includes('come funziona') || lowerMessage.includes('aiuto') || 
+                lowerMessage.includes('help') || lowerMessage.includes('cosa')) {
+                return generateSystemExplanation();
+            }
+            
+            // DOMANDA SUI PRONOSTICI ATTUALI
+            if (lowerMessage.includes('pronostico') && (lowerMessage.includes('attuale') || 
+                lowerMessage.includes('corrente') || lowerMessage.includes('questo'))) {
+                return analyzeCurrentForecast();
+            }
+            
+            // RISPONDI CON ANALISI INTELLIGENTE
+            return generateIntelligentResponse(message);
+        }
+
+        function analyzeSavedForecasts() {
+            if (savedForecasts.length === 0) {
+                return {
+                    text: "📭 Non hai ancora salvato nessun pronostico. Per iniziare, analizza e salva alcuni pronostici utilizzando il form principale. Poi potrò aiutarti a scegliere i migliori!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                };
+            }
+            
+            // Ordina i pronostici per punteggio
+            const scoredForecasts = savedForecasts.map(forecast => {
+                const score = calculateForecastScore(forecast);
+                return { ...forecast, score };
+            }).sort((a, b) => b.score - a.score);
+            
+            // Prendi i top 3
+            const topForecasts = scoredForecasts.slice(0, 3);
+            
+            let response = `📊 <strong>ANALISI PRONOSTICI SALVATI</strong><br><br>`;
+            response += `Hai <strong>${savedForecasts.length}</strong> pronostici salvati. Ecco i migliori:<br><br>`;
+            
+            topForecasts.forEach((forecast, index) => {
+                const scoreClass = getScoreClass(forecast.score);
+                const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
+                const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
+                
+                response += `<strong>${index + 1}. ${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</strong><br>`;
+                response += `🎯 ${forecast.bet || 'N/D'}<br>`;
+                response += `📈 Probabilità: ${forecast.probability || 0}%<br>`;
+                response += `💰 Value: ${valueSign}${valuePercent}%<br>`;
+                response += `⭐ Punteggio: <span class="forecast-score ${scoreClass}">${forecast.score.toFixed(1)}/100</span><br><br>`;
+            });
+            
+            // Aggiungi raccomandazioni
+            if (topForecasts.length > 0) {
+                const bestForecast = topForecasts[0];
+                
+                response += `💡 <strong>RACCOMANDAZIONE PRINCIPALE:</strong><br>`;
+                response += `Consiglio di puntare su <strong>${bestForecast.bet}</strong> in ${bestForecast.team1} vs ${bestForecast.team2}<br>`;
+                response += `Motivo: ${getRecommendationReason(bestForecast)}<br><br>`;
+                
+                response += `⚠️ <strong>AVVERTENZE:</strong><br>`;
+                response += `• Diversifica sempre le tue scommesse<br>`;
+                response += `• Non puntare più del 5% del tuo bankroll su una singola scommessa<br>`;
+                response += `• Considera sempre il value betting (quota > probabilità)<br>`;
+            }
+            
+            return {
+                text: response
+            };
+        }
+
+        function calculateForecastScore(forecast) {
+            let score = 0;
+            
+            // Punteggio base dalla probabilità (0-50 punti)
+            score += (forecast.probability || 0) * 0.5;
+            
+            // Bonus per value positivo (0-30 punti)
+            const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
+            if (valueMargin > 0) {
+                score += Math.min(30, valueMargin * 100 * 3);
+            } else if (valueMargin < -0.1) {
+                score -= 20; // Penalità per value negativo
+            }
+            
+            // Bonus per frequenza storica (0-10 punti)
+            const historical = forecast.statistics?.historicalFrequency || 0;
+            if (historical > 60) score += 10;
+            else if (historical > 40) score += 5;
+            
+            // Bonus per forma recente (0-10 punti)
+            const recentForm = forecast.statistics?.recentFormValue || 0;
+            if (recentForm > 60) score += 10;
+            else if (recentForm > 40) score += 5;
+            
+            return Math.max(0, Math.min(100, score));
+        }
+
+        function getScoreClass(score) {
+            if (score >= 80) return 'score-excellent';
+            if (score >= 60) return 'score-good';
+            if (score >= 40) return 'score-average';
+            return 'score-poor';
+        }
+
+        function getRecommendationReason(forecast) {
+            const reasons = [];
+            
+            if (forecast.probability >= 70) {
+                reasons.push('probabilità molto alta');
+            } else if (forecast.probability >= 50) {
+                reasons.push('buona probabilità');
+            }
+            
+            const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
+            if (valueMargin > 0.1) {
+                reasons.push('value betting eccellente');
+            } else if (valueMargin > 0) {
+                reasons.push('value betting positivo');
+            }
+            
+            if (forecast.statistics?.historicalFrequency > 60) {
+                reasons.push('storico positivo');
+            }
+            
+            if (forecast.statistics?.recentFormValue > 60) {
+                reasons.push('forma recente eccellente');
+            }
+            
+            return reasons.length > 0 ? reasons.join(', ') : 'analisi complessiva positiva';
+        }
+
+        function generateStatsReport() {
+            if (savedForecasts.length === 0) {
+                return {
+                    text: "📊 Non ci sono ancora dati da analizzare. Salva alcuni pronostici per generare statistiche!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                };
+            }
+            
+            let report = `📈 <strong>REPORT STATISTICO COMPLETO</strong><br><br>`;
+            
+            // Statistiche generali
+            const totalForecasts = savedForecasts.length;
+            const avgProbability = savedForecasts.reduce((sum, f) => sum + (f.probability || 0), 0) / totalForecasts;
+            const avgValue = savedForecasts.reduce((sum, f) => sum + ((f.oddsAnalysis?.valueMargin || 0) * 100), 0) / totalForecasts;
+            
+            report += `<strong>Statistiche Generali:</strong><br>`;
+            report += `• Pronostici totali: ${totalForecasts}<br>`;
+            report += `• Probabilità media: ${avgProbability.toFixed(1)}%<br>`;
+            report += `• Value medio: ${avgValue.toFixed(1)}%<br><br>`;
+            
+            // Distribuzione per sport
+            const sports = {};
+            savedForecasts.forEach(f => {
+                sports[f.sport] = (sports[f.sport] || 0) + 1;
+            });
+            
+            report += `<strong>Distribuzione per Sport:</strong><br>`;
+            Object.entries(sports).forEach(([sport, count]) => {
+                const percentage = (count / totalForecasts * 100).toFixed(1);
+                report += `• ${sport}: ${count} (${percentage}%)<br>`;
+            });
+            report += `<br>`;
+            
+            // Consigli basati sui dati
+            report += `💡 <strong>INSIGHTS E CONSIGLI:</strong><br>`;
+            
+            if (avgValue > 0) {
+                report += `✅ Stai trovando value positivo nei tuoi pronostici! Continua così.<br>`;
+            } else {
+                report += `⚠️ Il value medio è negativo. Cerca pronostici con quote più alte rispetto alla probabilità reale.<br>`;
+            }
+            
+            if (avgProbability > 60) {
+                report += `✅ La tua selezione è prudente (alta probabilità media).<br>`;
+            } else if (avgProbability < 40) {
+                report += `⚠️ Stai selezionando molti pronostici rischiosi (bassa probabilità).<br>`;
+            }
+            
+            return {
+                text: report
+            };
+        }
+
+        function generateBettingStrategy() {
+            let strategy = `🎯 <strong>STRATEGIE DI BETTING INTELLIGENTE</strong><br><br>`;
+            
+            strategy += `<strong>1. VALUE BETTING (Fondamentale)</strong><br>`;
+            strategy += `Cerca sempre quote che offrano value positivo:<br>`;
+            strategy += `Formula: Value = (Quota × Probabilità / 100) - 1<br>`;
+            strategy += `Esempio: Quota 2.00, Probabilità 55% → Value = +10%<br><br>`;
+            
+            strategy += `<strong>2. GESTIONE DEL BANKROLL</strong><br>`;
+            strategy += `• Kelly Criterion: Puntata = (Quota × Probabilità - 1) / (Quota - 1)<br>`;
+            strategy += `• Metodo conservativo: 1-2% del bankroll per scommessa<br>`;
+            strategy += `• Mai puntare più del 5% su una singola scommessa<br><br>`;
+            
+            strategy += `<strong>3. SELEZIONE PRONOSTICI</strong><br>`;
+            strategy += `• Focus su 1-2 sport che conosci bene<br>`;
+            strategy += `• Evita le emozioni, segui i dati<br>`;
+            strategy += `• Cerca mercati con meno competizione (es: gol/no gol, under/over)<br><br>`;
+            
+            strategy += `<strong>4. ANALISI PRE-PARTITA</strong><br>`;
+            strategy += `• Controlla infortuni e squalifiche<br>`;
+            strategy += `• Considera motivazione e contesto<br>`;
+            strategy += `• Analizza scontri diretti storici<br><br>`;
+            
+            strategy += `<strong>5. TENERE TRACCIA</strong><br>`;
+            strategy += `• Registra tutte le tue scommesse<br>`;
+            strategy += `• Analizza performance per mercato/sport<br>`;
+            strategy += `• Adatta la strategia in base ai risultati<br>`;
+            
+            return {
+                text: strategy
+            };
+        }
+
+        function generateSystemExplanation() {
+            let explanation = `🤖 <strong>COME FUNZIONA BETTING AI ULTRA</strong><br><br>`;
+            
+            explanation += `<strong>1. ANALISI PREDITTIVA AVANZATA</strong><br>`;
+            explanation += `• Riconoscimento automatico di 20+ tipi di mercato<br>`;
+            explanation += `• Calcolo probabilità con algoritmi specifici per mercato<br>`;
+            explanation += `• Analisi value betting in tempo reale<br><br>`;
+            
+            explanation += `<strong>2. ASSISTENTE AI INTEGRATO</strong><br>`;
+            explanation += `• Analisi intelligente dei tuoi pronostici salvati<br>`;
+            explanation += `• Raccomandazioni personalizzate<br>`;
+            explanation += `• Risposte contestuali alle tue domande<br>`;
+            explanation += `• <strong>Nuovo:</strong> Pulsante "Dati necessari" per sapere cosa inserire<br><br>`;
+            
+            explanation += `<strong>3. FEATURES PRINCIPALI</strong><br>`;
+            explanation += `• Supporto Calcio e Basket<br>`;
+            explanation += `• Salvataggio e confronto pronostici<br>`;
+            explanation += `• Chat con salvataggio automatico<br>`;
+            explanation += `• Dark/Light mode<br>`;
+            explanation += `• Interfaccia responsive<br><br>`;
+            
+            explanation += `<strong>COME USARE AL MEGLIO:</strong><br>`;
+            explanation += `1. Inserisci i dati della partita<br>`;
+            explanation += `2. Analizza il pronostico<br>`;
+            explanation += `3. Salva i migliori pronostici<br>`;
+            explanation += `4. Chiedi all'AI consigli personalizzati<br>`;
+            explanation += `5. Monitora le tue performance<br>`;
+            
+            return {
+                text: explanation
+            };
+        }
+
+        function analyzeCurrentForecast() {
+            if (!currentAnalysis) {
+                return {
+                    text: "⚠️ Non c'è nessun pronostico corrente da analizzare. Prima inserisci i dati e fai l'analisi!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                };
+            }
+            
+            let analysis = `🔍 <strong>ANALISI PRONOSTICO CORRENTE</strong><br><br>`;
+            
+            analysis += `<strong>Partita:</strong> ${currentAnalysis.team1} vs ${currentAnalysis.team2}<br>`;
+            analysis += `<strong>Pronostico:</strong> ${currentAnalysis.bet}<br>`;
+            analysis += `<strong>Probabilità:</strong> ${currentAnalysis.probability}%<br>`;
+            analysis += `<strong>Quota:</strong> ${currentAnalysis.oddsAnalysis?.bookmakerOdds || 'N/D'}<br>`;
+            analysis += `<strong>Value:</strong> ${((currentAnalysis.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1)}%<br><br>`;
+            
+            analysis += `💡 <strong>VALUTAZIONE AI:</strong><br>`;
+            
+            if (currentAnalysis.probability >= 70 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0.1) {
+                analysis += `✅ <strong>ECCELLENTE OPPORTUNITÀ</strong><br>`;
+                analysis += `Alta probabilità combinata con value positivo significativo. Consiglio FORTE di puntare.<br>`;
+            } else if (currentAnalysis.probability >= 50 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0) {
+                analysis += `👍 <strong>BUON PRONOSTICO</strong><br>`;
+                analysis += `Probabilità decente con value positivo. Può essere considerato per una puntata moderata.<br>`;
+            } else if (currentAnalysis.probability >= 40 || (currentAnalysis.oddsAnalysis?.valueMargin || 0) > -0.05) {
+                analysis += `🤔 <strong>VALUTABILE</strong><br>`;
+                analysis += `Probabilità moderata o value marginale. Potrebbe valere una piccola puntata.<br>`;
+            } else {
+                analysis += `⚠️ <strong>SCONSIGLIATO</strong><br>`;
+                analysis += `Probabilità bassa e/o value negativo. Meglio evitare.<br>`;
+            }
+            
+            analysis += `<br><strong>SUGGERIMENTI:</strong><br>`;
+            if (currentAnalysis.statistics?.historicalFrequency > 0) {
+                analysis += `• Storico positivo: ${currentAnalysis.statistics.historicalFrequency.toFixed(1)}%<br>`;
+            }
+            if (currentAnalysis.statistics?.recentFormValue > 0) {
+                analysis += `• Forma recente: ${currentAnalysis.statistics.recentFormValue.toFixed(1)}%<br>`;
+            }
+            
+            return {
+                text: analysis
+            };
+        }
+
+        function generateIntelligentResponse(message) {
+            const responses = [
+                "Ho analizzato la tua domanda. Per darti una risposta precisa, potresti specificare se ti riferisci a pronostici di calcio o basket? Oppure chiedimi direttamente di analizzare i tuoi pronostici salvati!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
+                "Come assistente AI per il betting, posso aiutarti a: 1) Analizzare i tuoi pronostici salvati 2) Consigliarti strategie di betting 3) Spiegarti come funziona il sistema 4) Rispondere a domande specifiche sui pronostici. Cosa preferisci?<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
+                "Per fornirti il miglior aiuto possibile, ho bisogno di più contesto. Stai cercando consigli su pronostici specifici? Vuoi analizzare le tue performance? O hai bisogno di spiegazioni sul sistema?<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
+                "Il successo nel betting dipende da: analisi accurata, gestione del bankroll e value betting. Posso aiutarti in tutti questi aspetti! Dimmi cosa ti interessa di più.<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
+                "Ricorda: nel betting a lungo termine, ciò che conta è trovare value positivo (quota > probabilità reale). Posso aiutarti a identificare queste opportunità nei tuoi pronostici!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+            ];
+            
+            return {
+                text: responses[Math.floor(Math.random() * responses.length)]
+            };
+        }
     </script>
 </body>
-    </html>
+</html>
 
 
 
