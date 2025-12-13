@@ -1736,52 +1736,6 @@
         let currentSessionId = null;
         let pendingSessionState = null;
 
-        // DATABASE MERCATI DI SCOMMESSA
-        const bettingMarkets = {
-            '1X2': {
-                name: 'Esito Finale 1X2',
-                category: 'Principali',
-                patterns: ['1', 'x', '2', '1x2', '1 x 2', 'vittoria', 'pareggio', 'esito'],
-                description: 'Pronostico sull\'esito finale della partita: 1=vittoria casa, X=pareggio, 2=vittoria ospite'
-            },
-            'Doppia Chance': {
-                name: 'Doppia Chance',
-                category: 'Principali',
-                patterns: ['dc', 'doppia chance', '1x', 'x2', '12', 'casa o pareggio', 'ospite o pareggio', 'doppiachance'],
-                description: 'Pronostico che la partita non si concluda con la vittoria di una specifica squadra'
-            },
-            'Under/Over': {
-                name: 'Under/Over',
-                category: 'Principali',
-                patterns: ['under', 'over', 'u/', 'o/', 'sotto', 'sopra', 'u ', 'o ', 'under ', 'over '],
-                description: 'Pronostico sul numero totale di gol/punti rispetto a una soglia'
-            },
-            'Gol/No Gol': {
-                name: 'Gol/No Gol',
-                category: 'Principali',
-                patterns: ['gg', 'ng', 'gol/nogol', 'both teams to score', 'btts', 'goal', 'no goal', 'gol', 'nogol'],
-                description: 'Pronostico se entrambe le squadre segneranno (GG) o no (NG)'
-            },
-            'Handicap': {
-                name: 'Handicap',
-                category: 'Handicap',
-                patterns: ['handicap', 'hcp', 'h ', 'asian handicap', 'ah', '-', '+'],
-                description: 'Pronostico con svantaggio/vantaggio applicato ad una squadra'
-            },
-            'Marcatore': {
-                name: 'Marcatore',
-                category: 'Marcatori',
-                patterns: ['marcatore', 'goal scorer', 'segna', 'rete', 'gol di'],
-                description: 'Pronostico su quale giocatore segnerà'
-            },
-            'Risultato Esatto': {
-                name: 'Risultato Esatto',
-                category: 'Risultati',
-                patterns: ['risultato esatto', 'esatto', '1-0', '2-1', '3-2', '0-0'],
-                description: 'Pronostico sul risultato finale esatto'
-            }
-        };
-
         // INIZIALIZZAZIONE
         document.addEventListener('DOMContentLoaded', function() {
             console.log('✅ DOM caricato - Inizializzazione iniziata');
@@ -2177,8 +2131,7 @@
                         formData.historical, 
                         formData.recentForm, 
                         formData.difficulty,
-                        formData.additionalNotes,
-                        marketAnalysis.type
+                        formData.additionalNotes
                     );
                     
                     const probability = calculateProbability(statistics, marketAnalysis);
@@ -2198,12 +2151,12 @@
                         team1: formData.team1,
                         team2: formData.team2,
                         bet: formData.bet,
-                        marketAnalysis,
-                        statistics,
-                        probability,
-                        oddsAnalysis,
-                        explanation,
-                        verdict,
+                        marketAnalysis: marketAnalysis,
+                        statistics: statistics,
+                        probability: probability,
+                        oddsAnalysis: oddsAnalysis,
+                        explanation: explanation,
+                        verdict: verdict,
                         formData: formData,
                         timestamp: new Date().toLocaleString('it-IT')
                     };
@@ -2253,7 +2206,16 @@
             const additionalNotes = document.getElementById('note-aggiuntive').value;
             
             return {
-                team1, team2, bet, average, threshold, historical, odds, recentForm, difficulty, additionalNotes
+                team1: team1,
+                team2: team2,
+                bet: bet,
+                average: average,
+                threshold: threshold,
+                historical: historical,
+                odds: odds,
+                recentForm: recentForm,
+                difficulty: difficulty,
+                additionalNotes: additionalNotes
             };
         }
         
@@ -2347,6 +2309,52 @@
                 .replace(/,/g, ' ');
             
             console.log("🔍 Identificazione mercato - Testo pulito:", cleanText);
+            
+            // DATABASE MERCATI DI SCOMMESSA
+            const bettingMarkets = {
+                '1X2': {
+                    name: 'Esito Finale 1X2',
+                    category: 'Principali',
+                    patterns: ['1', 'x', '2', '1x2', '1 x 2', 'vittoria', 'pareggio', 'esito'],
+                    description: 'Pronostico sull\'esito finale della partita: 1=vittoria casa, X=pareggio, 2=vittoria ospite'
+                },
+                'Doppia Chance': {
+                    name: 'Doppia Chance',
+                    category: 'Principali',
+                    patterns: ['dc', 'doppia chance', '1x', 'x2', '12', 'casa o pareggio', 'ospite o pareggio', 'doppiachance'],
+                    description: 'Pronostico che la partita non si concluda con la vittoria di una specifica squadra'
+                },
+                'Under/Over': {
+                    name: 'Under/Over',
+                    category: 'Principali',
+                    patterns: ['under', 'over', 'u/', 'o/', 'sotto', 'sopra', 'u ', 'o ', 'under ', 'over '],
+                    description: 'Pronostico sul numero totale di gol/punti rispetto a una soglia'
+                },
+                'Gol/No Gol': {
+                    name: 'Gol/No Gol',
+                    category: 'Principali',
+                    patterns: ['gg', 'ng', 'gol/nogol', 'both teams to score', 'btts', 'goal', 'no goal', 'gol', 'nogol'],
+                    description: 'Pronostico se entrambe le squadre segneranno (GG) o no (NG)'
+                },
+                'Handicap': {
+                    name: 'Handicap',
+                    category: 'Handicap',
+                    patterns: ['handicap', 'hcp', 'h ', 'asian handicap', 'ah', '-', '+'],
+                    description: 'Pronostico con svantaggio/vantaggio applicato ad una squadra'
+                },
+                'Marcatore': {
+                    name: 'Marcatore',
+                    category: 'Marcatori',
+                    patterns: ['marcatore', 'goal scorer', 'segna', 'rete', 'gol di'],
+                    description: 'Pronostico su quale giocatore segnerà'
+                },
+                'Risultato Esatto': {
+                    name: 'Risultato Esatto',
+                    category: 'Risultati',
+                    patterns: ['risultato esatto', 'esatto', '1-0', '2-1', '3-2', '0-0'],
+                    description: 'Pronostico sul risultato finale esatto'
+                }
+            };
             
             let bestMatch = null;
             let bestScore = 0;
@@ -2512,7 +2520,7 @@
             return analysisTypes[marketKey] || 'standard';
         }
         
-        function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes, marketType) {
+        function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes) {
             const diffAverageThreshold = average - threshold;
             
             let historicalFrequency = 0;
@@ -2598,14 +2606,13 @@
             }
             
             return {
-                average,
-                threshold,
-                diffAverageThreshold,
-                historicalFrequency,
-                recentFormValue,
-                difficultyWeight,
-                notesAnalysis,
-                marketType
+                average: average,
+                threshold: threshold,
+                diffAverageThreshold: diffAverageThreshold,
+                historicalFrequency: historicalFrequency,
+                recentFormValue: recentFormValue,
+                difficultyWeight: difficultyWeight,
+                notesAnalysis: notesAnalysis
             };
         }
         
@@ -3526,7 +3533,9 @@
         }
     </script>
 </body>
-                </html>
+    </html>
+
+
 
 
 
