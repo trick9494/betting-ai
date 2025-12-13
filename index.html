@@ -1387,7 +1387,7 @@
                             <label for="calcio-squadra1"><i class="fas fa-home"></i> Squadra Casa</label>
                             <div class="input-with-icon">
                                 <i class="fas fa-flag"></i>
-                                <input type="text" id="calcio-squadra1" placeholder="Es. Juventus">
+                                <input type="text" id="calcio-squadra1" placeholder="Es. Juventus" value="Atalanta">
                             </div>
                         </div>
                     </div>
@@ -1396,7 +1396,7 @@
                             <label for="calcio-squadra2"><i class="fas fa-route"></i> Squadra Trasferta</label>
                             <div class="input-with-icon">
                                 <i class="fas fa-flag"></i>
-                                <input type="text" id="calcio-squadra2" placeholder="Es. Inter">
+                                <input type="text" id="calcio-squadra2" placeholder="Es. Inter" value="Cagliari">
                             </div>
                         </div>
                     </div>
@@ -1905,39 +1905,7 @@
                 }
             });
 
-            // Aiuto automatico per la compilazione dei pronostici
-            document.getElementById('calcio-pronostico').addEventListener('input', function() {
-                suggestBetExamples(this.value, 'calcio');
-            });
-            
-            document.getElementById('basket-pronostico').addEventListener('input', function() {
-                suggestBetExamples(this.value, 'basket');
-            });
-
             console.log('✅ Event listeners configurati');
-        }
-
-        // FUNZIONI PER SUGGERIMENTI DI PRONOSTICI
-        function suggestBetExamples(value, sport) {
-            if (!value || value.length < 2) return;
-            
-            const suggestions = {
-                'calcio': [
-                    'Over 2.5', 'Under 2.5', '1X', 'X2', '12', 'GG', 'NG',
-                    '1', 'X', '2', '1-0', '2-1', '0-0', 'Handicap +1.5',
-                    'Marcatore Ronaldo', 'Pari o dispari'
-                ],
-                'basket': [
-                    'Over 220.5', 'Under 220.5', 'Lakers -5.5', 'Warriors +3.5',
-                    '1', '2', '1X', 'X2', 'Over 110.5 punti Lakers',
-                    'Under 105.5 punti Warriors'
-                ]
-            };
-            
-            // Mostra esempi se il campo è vuoto o quasi
-            if (value.length < 3) {
-                console.log(`💡 Esempi per ${sport}:`, suggestions[sport].slice(0, 5).join(', '));
-            }
         }
 
         // FUNZIONI CHATBOT
@@ -2185,7 +2153,7 @@
             }
         }
 
-        // FUNZIONE PRINCIPALE DI ANALISI - MIGLIORATA
+        // FUNZIONE PRINCIPALE DI ANALISI
         function analyzeBet() {
             console.log('🔍 Avvio analisi...');
             showLoading(true);
@@ -2290,6 +2258,16 @@
         }
         
         function validateFormData(data) {
+            if (!data.team1 || data.team1.trim() === '') {
+                showAlert('Inserisci la squadra di casa', 'error');
+                return false;
+            }
+            
+            if (!data.team2 || data.team2.trim() === '') {
+                showAlert('Inserisci la squadra in trasferta', 'error');
+                return false;
+            }
+            
             if (!data.bet || data.bet.trim() === '') {
                 showAlert('Inserisci un pronostico da analizzare', 'error');
                 return false;
@@ -2346,7 +2324,7 @@
             }
         }
         
-        // FUNZIONE DI IDENTIFICAZIONE MERCATO MIGLIORATA
+        // FUNZIONE DI IDENTIFICAZIONE MERCATO
         function identifyMarket(bet, team1, team2) {
             if (!bet || typeof bet !== 'string') {
                 return {
@@ -3549,7 +3527,8 @@
         }
     </script>
 </body>
-                        </html>
+    </html>
+
 
 
 
