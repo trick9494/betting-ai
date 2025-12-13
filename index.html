@@ -1673,7 +1673,7 @@
                     <div class="step-content">
                         <div class="probability-container">
                             <div class="probability-circle" id="probability-circle">
-                                <div class="probability-text" id="probability-value">-</div>
+                                <div class="probability-text" id="probability-value"> 0%</div>
                             </div>
                             <div class="probability-label" id="probability-label">Probabilità di Successo</div>
                         </div>
@@ -2079,7 +2079,7 @@
             }
         }
 
-        // FUNZIONE PRINCIPALE DI ANALISI
+        // FUNZIONE PRINCIPALE DI ANALISI - SEMPLIFICATA E CORRETTA
         function analyzeBet() {
             showLoading(true);
             
@@ -2092,8 +2092,11 @@
                         return;
                     }
                     
-                    const marketAnalysis = identifyMarket(formData.bet, formData.team1, formData.team2);
-                    const statistics = processStatistics(
+                    // Funzione semplificata di identificazione mercato
+                    const marketAnalysis = simpleIdentifyMarket(formData.bet);
+                    
+                    // Calcolo statistiche semplificato
+                    const statistics = simpleProcessStatistics(
                         formData.average, 
                         formData.threshold, 
                         formData.historical, 
@@ -2102,17 +2105,17 @@
                         formData.additionalNotes
                     );
                     
-                    const probability = calculateProbability(statistics, marketAnalysis);
-                    const oddsAnalysis = analyzeOdds(probability, formData.odds);
-                    const explanation = generateExplanation(
-                        marketAnalysis, 
-                        statistics, 
-                        probability, 
-                        oddsAnalysis,
-                        formData
-                    );
+                    // Calcolo probabilità semplificato
+                    const probability = simpleCalculateProbability(statistics, marketAnalysis);
                     
-                    const verdict = generateVerdict(probability, oddsAnalysis.valueMargin, marketAnalysis.type);
+                    // Analisi quote
+                    const oddsAnalysis = simpleAnalyzeOdds(probability, formData.odds);
+                    
+                    // Genera spiegazione
+                    const explanation = simpleGenerateExplanation(marketAnalysis, statistics, probability, oddsAnalysis, formData);
+                    
+                    // Genera verdetto
+                    const verdict = simpleGenerateVerdict(probability, oddsAnalysis.valueMargin, marketAnalysis.type);
                     
                     currentAnalysis = {
                         sport: currentSport,
@@ -2129,7 +2132,8 @@
                         timestamp: new Date().toLocaleString('it-IT')
                     };
                     
-                    updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict, formData);
+                    // Aggiorna l'interfaccia
+                    simpleUpdateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict);
                     
                     document.getElementById('saveBtn').disabled = false;
                     document.getElementById('result-section').style.display = 'block';
@@ -2252,311 +2256,106 @@
             }
         }
         
-        // FUNZIONE DI IDENTIFICAZIONE MERCATO
-        function identifyMarket(bet, team1, team2) {
-            if (!bet || typeof bet !== 'string') {
-                return {
-                    type: "Personalizzato",
-                    normalizedBet: bet || "",
-                    category: "Altro",
-                    description: "Mercato non riconosciuto",
-                    analysisType: "standard",
-                    confidence: 0
-                };
-            }
-            
-            let cleanText = bet
-                .trim()
-                .toLowerCase()
-                .replace(/\s+/g, ' ')
-                .replace(/[\u200B-\u200D\uFEFF]/g, '')
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/\./g, ' ')
-                .replace(/,/g, ' ');
-            
-            // DATABASE MERCATI DI SCOMMESSA
-            const bettingMarkets = {
-                '1X2': {
-                    name: 'Esito Finale 1X2',
-                    category: 'Principali',
-                    patterns: ['1', 'x', '2', '1x2', '1 x 2', 'vittoria', 'pareggio', 'esito'],
-                    description: 'Pronostico sull\'esito finale della partita: 1=vittoria casa, X=pareggio, 2=vittoria ospite'
-                },
-                'Doppia Chance': {
-                    name: 'Doppia Chance',
-                    category: 'Principali',
-                    patterns: ['dc', 'doppia chance', '1x', 'x2', '12', 'casa o pareggio', 'ospite o pareggio', 'doppiachance'],
-                    description: 'Pronostico che la partita non si concluda con la vittoria di una specifica squadra'
-                },
-                'Under/Over': {
-                    name: 'Under/Over',
-                    category: 'Principali',
-                    patterns: ['under', 'over', 'u/', 'o/', 'sotto', 'sopra', 'u ', 'o ', 'under ', 'over '],
-                    description: 'Pronostico sul numero totale di gol/punti rispetto a una soglia'
-                },
-                'Gol/No Gol': {
-                    name: 'Gol/No Gol',
-                    category: 'Principali',
-                    patterns: ['gg', 'ng', 'gol/nogol', 'both teams to score', 'btts', 'goal', 'no goal', 'gol', 'nogol'],
-                    description: 'Pronostico se entrambe le squadre segneranno (GG) o no (NG)'
-                },
-                'Handicap': {
-                    name: 'Handicap',
-                    category: 'Handicap',
-                    patterns: ['handicap', 'hcp', 'h ', 'asian handicap', 'ah', '-', '+'],
-                    description: 'Pronostico con svantaggio/vantaggio applicato ad una squadra'
-                },
-                'Marcatore': {
-                    name: 'Marcatore',
-                    category: 'Marcatori',
-                    patterns: ['marcatore', 'goal scorer', 'segna', 'rete', 'gol di'],
-                    description: 'Pronostico su quale giocatore segnerà'
-                },
-                'Risultato Esatto': {
-                    name: 'Risultato Esatto',
-                    category: 'Risultati',
-                    patterns: ['risultato esatto', 'esatto', '1-0', '2-1', '3-2', '0-0'],
-                    description: 'Pronostico sul risultato finale esatto'
-                }
-            };
-            
-            let bestMatch = null;
-            let bestScore = 0;
-            
-            // Analisi per ogni tipo di mercato
-            for (const [key, market] of Object.entries(bettingMarkets)) {
-                let score = 0;
-                
-                // Controllo pattern semplici
-                for (const pattern of market.patterns) {
-                    const regex = new RegExp(`\\b${pattern}\\b`, 'i');
-                    if (regex.test(cleanText)) {
-                        score += 10;
-                    }
-                }
-                
-                // Controllo per Under/Over con numero
-                if (key === 'Under/Over') {
-                    const uoMatch = cleanText.match(/(under|over|u|o)\s*(\d+[.,]?\d*)/i);
-                    if (uoMatch) {
-                        score += 20;
-                    }
-                }
-                
-                // Controllo per 1X2
-                if (key === '1X2') {
-                    if (/^[12x]$/i.test(cleanText)) {
-                        score += 15;
-                    } else if (/^vittoria\s+(casa|ospite)$/i.test(cleanText) || /^pareggio$/i.test(cleanText)) {
-                        score += 12;
-                    }
-                }
-                
-                // Controllo per Doppia Chance
-                if (key === 'Doppia Chance') {
-                    if (/^(1x|x2|12)$/i.test(cleanText)) {
-                        score += 15;
-                    }
-                }
-                
-                // Controllo per Gol/NoGol
-                if (key === 'Gol/No Gol') {
-                    if (/^(gg|ng|gol\/nogol|gol\s+no\s+gol)$/i.test(cleanText)) {
-                        score += 15;
-                    }
-                }
-                
-                // Controllo per Handicap
-                if (key === 'Handicap') {
-                    const handicapMatch = cleanText.match(/(\+|-)\s*(\d+[.,]?\d*)/);
-                    if (handicapMatch) {
-                        score += 15;
-                    }
-                }
-                
-                // Controllo per Marcatore
-                if (key === 'Marcatore') {
-                    if (cleanText.includes('marcatore') || cleanText.includes('segna') || cleanText.includes('gol di')) {
-                        score += 15;
-                    }
-                }
-                
-                // Controllo per Risultato Esatto
-                if (key === 'Risultato Esatto') {
-                    const scoreMatch = cleanText.match(/(\d+)-(\d+)/);
-                    if (scoreMatch) {
-                        score += 20;
-                    }
-                }
-                
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMatch = { key, market, score };
-                }
-            }
+        // FUNZIONI SEMPLIFICATE PER L'ANALISI
+        function simpleIdentifyMarket(bet) {
+            const betLower = bet.toLowerCase().trim();
             
             let marketType = "Personalizzato";
             let category = "Altro";
-            let description = "Mercato non riconosciuto";
             let analysisType = "standard";
             let normalizedBet = bet;
-            let confidence = bestScore;
             
-            if (bestMatch && bestScore > 5) {
-                marketType = bestMatch.market.name;
-                category = bestMatch.market.category;
-                description = bestMatch.market.description;
-                analysisType = getAnalysisTypeForMarket(bestMatch.key);
+            // Identificazione semplificata
+            if (betLower.includes('over') || betLower.includes('under') || betLower.includes('u/') || betLower.includes('o/')) {
+                marketType = "Under/Over";
+                category = "Principali";
+                analysisType = "underOver";
                 
-                // Normalizza il pronostico
-                normalizedBet = normalizeBet(bet, bestMatch.key);
-                
-            } else {
-                marketType = "Personalizzato";
-                normalizedBet = bet;
+                // Normalizza
+                if (betLower.includes('over')) {
+                    const match = bet.match(/over\s*(\d+[.,]?\d*)/i);
+                    normalizedBet = match ? `Over ${match[1].replace(',', '.')}` : "Over";
+                } else if (betLower.includes('under')) {
+                    const match = bet.match(/under\s*(\d+[.,]?\d*)/i);
+                    normalizedBet = match ? `Under ${match[1].replace(',', '.')}` : "Under";
+                }
+            } else if (betLower === '1' || betLower === 'x' || betLower === '2' || betLower.includes('1x2')) {
+                marketType = "Esito Finale 1X2";
+                category = "Principali";
+                analysisType = "1x2";
+                normalizedBet = bet.toUpperCase();
+            } else if (betLower === 'gg' || betLower === 'ng' || betLower.includes('gol/nogol') || betLower.includes('both teams to score')) {
+                marketType = "Gol/No Gol";
+                category = "Principali";
+                analysisType = "ggng";
+                normalizedBet = bet.toUpperCase();
+            } else if (betLower.includes('handicap') || betLower.includes('hcp') || /[+-]\s*\d+/.test(bet)) {
+                marketType = "Handicap";
+                category = "Handicap";
+                analysisType = "handicap";
+            } else if (betLower.includes('marcatore') || betLower.includes('segna')) {
+                marketType = "Marcatore";
+                category = "Marcatori";
+                analysisType = "scorer";
+            } else if (/\d+-\d+/.test(bet)) {
+                marketType = "Risultato Esatto";
+                category = "Risultati";
+                analysisType = "exactScore";
             }
             
             return {
                 type: marketType,
                 normalizedBet: normalizedBet,
                 category: category,
-                description: description,
+                description: "Analisi del mercato di scommessa",
                 analysisType: analysisType,
-                confidence: confidence,
-                rawText: bet
+                confidence: 80
             };
         }
         
-        function normalizeBet(bet, marketKey) {
-            const cleanBet = bet.trim();
-            
-            switch(marketKey) {
-                case 'Under/Over':
-                    const uoMatch = cleanBet.match(/(under|over|u|o)\s*(\d+[.,]?\d*)/i);
-                    if (uoMatch) {
-                        const type = uoMatch[1].toLowerCase().includes('under') || uoMatch[1] === 'u' ? 'Under' : 'Over';
-                        const value = uoMatch[2].replace(',', '.');
-                        return `${type} ${value}`;
-                    }
-                    break;
-                    
-                case '1X2':
-                    if (/^[12x]$/i.test(cleanBet)) {
-                        return cleanBet.toUpperCase();
-                    }
-                    break;
-                    
-                case 'Doppia Chance':
-                    if (/^(1x|x2|12)$/i.test(cleanBet)) {
-                        return cleanBet.toUpperCase();
-                    }
-                    break;
-                    
-                case 'Gol/No Gol':
-                    if (/^gg$/i.test(cleanBet)) return 'GG';
-                    if (/^ng$/i.test(cleanBet)) return 'NG';
-                    break;
-                    
-                case 'Risultato Esatto':
-                    const scoreMatch = cleanBet.match(/(\d+)-(\d+)/);
-                    if (scoreMatch) {
-                        return `${scoreMatch[1]}-${scoreMatch[2]}`;
-                    }
-                    break;
-            }
-            
-            return cleanBet;
-        }
-        
-        function getAnalysisTypeForMarket(marketKey) {
-            const analysisTypes = {
-                'Under/Over': 'underOver',
-                '1X2': '1x2',
-                'Doppia Chance': 'doubleChance',
-                'Gol/No Gol': 'ggng',
-                'Handicap': 'handicap',
-                'Marcatore': 'scorer',
-                'Risultato Esatto': 'exactScore'
-            };
-            
-            return analysisTypes[marketKey] || 'standard';
-        }
-        
-        function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes) {
+        function simpleProcessStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes) {
             const diffAverageThreshold = average - threshold;
             
+            // Calcolo frequenza storica semplificato
             let historicalFrequency = 0;
-            if (historical && historical.toString().trim() !== '') {
-                const histStr = historical.toString().trim();
-                
+            if (historical) {
+                const histStr = historical.toString().toLowerCase();
                 if (histStr.includes('su')) {
                     const parts = histStr.split('su');
                     if (parts.length === 2) {
-                        const successes = parseFloat(parts[0].trim()) || 0;
-                        const total = parseFloat(parts[1].trim()) || 1;
-                        historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
-                    }
-                } else if (histStr.includes('/')) {
-                    const parts = histStr.split('/');
-                    if (parts.length === 2) {
-                        const successes = parseFloat(parts[0].trim()) || 0;
-                        const total = parseFloat(parts[1].trim()) || 1;
+                        const successes = parseFloat(parts[0]) || 0;
+                        const total = parseFloat(parts[1]) || 1;
                         historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
                     }
                 } else if (histStr.includes('%')) {
-                    historicalFrequency = parseFloat(histStr.replace('%', '').trim()) || 0;
+                    historicalFrequency = parseFloat(histStr.replace('%', '')) || 0;
+                } else {
+                    historicalFrequency = parseFloat(histStr) || 0;
                 }
             }
             
+            // Calcolo forma recente semplificato
             let recentFormValue = 0;
-            if (recentForm && recentForm.toString().trim() !== '') {
-                const formStr = recentForm.toString().trim();
-                
+            if (recentForm) {
+                const formStr = recentForm.toString().toLowerCase();
                 if (formStr.includes('su')) {
                     const parts = formStr.split('su');
                     if (parts.length === 2) {
-                        const successes = parseFloat(parts[0].trim()) || 0;
-                        const total = parseFloat(parts[1].trim()) || 1;
-                        recentFormValue = total > 0 ? (successes / total) * 100 : 0;
-                    }
-                } else if (formStr.includes('/')) {
-                    const parts = formStr.split('/');
-                    if (parts.length === 2) {
-                        const successes = parseFloat(parts[0].trim()) || 0;
-                        const total = parseFloat(parts[1].trim()) || 1;
+                        const successes = parseFloat(parts[0]) || 0;
+                        const total = parseFloat(parts[1]) || 1;
                         recentFormValue = total > 0 ? (successes / total) * 100 : 0;
                     }
                 } else if (formStr.includes('%')) {
-                    recentFormValue = parseFloat(formStr.replace('%', '').trim()) || 0;
+                    recentFormValue = parseFloat(formStr.replace('%', '')) || 0;
                 }
             }
             
+            // Peso difficoltà
             let difficultyWeight = 0;
             switch(difficulty) {
-                case "bassa":
-                    difficultyWeight = 5;
-                    break;
-                case "media":
-                    difficultyWeight = 0;
-                    break;
-                case "alta":
-                    difficultyWeight = -10;
-                    break;
-            }
-            
-            let notesAnalysis = 0;
-            if (additionalNotes) {
-                const notes = additionalNotes.toLowerCase();
-                const positiveKeywords = ['forma buona', 'infortuni pochi', 'motivati', 'favoriti', 'casa', 'campo', 'in forma', 'forte'];
-                const negativeKeywords = ['infortuni', 'squalifiche', 'stanchi', 'demotivati', 'trasferta', 'problemi', 'debole', 'crisi'];
-                
-                positiveKeywords.forEach(keyword => {
-                    if (notes.includes(keyword)) notesAnalysis += 5;
-                });
-                
-                negativeKeywords.forEach(keyword => {
-                    if (notes.includes(keyword)) notesAnalysis -= 5;
-                });
+                case "bassa": difficultyWeight = 5; break;
+                case "media": difficultyWeight = 0; break;
+                case "alta": difficultyWeight = -10; break;
             }
             
             return {
@@ -2565,78 +2364,60 @@
                 diffAverageThreshold: diffAverageThreshold,
                 historicalFrequency: historicalFrequency,
                 recentFormValue: recentFormValue,
-                difficultyWeight: difficultyWeight,
-                notesAnalysis: notesAnalysis
+                difficultyWeight: difficultyWeight
             };
         }
         
-        function calculateProbability(statistics, marketAnalysis) {
-            let baseProbability = 50;
+        function simpleCalculateProbability(statistics, marketAnalysis) {
+            let probability = 50;
             
+            // Base sul tipo di mercato
             switch(marketAnalysis.analysisType) {
                 case 'underOver':
                     if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
-                        baseProbability += (-statistics.diffAverageThreshold * 3);
+                        probability += (-statistics.diffAverageThreshold * 3);
                     } else {
-                        baseProbability += (statistics.diffAverageThreshold * 3);
+                        probability += (statistics.diffAverageThreshold * 3);
                     }
                     break;
-                    
                 case '1x2':
-                    baseProbability += statistics.difficultyWeight;
-                    baseProbability += statistics.notesAnalysis;
+                    probability += statistics.difficultyWeight;
                     break;
-                    
                 case 'doubleChance':
-                    baseProbability = 65;
-                    baseProbability += statistics.difficultyWeight * 0.5;
+                    probability = 65;
                     break;
-                    
                 case 'ggng':
-                    if (marketAnalysis.normalizedBet.toLowerCase().includes('gg') || 
-                        marketAnalysis.normalizedBet.toLowerCase().includes('goal')) {
-                        baseProbability = Math.min(80, 40 + (statistics.average * 10));
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('gg')) {
+                        probability = Math.min(80, 40 + (statistics.average * 10));
                     } else {
-                        baseProbability = Math.min(80, 60 - (statistics.average * 10));
+                        probability = Math.min(80, 60 - (statistics.average * 10));
                     }
                     break;
-                    
                 case 'handicap':
-                    baseProbability = 55 + statistics.difficultyWeight;
+                    probability = 55 + statistics.difficultyWeight;
                     break;
-                    
                 case 'scorer':
-                    baseProbability = 25 + statistics.notesAnalysis;
+                    probability = 25;
                     break;
-                    
                 case 'exactScore':
-                    baseProbability = 15;
-                    break;
-                    
-                default:
-                    if (statistics.diffAverageThreshold !== 0) {
-                        baseProbability += statistics.diffAverageThreshold * 2;
-                    }
+                    probability = 15;
                     break;
             }
             
+            // Aggiusta per storico e forma
             if (statistics.historicalFrequency > 0) {
-                baseProbability = (baseProbability * 0.6) + (statistics.historicalFrequency * 0.4);
+                probability = (probability * 0.6) + (statistics.historicalFrequency * 0.4);
             }
             
             if (statistics.recentFormValue > 0) {
-                baseProbability = (baseProbability * 0.7) + (statistics.recentFormValue * 0.3);
+                probability = (probability * 0.7) + (statistics.recentFormValue * 0.3);
             }
             
-            baseProbability += statistics.difficultyWeight;
-            baseProbability += statistics.notesAnalysis;
-            
-            const finalProbability = Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
-            
-            return finalProbability;
+            // Limita tra 1 e 95
+            return Math.max(1, Math.min(95, Math.round(probability * 10) / 10));
         }
         
-        function analyzeOdds(probability, bookmakerOdds) {
+        function simpleAnalyzeOdds(probability, bookmakerOdds) {
             const theoreticalOdds = (100 / probability).toFixed(2);
             const valueMargin = ((bookmakerOdds / theoreticalOdds) - 1).toFixed(3);
             
@@ -2647,143 +2428,79 @@
             };
         }
         
-        function generateExplanation(marketAnalysis, statistics, probability, oddsAnalysis, formData) {
-            let explanation = `<p>Analisi del pronostico <strong>${marketAnalysis.normalizedBet}</strong> (${marketAnalysis.type} - ${marketAnalysis.category}):</p>`;
-            explanation += `<p><em>${marketAnalysis.description}</em></p><ul>`;
+        function simpleGenerateExplanation(marketAnalysis, statistics, probability, oddsAnalysis, formData) {
+            let explanation = `<p>Analisi del pronostico <strong>${marketAnalysis.normalizedBet}</strong> (${marketAnalysis.type}):</p><ul>`;
             
-            // Analisi specifica per tipo di mercato
-            if (marketAnalysis.analysisType === 'underOver') {
-                if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
-                    if (statistics.diffAverageThreshold < 0) {
-                        explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Under</li>`;
-                    } else if (statistics.diffAverageThreshold > 0) {
-                        explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Under</li>`;
+            // Analisi differenza media-soglia
+            if (statistics.diffAverageThreshold !== 0) {
+                if (marketAnalysis.analysisType === 'underOver') {
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
+                        if (statistics.diffAverageThreshold < 0) {
+                            explanation += `<li class="positive">La media (${statistics.average}) è ${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti sotto la soglia → FAVOREVOLE per Under</li>`;
+                        } else {
+                            explanation += `<li class="negative">La media (${statistics.average}) è ${statistics.diffAverageThreshold.toFixed(1)} punti sopra la soglia → SFVOREVOLE per Under</li>`;
+                        }
                     } else {
-                        explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
-                    }
-                } else {
-                    if (statistics.diffAverageThreshold > 0) {
-                        explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Over</li>`;
-                    } else if (statistics.diffAverageThreshold < 0) {
-                        explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Over</li>`;
-                    } else {
-                        explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
-                    }
-                }
-            } else if (marketAnalysis.analysisType === '1x2') {
-                explanation += `<li>Analisi basata sulla forma delle squadre e difficoltà dell'avversario</li>`;
-                if (statistics.difficultyWeight > 0) {
-                    explanation += `<li class="positive">Difficoltà avversario: BASSA → FATTORE POSITIVO</li>`;
-                } else if (statistics.difficultyWeight < 0) {
-                    explanation += `<li class="negative">Difficoltà avversario: ALTA → FATTORE NEGATIVO</li>`;
-                } else {
-                    explanation += `<li class="neutral">Difficoltà avversario: MEDIA → FATTORE NEUTRO</li>`;
-                }
-            } else if (marketAnalysis.analysisType === 'doubleChance') {
-                explanation += `<li class="positive">La doppia chance offre naturalmente una probabilità più alta rispetto al semplice 1X2</li>`;
-            } else if (marketAnalysis.analysisType === 'ggng') {
-                if (marketAnalysis.normalizedBet.toLowerCase().includes('gg')) {
-                    explanation += `<li>Media gol partita: ${statistics.average.toFixed(1)}</li>`;
-                    if (statistics.average > 2.5) {
-                        explanation += `<li class="positive">Alta media gol favorisce Gol/Gol</li>`;
-                    } else {
-                        explanation += `<li class="negative">Bassa media gol sfavorisce Gol/Gol</li>`;
-                    }
-                } else {
-                    explanation += `<li>Media gol partita: ${statistics.average.toFixed(1)}</li>`;
-                    if (statistics.average < 2.5) {
-                        explanation += `<li class="positive">Bassa media gol favorisce NoGol</li>`;
-                    } else {
-                        explanation += `<li class="negative">Alta media gol sfavorisce NoGol</li>`;
-                    }
-                }
-            } else if (marketAnalysis.analysisType === 'handicap') {
-                explanation += `<li>Analisi handicap: considerando la difficoltà dell'avversario</li>`;
-            } else if (marketAnalysis.analysisType === 'scorer') {
-                explanation += `<li>Pronostico marcatore: analisi basata su forma e note aggiuntive</li>`;
-            } else if (marketAnalysis.analysisType === 'exactScore') {
-                explanation += `<li class="neutral">Risultato esatto: naturalmente a bassa probabilità statistica</li>`;
-            } else {
-                // Analisi generica
-                if (statistics.diffAverageThreshold !== 0) {
-                    if (statistics.diffAverageThreshold > 0) {
-                        explanation += `<li class="positive">La media statistica (${statistics.average}) supera la soglia (${statistics.threshold}) di ${statistics.diffAverageThreshold.toFixed(1)}, fattore positivo</li>`;
-                    } else {
-                        explanation += `<li class="negative">La media statistica (${statistics.average}) è inferiore alla soglia (${statistics.threshold}) di ${Math.abs(statistics.diffAverageThreshold).toFixed(1)}, fattore negativo</li>`;
+                        if (statistics.diffAverageThreshold > 0) {
+                            explanation += `<li class="positive">La media (${statistics.average}) è ${statistics.diffAverageThreshold.toFixed(1)} punti sopra la soglia → FAVOREVOLE per Over</li>`;
+                        } else {
+                            explanation += `<li class="negative">La media (${statistics.average}) è ${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti sotto la soglia → SFVOREVOLE per Over</li>`;
+                        }
                     }
                 }
             }
             
-            // Analisi statistica generale
+            // Analisi storico
             if (statistics.historicalFrequency > 0) {
                 if (statistics.historicalFrequency > 60) {
-                    explanation += `<li class="positive">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano fortemente il pronostico</li>`;
+                    explanation += `<li class="positive">Storico positivo: ${statistics.historicalFrequency.toFixed(1)}% di successi</li>`;
                 } else if (statistics.historicalFrequency > 40) {
-                    explanation += `<li class="neutral">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano moderatamente il pronostico</li>`;
+                    explanation += `<li class="neutral">Storico moderato: ${statistics.historicalFrequency.toFixed(1)}% di successi</li>`;
                 } else {
-                    explanation += `<li class="negative">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) non supportano il pronostico</li>`;
+                    explanation += `<li class="negative">Storico scarso: ${statistics.historicalFrequency.toFixed(1)}% di successi</li>`;
                 }
             }
             
+            // Analisi forma
             if (statistics.recentFormValue > 0) {
                 if (statistics.recentFormValue > 60) {
-                    explanation += `<li class="positive">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è eccellente</li>`;
+                    explanation += `<li class="positive">Forma recente eccellente: ${statistics.recentFormValue.toFixed(1)}%</li>`;
                 } else if (statistics.recentFormValue > 40) {
-                    explanation += `<li class="neutral">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è discreta</li>`;
+                    explanation += `<li class="neutral">Forma recente discreta: ${statistics.recentFormValue.toFixed(1)}%</li>`;
                 } else {
-                    explanation += `<li class="negative">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è scarsa</li>`;
+                    explanation += `<li class="negative">Forma recente scarsa: ${statistics.recentFormValue.toFixed(1)}%</li>`;
                 }
             }
             
             // Analisi value
             if (oddsAnalysis.valueMargin > 0) {
-                explanation += `<li class="positive">Value margin positivo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica POTENZIALE VALORE nella quota</li>`;
+                explanation += `<li class="positive">Value positivo: +${(oddsAnalysis.valueMargin * 100).toFixed(1)}% → QUOTA SOTTOVALUTATA</li>`;
             } else if (oddsAnalysis.valueMargin < -0.1) {
-                explanation += `<li class="negative">Value margin negativo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica ASSENZA DI VALORE nella quota</li>`;
+                explanation += `<li class="negative">Value negativo: ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% → QUOTA SOPRAVALUTATA</li>`;
             } else {
-                explanation += `<li class="neutral">Value margin neutro (${(oddsAnalysis.valueMargin * 100).toFixed(1)}%) - quota in linea con la probabilità</li>`;
+                explanation += `<li class="neutral">Value neutro: ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% → QUOTA IN LINEA</li>`;
             }
             
             explanation += `</ul>`;
-            
             return explanation;
         }
         
-        function generateVerdict(probability, valueMargin, marketType) {
+        function simpleGenerateVerdict(probability, valueMargin, marketType) {
             const score = probability + (valueMargin > 0 ? valueMargin * 100 : 0);
             
-            let strongThreshold = 75;
-            let recommendedThreshold = 60;
-            let cautionThreshold = 40;
-            
-            // Regole speciali per certi mercati
-            if (marketType.includes('Doppia Chance')) {
-                strongThreshold = 85;
-                recommendedThreshold = 70;
-                cautionThreshold = 55;
-            } else if (marketType.includes('Marcatore')) {
-                strongThreshold = 40;
-                recommendedThreshold = 30;
-                cautionThreshold = 20;
-            } else if (marketType.includes('Risultato Esatto')) {
-                strongThreshold = 25;
-                recommendedThreshold = 20;
-                cautionThreshold = 15;
-            }
-            
-            if (score > strongThreshold && valueMargin > 0.1) {
+            if (score > 75 && valueMargin > 0.1) {
                 return {
                     text: "CONSIGLIO FORTE",
                     class: "verdict-strong",
-                    description: "Alta probabilità combinata con value positivo significativo"
+                    description: "Alta probabilità con value positivo"
                 };
-            } else if (score > recommendedThreshold && valueMargin > 0) {
+            } else if (score > 60 && valueMargin > 0) {
                 return {
                     text: "CONSIGLIATO",
                     class: "verdict-recommended",
                     description: "Buona probabilità con value positivo"
                 };
-            } else if (score > cautionThreshold || valueMargin > -0.05) {
+            } else if (score > 40 || valueMargin > -0.05) {
                 return {
                     text: "VALUTABILE",
                     class: "verdict-caution",
@@ -2798,22 +2515,20 @@
             }
         }
         
-        function updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict, formData) {
+        function simpleUpdateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict) {
             // Aggiorna i valori nel DOM
             document.getElementById('market-type').textContent = marketAnalysis.type;
             document.getElementById('market-category').textContent = marketAnalysis.category;
             document.getElementById('normalized-bet').textContent = marketAnalysis.normalizedBet;
             document.getElementById('analysis-type').textContent = marketAnalysis.analysisType;
             
-            // Aggiorna i tag del mercato
-            const marketTags = document.getElementById('market-tags');
-            marketTags.innerHTML = `
+            // Tag del mercato
+            document.getElementById('market-tags').innerHTML = `
                 <div class="market-tag">${marketAnalysis.category}</div>
                 <div class="market-tag">${marketAnalysis.analysisType}</div>
-                ${marketAnalysis.confidence > 10 ? `<div class="market-tag">Confidenza: ${marketAnalysis.confidence}%</div>` : ''}
             `;
             
-            // Aggiorna i parametri chiave
+            // Parametri chiave
             const keyParams = [];
             if (statistics.diffAverageThreshold !== 0) {
                 keyParams.push(`Diff: ${statistics.diffAverageThreshold > 0 ? '+' : ''}${statistics.diffAverageThreshold.toFixed(1)}`);
@@ -2821,19 +2536,16 @@
             if (statistics.historicalFrequency > 0) {
                 keyParams.push(`Storico: ${statistics.historicalFrequency.toFixed(1)}%`);
             }
-            if (statistics.recentFormValue > 0) {
-                keyParams.push(`Forma: ${statistics.recentFormValue.toFixed(1)}%`);
-            }
             document.getElementById('key-parameters').textContent = keyParams.join(' | ') || 'Nessun parametro chiave';
             
-            // Aggiorna le statistiche
+            // Statistiche
             document.getElementById('stat-avg').textContent = statistics.average.toFixed(1);
             
             const diffElement = document.getElementById('diff-avg-threshold');
             const diffValue = statistics.diffAverageThreshold;
             diffElement.textContent = diffValue >= 0 ? `+${diffValue.toFixed(1)}` : diffValue.toFixed(1);
             
-            // Colora la differenza in base al tipo di mercato
+            // Colora la differenza
             if (marketAnalysis.analysisType === 'underOver') {
                 if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
                     diffElement.className = "metric-value " + (diffValue < 0 ? "positive" : diffValue > 0 ? "negative" : "neutral");
@@ -2849,10 +2561,10 @@
             document.getElementById('recent-form').textContent = statistics.recentFormValue > 0 ? 
                 `${statistics.recentFormValue.toFixed(1)}%` : "N/D";
             
-            // Aggiorna la probabilità
+            // Probabilità
             document.getElementById('probability-value').textContent = `${probability}%`;
             
-            // Aggiorna le quote
+            // Quote
             document.getElementById('theoretical-odds').textContent = oddsAnalysis.theoreticalOdds;
             document.getElementById('bookmaker-odds').textContent = oddsAnalysis.bookmakerOdds;
             
@@ -2864,16 +2576,16 @@
                 valueElement.innerHTML = `<span class="value-negative">${valuePercent}%</span>`;
             }
             
-            // Aggiorna la spiegazione
+            // Spiegazione
             document.getElementById('ai-explanation').innerHTML = explanation;
             
-            // Aggiorna il verdetto
+            // Verdetto
             const verdictBox = document.getElementById('verdict-box');
             verdictBox.textContent = verdict.text;
             verdictBox.className = `verdict-box ${verdict.class}`;
             verdictBox.title = verdict.description;
             
-            // Aggiorna il cerchio della probabilità
+            // Cerchio probabilità
             const probabilityCircle = document.getElementById('probability-circle');
             let probabilityColor;
             
@@ -2956,7 +2668,7 @@
                 
                 setTimeout(() => {
                     if (document.getElementById('chatbotContainer').classList.contains('open')) {
-                        addBotMessage(`📥 Ho visto che hai salvato un nuovo pronostico: "${forecast.bet}"! Ora hai ${savedForecasts.length} pronostici salvati. Chiedimi "Quali sono i migliori pronostici?" per avere una raccomandazione personalizzata!`);
+                        addBotMessage(`📥 Ho visto che hai salvato un nuovo pronostico: "${forecast.bet}"! Ora hai ${savedForecasts.length} pronostici salvati.`);
                     }
                 }, 500);
                 
@@ -2987,15 +2699,11 @@
                 const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
                 const valueClass = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? 'value-positive' : 'value-negative';
                 const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
-                const marketTypeIcon = forecast.marketAnalysis?.type?.includes('Under') ? '📉' : 
-                                    forecast.marketAnalysis?.type?.includes('Over') ? '📈' : 
-                                    forecast.marketAnalysis?.type?.includes('1X2') ? '⚽' : 
-                                    forecast.sport === 'calcio' ? '⚽' : '🏀';
                 
                 return `
                 <div class="saved-item" data-id="${forecast.id}">
                     <div class="saved-item-header">
-                        <span class="saved-item-sport">${marketTypeIcon} ${forecast.marketAnalysis?.type || forecast.sport}</span>
+                        <span class="saved-item-sport">${forecast.sport === 'calcio' ? '⚽' : '🏀'} ${forecast.marketAnalysis?.type || forecast.sport}</span>
                         <span class="saved-item-date">${forecast.timestamp}</span>
                     </div>
                     <div class="saved-item-match">${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</div>
@@ -3084,14 +2792,13 @@
             
             currentAnalysis = forecast;
             
-            updateInterface(
+            simpleUpdateInterface(
                 forecast.marketAnalysis,
                 forecast.statistics,
                 forecast.probability,
                 forecast.oddsAnalysis,
                 forecast.explanation,
-                forecast.verdict,
-                forecast.formData
+                forecast.verdict
             );
             
             document.getElementById('result-section').style.display = 'block';
@@ -3171,7 +2878,7 @@
         function analyzeSavedForecasts() {
             if (savedForecasts.length === 0) {
                 return {
-                    text: "📭 Non hai ancora salvato nessun pronostico. Per iniziare, analizza e salva alcuni pronostici utilizzando il form principale. Poi potrò aiutarti a scegliere i migliori!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                    text: "📭 Non hai ancora salvato nessun pronostico. Per iniziare, analizza e salva alcuni pronostici utilizzando il form principale."
                 };
             }
             
@@ -3197,19 +2904,6 @@
                 response += `⭐ Punteggio: <span class="forecast-score ${scoreClass}">${forecast.score.toFixed(1)}/100</span><br><br>`;
             });
             
-            if (topForecasts.length > 0) {
-                const bestForecast = topForecasts[0];
-                
-                response += `💡 <strong>RACCOMANDAZIONE PRINCIPALE:</strong><br>`;
-                response += `Consiglio di puntare su <strong>${bestForecast.bet}</strong> in ${bestForecast.team1} vs ${bestForecast.team2}<br>`;
-                response += `Motivo: ${getRecommendationReason(bestForecast)}<br><br>`;
-                
-                response += `⚠️ <strong>AVVERTENZE:</strong><br>`;
-                response += `• Diversifica sempre le tue scommesse<br>`;
-                response += `• Non puntare più del 5% del tuo bankroll su una singola scommessa<br>`;
-                response += `• Considera sempre il value betting (quota > probabilità)<br>`;
-            }
-            
             return {
                 text: response
             };
@@ -3223,17 +2917,7 @@
             const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
             if (valueMargin > 0) {
                 score += Math.min(30, valueMargin * 100 * 3);
-            } else if (valueMargin < -0.1) {
-                score -= 20;
             }
-            
-            const historical = forecast.statistics?.historicalFrequency || 0;
-            if (historical > 60) score += 10;
-            else if (historical > 40) score += 5;
-            
-            const recentForm = forecast.statistics?.recentFormValue || 0;
-            if (recentForm > 60) score += 10;
-            else if (recentForm > 40) score += 5;
             
             return Math.max(0, Math.min(100, score));
         }
@@ -3245,76 +2929,23 @@
             return 'score-poor';
         }
 
-        function getRecommendationReason(forecast) {
-            const reasons = [];
-            
-            if (forecast.probability >= 70) {
-                reasons.push('probabilità molto alta');
-            } else if (forecast.probability >= 50) {
-                reasons.push('buona probabilità');
-            }
-            
-            const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
-            if (valueMargin > 0.1) {
-                reasons.push('value betting eccellente');
-            } else if (valueMargin > 0) {
-                reasons.push('value betting positivo');
-            }
-            
-            if (forecast.statistics?.historicalFrequency > 60) {
-                reasons.push('storico positivo');
-            }
-            
-            if (forecast.statistics?.recentFormValue > 60) {
-                reasons.push('forma recente eccellente');
-            }
-            
-            return reasons.length > 0 ? reasons.join(', ') : 'analisi complessiva positiva';
-        }
-
         function generateStatsReport() {
             if (savedForecasts.length === 0) {
                 return {
-                    text: "📊 Non ci sono ancora dati da analizzare. Salva alcuni pronostici per generare statistiche!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                    text: "📊 Non ci sono ancora dati da analizzare. Salva alcuni pronostici per generare statistiche!"
                 };
             }
             
-            let report = `📈 <strong>REPORT STATISTICO COMPLETO</strong><br><br>`;
+            let report = `📈 <strong>REPORT STATISTICO</strong><br><br>`;
             
             const totalForecasts = savedForecasts.length;
             const avgProbability = savedForecasts.reduce((sum, f) => sum + (f.probability || 0), 0) / totalForecasts;
             const avgValue = savedForecasts.reduce((sum, f) => sum + ((f.oddsAnalysis?.valueMargin || 0) * 100), 0) / totalForecasts;
             
-            report += `<strong>Statistiche Generali:</strong><br>`;
+            report += `<strong>Statistiche:</strong><br>`;
             report += `• Pronostici totali: ${totalForecasts}<br>`;
             report += `• Probabilità media: ${avgProbability.toFixed(1)}%<br>`;
-            report += `• Value medio: ${avgValue.toFixed(1)}%<br><br>`;
-            
-            const sports = {};
-            savedForecasts.forEach(f => {
-                sports[f.sport] = (sports[f.sport] || 0) + 1;
-            });
-            
-            report += `<strong>Distribuzione per Sport:</strong><br>`;
-            Object.entries(sports).forEach(([sport, count]) => {
-                const percentage = (count / totalForecasts * 100).toFixed(1);
-                report += `• ${sport}: ${count} (${percentage}%)<br>`;
-            });
-            report += `<br>`;
-            
-            report += `💡 <strong>INSIGHTS E CONSIGLI:</strong><br>`;
-            
-            if (avgValue > 0) {
-                report += `✅ Stai trovando value positivo nei tuoi pronostici! Continua così.<br>`;
-            } else {
-                report += `⚠️ Il value medio è negativo. Cerca pronostici con quote più alte rispetto alla probabilità reale.<br>`;
-            }
-            
-            if (avgProbability > 60) {
-                report += `✅ La tua selezione è prudente (alta probabilità media).<br>`;
-            } else if (avgProbability < 40) {
-                report += `⚠️ Stai selezionando molti pronostici rischiosi (bassa probabilità).<br>`;
-            }
+            report += `• Value medio: ${avgValue.toFixed(1)}%<br>`;
             
             return {
                 text: report
@@ -3322,32 +2953,18 @@
         }
 
         function generateBettingStrategy() {
-            let strategy = `🎯 <strong>STRATEGIE DI BETTING INTELLIGENTE</strong><br><br>`;
+            let strategy = `🎯 <strong>STRATEGIE DI BETTING</strong><br><br>`;
             
-            strategy += `<strong>1. VALUE BETTING (Fondamentale)</strong><br>`;
-            strategy += `Cerca sempre quote che offrano value positivo:<br>`;
-            strategy += `Formula: Value = (Quota × Probabilità / 100) - 1<br>`;
-            strategy += `Esempio: Quota 2.00, Probabilità 55% → Value = +10%<br><br>`;
+            strategy += `1. <strong>Value Betting</strong><br>`;
+            strategy += `Cerca sempre quote con value positivo<br><br>`;
             
-            strategy += `<strong>2. GESTIONE DEL BANKROLL</strong><br>`;
-            strategy += `• Kelly Criterion: Puntata = (Quota × Probabilità - 1) / (Quota - 1)<br>`;
-            strategy += `• Metodo conservativo: 1-2% del bankroll per scommessa<br>`;
-            strategy += `• Mai puntare più del 5% su una singola scommessa<br><br>`;
+            strategy += `2. <strong>Gestione Bankroll</strong><br>`;
+            strategy += `• Mai più del 5% su una scommessa<br>`;
+            strategy += `• Diversifica sempre<br><br>`;
             
-            strategy += `<strong>3. SELEZIONE PRONOSTICI</strong><br>`;
-            strategy += `• Focus su 1-2 sport che conosci bene<br>`;
-            strategy += `• Evita le emozioni, segui i dati<br>`;
-            strategy += `• Cerca mercati con meno competizione (es: gol/no gol, under/over)<br><br>`;
-            
-            strategy += `<strong>4. ANALISI PRE-PARTITA</strong><br>`;
-            strategy += `• Controlla infortuni e squalifiche<br>`;
-            strategy += `• Considera motivazione e contesto<br>`;
-            strategy += `• Analizza scontri diretti storici<br><br>`;
-            
-            strategy += `<strong>5. TENERE TRACCIA</strong><br>`;
-            strategy += `• Registra tutte le tue scommesse<br>`;
-            strategy += `• Analizza performance per mercato/sport<br>`;
-            strategy += `• Adatta la strategia in base ai risultati<br>`;
+            strategy += `3. <strong>Analisi Dati</strong><br>`;
+            strategy += `• Studia statistiche e forme<br>`;
+            strategy += `• Considera infortuni e contesto<br>`;
             
             return {
                 text: strategy
@@ -3355,32 +2972,13 @@
         }
 
         function generateSystemExplanation() {
-            let explanation = `🤖 <strong>COME FUNZIONA BETTING AI ULTRA</strong><br><br>`;
+            let explanation = `🤖 <strong>COME FUNZIONA</strong><br><br>`;
             
-            explanation += `<strong>1. ANALISI PREDITTIVA AVANZATA</strong><br>`;
-            explanation += `• Riconoscimento automatico di 20+ tipi di mercato<br>`;
-            explanation += `• Calcolo probabilità con algoritmi specifici per mercato<br>`;
-            explanation += `• Analisi value betting in tempo reale<br><br>`;
-            
-            explanation += `<strong>2. ASSISTENTE AI INTEGRATO</strong><br>`;
-            explanation += `• Analisi intelligente dei tuoi pronostici salvati<br>`;
-            explanation += `• Raccomandazioni personalizzate<br>`;
-            explanation += `• Risposte contestuali alle tue domande<br>`;
-            explanation += `• <strong>Nuovo:</strong> Pulsante "Dati necessari" per sapere cosa inserire<br><br>`;
-            
-            explanation += `<strong>3. FEATURES PRINCIPALI</strong><br>`;
-            explanation += `• Supporto Calcio e Basket<br>`;
-            explanation += `• Salvataggio e confronto pronostici<br>`;
-            explanation += `• Chat con salvataggio automatico<br>`;
-            explanation += `• Dark/Light mode<br>`;
-            explanation += `• Interfaccia responsive<br><br>`;
-            
-            explanation += `<strong>COME USARE AL MEGLIO:</strong><br>`;
-            explanation += `1. Inserisci i dati della partita<br>`;
-            explanation += `2. Analizza il pronostico<br>`;
-            explanation += `3. Salva i migliori pronostici<br>`;
-            explanation += `4. Chiedi all'AI consigli personalizzati<br>`;
-            explanation += `5. Monitora le tue performance<br>`;
+            explanation += `1. Inserisci dati partita<br>`;
+            explanation += `2. Sistema analizza statistiche<br>`;
+            explanation += `3. Calcola probabilità e value<br>`;
+            explanation += `4. Fornisce raccomandazione<br>`;
+            explanation += `5. Puoi salvare e consultare pronostici<br>`;
             
             return {
                 text: explanation
@@ -3390,40 +2988,23 @@
         function analyzeCurrentForecast() {
             if (!currentAnalysis) {
                 return {
-                    text: "⚠️ Non c'è nessun pronostico corrente da analizzare. Prima inserisci i dati e fai l'analisi!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                    text: "⚠️ Non c'è nessun pronostico corrente da analizzare."
                 };
             }
             
-            let analysis = `🔍 <strong>ANALISI PRONOSTICO CORRENTE</strong><br><br>`;
+            let analysis = `🔍 <strong>ANALISI PRONOSTICO</strong><br><br>`;
             
-            analysis += `<strong>Partita:</strong> ${currentAnalysis.team1} vs ${currentAnalysis.team2}<br>`;
-            analysis += `<strong>Pronostico:</strong> ${currentAnalysis.bet}<br>`;
-            analysis += `<strong>Probabilità:</strong> ${currentAnalysis.probability}%<br>`;
-            analysis += `<strong>Quota:</strong> ${currentAnalysis.oddsAnalysis?.bookmakerOdds || 'N/D'}<br>`;
-            analysis += `<strong>Value:</strong> ${((currentAnalysis.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1)}%<br><br>`;
-            
-            analysis += `💡 <strong>VALUTAZIONE AI:</strong><br>`;
+            analysis += `Partita: ${currentAnalysis.team1} vs ${currentAnalysis.team2}<br>`;
+            analysis += `Pronostico: ${currentAnalysis.bet}<br>`;
+            analysis += `Probabilità: ${currentAnalysis.probability}%<br>`;
+            analysis += `Value: ${((currentAnalysis.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1)}%<br>`;
             
             if (currentAnalysis.probability >= 70 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0.1) {
-                analysis += `✅ <strong>ECCELLENTE OPPORTUNITÀ</strong><br>`;
-                analysis += `Alta probabilità combinata con value positivo significativo. Consiglio FORTE di puntare.<br>`;
+                analysis += `<br>✅ <strong>OTTIMA OPPORTUNITÀ</strong>`;
             } else if (currentAnalysis.probability >= 50 && (currentAnalysis.oddsAnalysis?.valueMargin || 0) > 0) {
-                analysis += `👍 <strong>BUON PRONOSTICO</strong><br>`;
-                analysis += `Probabilità decente con value positivo. Può essere considerato per una puntata moderata.<br>`;
-            } else if (currentAnalysis.probability >= 40 || (currentAnalysis.oddsAnalysis?.valueMargin || 0) > -0.05) {
-                analysis += `🤔 <strong>VALUTABILE</strong><br>`;
-                analysis += `Probabilità moderata o value marginale. Potrebbe valere una piccola puntata.<br>`;
+                analysis += `<br>👍 <strong>BUON PRONOSTICO</strong>`;
             } else {
-                analysis += `⚠️ <strong>SCONSIGLIATO</strong><br>`;
-                analysis += `Probabilità bassa e/o value negativo. Meglio evitare.<br>`;
-            }
-            
-            analysis += `<br><strong>SUGGERIMENTI:</strong><br>`;
-            if (currentAnalysis.statistics?.historicalFrequency > 0) {
-                analysis += `• Storico positivo: ${currentAnalysis.statistics.historicalFrequency.toFixed(1)}%<br>`;
-            }
-            if (currentAnalysis.statistics?.recentFormValue > 0) {
-                analysis += `• Forma recente: ${currentAnalysis.statistics.recentFormValue.toFixed(1)}%<br>`;
+                analysis += `<br>⚠️ <strong>VALUTARE CON CAUTELA</strong>`;
             }
             
             return {
@@ -3433,11 +3014,9 @@
 
         function generateIntelligentResponse(message) {
             const responses = [
-                "Ho analizzato la tua domanda. Per darti una risposta precisa, potresti specificare se ti riferisci a pronostici di calcio o basket? Oppure chiedimi direttamente di analizzare i tuoi pronostici salvati!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
-                "Come assistente AI per il betting, posso aiutarti a: 1) Analizzare i tuoi pronostici salvati 2) Consigliarti strategie di betting 3) Spiegarti come funziona il sistema 4) Rispondere a domande specifiche sui pronostici. Cosa preferisci?<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
-                "Per fornirti il miglior aiuto possibile, ho bisogno di più contesto. Stai cercando consigli su pronostici specifici? Vuoi analizzare le tue performance? O hai bisogno di spiegazioni sul sistema?<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
-                "Il successo nel betting dipende da: analisi accurata, gestione del bankroll e value betting. Posso aiutarti in tutti questi aspetti! Dimmi cosa ti interessa di più.<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi.",
-                "Ricorda: nel betting a lungo termine, ciò che conta è trovare value positivo (quota > probabilità reale). Posso aiutarti a identificare queste opportunità nei tuoi pronostici!<br><br>Usa il pulsante <strong>'Dati necessari'</strong> per sapere quali informazioni servono per l'analisi."
+                "Posso aiutarti ad analizzare i tuoi pronostici salvati o a spiegarti come funziona il sistema. Cosa preferisci?",
+                "Per un'analisi precisa, inserisci i dati nel form principale e clicca su 'Analisi Avanzata'.",
+                "Il successo nel betting dipende da analisi accurate e gestione responsabile del bankroll."
             ];
             
             return {
@@ -3446,7 +3025,8 @@
         }
     </script>
 </body>
-    </html>
+                                    </html>
+
 
 
 
