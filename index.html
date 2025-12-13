@@ -1525,7 +1525,6 @@
                                 <i class="fas fa-calculator"></i>
                                 <input type="number" id="basket-media-punti" step="0.1" placeholder="Es. 215.5" min="0" max="300">
                             </div>
-                            <div class="note">Media punti totali per partita delle squadre</div>
                         </div>
                     </div>
                     <div class="col">
@@ -1535,7 +1534,6 @@
                                 <i class="fas fa-sliders-h"></i>
                                 <input type="number" id="basket-soglia" step="0.1" placeholder="Es. 220.5" min="0" max="300">
                             </div>
-                            <div class="note">Soglia Over/Under o Handicap (se applicabile)</div>
                         </div>
                     </div>
                 </div>
@@ -1543,12 +1541,11 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label for="basket-storico"><i class="fas fa-history"></i> Successis Storici</label>
+                            <label for="basket-storico"><i class="fas fa-history"></i> Successi Storici</label>
                             <div class="input-with-icon">
                                 <i class="fas fa-chart-pie"></i>
                                 <input type="text" id="basket-storico" placeholder="Es. 6 su 10 o 60%">
                             </div>
-                            <div class="note">Frequenza storica dell'evento</div>
                         </div>
                     </div>
                     <div class="col">
@@ -1570,7 +1567,6 @@
                                 <i class="fas fa-running"></i>
                                 <input type="text" id="basket-forma-recente" placeholder="Es. 4 vittorie su 6">
                             </div>
-                            <div class="note">Ultime prestazioni della squadra/giocatore</div>
                         </div>
                     </div>
                     <div class="col">
@@ -1738,26 +1734,21 @@
 
         // INIZIALIZZAZIONE
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ DOM caricato - Inizializzazione iniziata');
             initializeApp();
         });
 
         function initializeApp() {
-            console.log('🚀 Inizializzazione app');
-            
             // Carica i pronostici salvati
             try {
                 const saved = localStorage.getItem('savedForecasts');
                 if (saved) {
                     savedForecasts = JSON.parse(saved);
-                    console.log('📂 Pronostici caricati:', savedForecasts.length);
                     updateSavedForecasts();
                 } else {
-                    console.log('📂 Nessun pronostico salvato trovato');
                     savedForecasts = [];
                 }
             } catch (e) {
-                console.error('❌ Errore nel caricamento dei pronostici:', e);
+                console.error('Errore nel caricamento dei pronostici:', e);
                 savedForecasts = [];
             }
 
@@ -1766,10 +1757,9 @@
                 const chat = localStorage.getItem('chatHistory');
                 if (chat) {
                     chatHistory = JSON.parse(chat);
-                    console.log('💬 Cronologia chat caricata:', chatHistory.length);
                 }
             } catch (e) {
-                console.error('❌ Errore nel caricamento della chat:', e);
+                console.error('Errore nel caricamento della chat:', e);
                 chatHistory = [];
             }
 
@@ -1778,14 +1768,13 @@
                 const sessionState = localStorage.getItem('currentChatSession');
                 if (sessionState) {
                     pendingSessionState = JSON.parse(sessionState);
-                    console.log('💾 Sessione precedente trovata');
                     if (pendingSessionState && pendingSessionState.messages && pendingSessionState.messages.length > 0) {
                         document.getElementById('chatbotToggle').classList.add('unread');
                         hasUnreadMessages = true;
                     }
                 }
             } catch (e) {
-                console.error('❌ Errore nel caricamento della sessione:', e);
+                console.error('Errore nel caricamento della sessione:', e);
             }
 
             // Imposta la modalità scura se attiva
@@ -1795,13 +1784,9 @@
             }
 
             setupEventListeners();
-            
-            console.log('✅ App inizializzata correttamente');
         }
 
         function setupEventListeners() {
-            console.log('🔧 Configurazione event listeners');
-            
             // Pulsanti tema e pannelli
             document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
             document.getElementById('toggleSavedPanel').addEventListener('click', toggleSavedPanel);
@@ -1840,7 +1825,6 @@
             // Pulsanti sport
             document.querySelectorAll('.sport-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    console.log('⚽ Cliccato sport:', this.dataset.sport);
                     switchSport(this);
                     updateDataRequirements();
                 });
@@ -1858,8 +1842,6 @@
                     document.getElementById('chatbotForm').dispatchEvent(new Event('submit'));
                 }
             });
-
-            console.log('✅ Event listeners configurati');
         }
 
         // FUNZIONI CHATBOT
@@ -1920,7 +1902,6 @@
 
         function startNewChatSession() {
             currentSessionId = 'session_' + Date.now();
-            console.log('💬 Nuova sessione chat:', currentSessionId);
             
             document.getElementById('chatbotMessages').innerHTML = '';
             
@@ -1952,7 +1933,6 @@
                 };
                 
                 localStorage.setItem('currentChatSession', JSON.stringify(sessionState));
-                console.log('💾 Sessione chat salvata:', messages.length, 'messaggi');
             } else {
                 localStorage.removeItem('currentChatSession');
             }
@@ -1981,8 +1961,6 @@
             });
             
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            console.log('💬 Sessione caricata:', sessionState.messages.length, 'messaggi');
         }
 
         function clearChatHistory() {
@@ -1992,7 +1970,6 @@
                 pendingSessionState = null;
                 startNewChatSession();
                 showAlert('Conversazione cancellata', 'success');
-                console.log('🗑️ Chat cancellata');
             }
         }
 
@@ -2086,8 +2063,6 @@
 
         // FUNZIONE PER CAMBIARE SPORT
         function switchSport(btn) {
-            console.log('🔄 Cambio sport a:', btn.dataset.sport);
-            
             document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
@@ -2101,21 +2076,16 @@
             const targetSection = document.getElementById(sport + '-section');
             if (targetSection) {
                 targetSection.classList.add('active');
-                console.log('✅ Sezione sport attivata:', sport);
-            } else {
-                console.error('❌ Sezione non trovata:', sport + '-section');
             }
         }
 
-        // FUNZIONE PRINCIPALE DI ANALISI - CORRETTA
+        // FUNZIONE PRINCIPALE DI ANALISI
         function analyzeBet() {
-            console.log('🔍 Avvio analisi...');
             showLoading(true);
             
             setTimeout(() => {
                 try {
                     const formData = getFormData();
-                    console.log('📊 Dati form:', formData);
                     
                     if (!validateFormData(formData)) {
                         showLoading(false);
@@ -2123,8 +2093,6 @@
                     }
                     
                     const marketAnalysis = identifyMarket(formData.bet, formData.team1, formData.team2);
-                    console.log('🎯 Mercato identificato:', marketAnalysis);
-                    
                     const statistics = processStatistics(
                         formData.average, 
                         formData.threshold, 
@@ -2167,10 +2135,8 @@
                     document.getElementById('result-section').style.display = 'block';
                     document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
                     
-                    console.log('✅ Analisi completata con successo');
-                    
                 } catch (error) {
-                    console.error('❌ Errore durante l\'analisi:', error);
+                    console.error('Errore durante l\'analisi:', error);
                     showAlert('Si è verificato un errore durante l\'analisi. Riprova.', 'error');
                 } finally {
                     showLoading(false);
@@ -2307,8 +2273,6 @@
                 .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
                 .replace(/\./g, ' ')
                 .replace(/,/g, ' ');
-            
-            console.log("🔍 Identificazione mercato - Testo pulito:", cleanText);
             
             // DATABASE MERCATI DI SCOMMESSA
             const bettingMarkets = {
@@ -2447,9 +2411,7 @@
                 // Normalizza il pronostico
                 normalizedBet = normalizeBet(bet, bestMatch.key);
                 
-                console.log(`✅ Mercato riconosciuto: ${marketType} (${category}) - Confidence: ${confidence}`);
             } else {
-                console.log(`❓ Mercato non riconosciuto con certezza - testo: ${cleanText}`);
                 marketType = "Personalizzato";
                 normalizedBet = bet;
             }
@@ -2526,7 +2488,6 @@
             let historicalFrequency = 0;
             if (historical && historical.toString().trim() !== '') {
                 const histStr = historical.toString().trim();
-                console.log("📊 Storico originale:", histStr);
                 
                 if (histStr.includes('su')) {
                     const parts = histStr.split('su');
@@ -2534,7 +2495,6 @@
                         const successes = parseFloat(parts[0].trim()) || 0;
                         const total = parseFloat(parts[1].trim()) || 1;
                         historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
-                        console.log(`📊 Storico calcolato: ${successes}/${total} = ${historicalFrequency}%`);
                     }
                 } else if (histStr.includes('/')) {
                     const parts = histStr.split('/');
@@ -2542,18 +2502,15 @@
                         const successes = parseFloat(parts[0].trim()) || 0;
                         const total = parseFloat(parts[1].trim()) || 1;
                         historicalFrequency = total > 0 ? (successes / total) * 100 : 0;
-                        console.log(`📊 Storico calcolato: ${successes}/${total} = ${historicalFrequency}%`);
                     }
                 } else if (histStr.includes('%')) {
                     historicalFrequency = parseFloat(histStr.replace('%', '').trim()) || 0;
-                    console.log(`📊 Storico diretto: ${historicalFrequency}%`);
                 }
             }
             
             let recentFormValue = 0;
             if (recentForm && recentForm.toString().trim() !== '') {
                 const formStr = recentForm.toString().trim();
-                console.log("📈 Forma originale:", formStr);
                 
                 if (formStr.includes('su')) {
                     const parts = formStr.split('su');
@@ -2561,7 +2518,6 @@
                         const successes = parseFloat(parts[0].trim()) || 0;
                         const total = parseFloat(parts[1].trim()) || 1;
                         recentFormValue = total > 0 ? (successes / total) * 100 : 0;
-                        console.log(`📈 Forma calcolata: ${successes}/${total} = ${recentFormValue}%`);
                     }
                 } else if (formStr.includes('/')) {
                     const parts = formStr.split('/');
@@ -2569,11 +2525,9 @@
                         const successes = parseFloat(parts[0].trim()) || 0;
                         const total = parseFloat(parts[1].trim()) || 1;
                         recentFormValue = total > 0 ? (successes / total) * 100 : 0;
-                        console.log(`📈 Forma calcolata: ${successes}/${total} = ${recentFormValue}%`);
                     }
                 } else if (formStr.includes('%')) {
                     recentFormValue = parseFloat(formStr.replace('%', '').trim()) || 0;
-                    console.log(`📈 Forma diretta: ${recentFormValue}%`);
                 }
             }
             
@@ -2619,17 +2573,12 @@
         function calculateProbability(statistics, marketAnalysis) {
             let baseProbability = 50;
             
-            console.log("🧮 Calcolo probabilità - Tipo mercato:", marketAnalysis.type);
-            console.log("🧮 Calcolo probabilità - Analisi tipo:", marketAnalysis.analysisType);
-            
             switch(marketAnalysis.analysisType) {
                 case 'underOver':
                     if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
                         baseProbability += (-statistics.diffAverageThreshold * 3);
-                        console.log(`🧮 Under adjustment: ${(-statistics.diffAverageThreshold * 3).toFixed(1)}`);
                     } else {
                         baseProbability += (statistics.diffAverageThreshold * 3);
-                        console.log(`🧮 Over adjustment: ${(statistics.diffAverageThreshold * 3).toFixed(1)}`);
                     }
                     break;
                     
@@ -2673,22 +2622,16 @@
             
             if (statistics.historicalFrequency > 0) {
                 baseProbability = (baseProbability * 0.6) + (statistics.historicalFrequency * 0.4);
-                console.log(`🧮 Dopo storico: ${baseProbability.toFixed(1)}`);
             }
             
             if (statistics.recentFormValue > 0) {
                 baseProbability = (baseProbability * 0.7) + (statistics.recentFormValue * 0.3);
-                console.log(`🧮 Dopo forma: ${baseProbability.toFixed(1)}`);
             }
             
             baseProbability += statistics.difficultyWeight;
-            console.log(`🧮 Dopo difficoltà: ${baseProbability.toFixed(1)}`);
-            
             baseProbability += statistics.notesAnalysis;
-            console.log(`🧮 Dopo note: ${baseProbability.toFixed(1)}`);
             
             const finalProbability = Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
-            console.log(`🧮 Probabilità finale: ${finalProbability}%`);
             
             return finalProbability;
         }
@@ -2696,12 +2639,6 @@
         function analyzeOdds(probability, bookmakerOdds) {
             const theoreticalOdds = (100 / probability).toFixed(2);
             const valueMargin = ((bookmakerOdds / theoreticalOdds) - 1).toFixed(3);
-            
-            console.log("💰 Analisi quote:");
-            console.log("💰 Probabilità:", probability + "%");
-            console.log("💰 Quota teorica:", theoreticalOdds);
-            console.log("💰 Quota bookmaker:", bookmakerOdds);
-            console.log("💰 Value margin:", (valueMargin * 100).toFixed(1) + "%");
             
             return {
                 theoreticalOdds: theoreticalOdds,
@@ -2986,10 +2923,7 @@
 
         // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI
         function saveForecast() {
-            console.log('💾 Tentativo di salvataggio pronostico...');
-            
             if (!currentAnalysis) {
-                console.error('❌ Nessuna analisi corrente da salvare');
                 showAlert('Prima devi effettuare un\'analisi per salvare il pronostico!', 'error');
                 return;
             }
@@ -3011,22 +2945,14 @@
                     timestamp: new Date().toLocaleString('it-IT')
                 };
                 
-                console.log('📝 Nuovo pronostico da salvare:', forecast);
-                
                 if (!Array.isArray(savedForecasts)) {
                     savedForecasts = [];
                 }
                 
                 savedForecasts.push(forecast);
-                console.log('📂 Pronostici totali dopo aggiunta:', savedForecasts.length);
-                
                 localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
-                console.log('💾 Salvataggio localStorage completato');
-                
                 updateSavedForecasts();
-                
                 showAlert('✅ Pronostico salvato con successo!', 'success');
-                console.log('✅ Pronostico salvato correttamente');
                 
                 setTimeout(() => {
                     if (document.getElementById('chatbotContainer').classList.contains('open')) {
@@ -3035,7 +2961,7 @@
                 }, 500);
                 
             } catch (error) {
-                console.error('❌ Errore durante il salvataggio:', error);
+                console.error('Errore durante il salvataggio:', error);
                 showAlert('❌ Errore nel salvataggio del pronostico', 'error');
             }
         }
@@ -3043,7 +2969,6 @@
         // FUNZIONE PER MOSTRARE I PRONOSTICI SALVATI
         function updateSavedForecasts() {
             const container = document.getElementById('savedForecastsList');
-            console.log('🔄 Aggiornamento lista pronostici salvati');
             
             if (!savedForecasts || savedForecasts.length === 0) {
                 container.innerHTML = `
@@ -3116,20 +3041,14 @@
                     }
                 });
             });
-            
-            console.log('✅ Lista pronostici aggiornata');
         }
         
         // FUNZIONE PER MOSTRARE I DETTAGLI DEL PRONOSTICO SALVATO
         function showForecastDetail(id) {
-            console.log('🔍 Mostra dettaglio pronostico:', id);
             const forecast = savedForecasts.find(f => f.id === id);
             if (!forecast) {
-                console.error('❌ Pronostico non trovato:', id);
                 return;
             }
-            
-            console.log('📋 Dettagli pronostico trovato:', forecast);
             
             if (forecast.sport === 'calcio') {
                 if (currentSport !== 'calcio') {
@@ -3181,19 +3100,15 @@
             document.getElementById('saveBtn').disabled = false;
             
             closeSavedPanel();
-            
-            console.log('✅ Dettaglio pronostico mostrato');
         }
         
         function deleteForecast(id) {
-            console.log('🗑️ Eliminazione pronostico:', id);
             if (!confirm('Sei sicuro di voler eliminare questo pronostico?')) return;
             
             savedForecasts = savedForecasts.filter(f => f.id !== id);
             localStorage.setItem('savedForecasts', JSON.stringify(savedForecasts));
             updateSavedForecasts();
             showAlert('🗑️ Pronostico eliminato', 'success');
-            console.log('✅ Pronostico eliminato');
         }
 
         // FUNZIONI PER IL TEMA CHIARO/SCURO
@@ -3204,7 +3119,6 @@
             
             const icon = document.getElementById('toggleDarkMode');
             icon.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            console.log('🎨 Dark mode:', darkMode);
         }
 
         // FUNZIONI PER IL PANNELLO DEI PRONOSTICI SALVATI
@@ -3213,7 +3127,6 @@
             const overlay = document.getElementById('overlay');
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
-            console.log('📋 Pannello salvati:', panel.classList.contains('open'));
         }
         
         function closeSavedPanel() {
@@ -3534,6 +3447,7 @@
     </script>
 </body>
     </html>
+
 
 
 
