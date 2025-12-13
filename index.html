@@ -735,6 +735,40 @@
             border: 2px solid var(--success);
         }
 
+        /* Market Recognition */
+        .market-recognition {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--secondary);
+        }
+
+        .market-recognition h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .market-tag {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .market-category {
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -830,7 +864,7 @@
             <div class="header-content">
                 <h1><i class="fas fa-robot"></i> Betting AI Ultra</h1>
                 <p class="subtitle">Analisi predittiva avanzata per pronostici di Calcio e Basket</p>
-                <div class="badge"><i class="fas fa-star"></i> ALGORITMO MIGLIORATO</div>
+                <div class="badge"><i class="fas fa-star"></i> RICONOSCIMENTO MERCATI AVANZATO</div>
             </div>
         </header>
         
@@ -871,9 +905,9 @@
                     <label for="calcio-pronostico"><i class="fas fa-bullseye"></i> Pronostico Calcio</label>
                     <div class="input-with-icon">
                         <i class="fas fa-chart-line"></i>
-                        <input type="text" id="calcio-pronostico" placeholder="Es. Over 2.5, Juventus -1, Haaland marcatore">
+                        <input type="text" id="calcio-pronostico" placeholder="Es. Over 2.5, 1X, GG, 1-0, Ronaldo marcatore">
                     </div>
-                    <div class="note">Esempi: "Over 2.5", "1X", "2-1", "Gol", "BTTS Sì", "Ronaldo marcatore"</div>
+                    <div class="note">Il sistema riconosce automaticamente il tipo di mercato (Over/Under, 1X2, Gol/NoGol, ecc.)</div>
                 </div>
                 
                 <div class="row">
@@ -894,7 +928,7 @@
                                 <i class="fas fa-sliders-h"></i>
                                 <input type="number" id="calcio-soglia" step="0.1" placeholder="Es. 2.5" min="0" max="10">
                             </div>
-                            <div class="note">Soglia Over/Under o Handicap</div>
+                            <div class="note">Soglia Over/Under o Handicap (se applicabile)</div>
                         </div>
                     </div>
                 </div>
@@ -979,7 +1013,7 @@
                         <i class="fas fa-chart-line"></i>
                         <input type="text" id="basket-pronostico" placeholder="Es. Over 220.5, Lakers -5.5, Under 97.5 punti Lakers">
                     </div>
-                    <div class="note">Esempi: "Over 220.5", "Lakers -5.5", "Under 97.5 punti Lakers", "Jokic Over 9.5 rimbalzi"</div>
+                    <div class="note">Il sistema riconosce automaticamente il tipo di mercato</div>
                 </div>
                 
                 <div class="row">
@@ -1000,7 +1034,7 @@
                                 <i class="fas fa-sliders-h"></i>
                                 <input type="number" id="basket-soglia" step="0.1" placeholder="Es. 220.5" min="0" max="300">
                             </div>
-                            <div class="note">Soglia Over/Under o Handicap</div>
+                            <div class="note">Soglia Over/Under o Handicap (se applicabile)</div>
                         </div>
                     </div>
                 </div>
@@ -1078,22 +1112,45 @@
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-chart-line"></i> Risultati Analisi Predittiva</h2>
                 
+                <!-- SEZIONE RICONOSCIMENTO MERCATO -->
                 <div class="analysis-step">
-                    <h3><i class="fas fa-cogs"></i> 1) ANALISI MERCATO</h3>
+                    <h3><i class="fas fa-search"></i> 1) RICONOSCIMENTO MERCATO</h3>
                     <div class="step-content">
-                        <div class="metric">
-                            <span>Tipo mercato identificato:</span>
-                            <span class="metric-value" id="market-type">-</span>
-                        </div>
-                        <div class="metric">
-                            <span>Pronostico normalizzato:</span>
-                            <span class="metric-value" id="normalized-bet">-</span>
+                        <div class="market-recognition">
+                            <h3><i class="fas fa-tags"></i> Mercato Identificato</h3>
+                            <div class="metric">
+                                <span>Tipo mercato:</span>
+                                <span class="metric-value" id="market-type">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>Categoria:</span>
+                                <span class="metric-value" id="market-category">-</span>
+                            </div>
+                            <div class="metric">
+                                <span>Pronostico normalizzato:</span>
+                                <span class="metric-value" id="normalized-bet">-</span>
+                            </div>
+                            <div id="market-tags"></div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="analysis-step">
-                    <h3><i class="fas fa-chart-bar"></i> 2) ANALISI STATISTICA</h3>
+                    <h3><i class="fas fa-cogs"></i> 2) ANALISI MERCATO SPECIFICA</h3>
+                    <div class="step-content">
+                        <div class="metric">
+                            <span>Tipo analisi applicata:</span>
+                            <span class="metric-value" id="analysis-type">-</span>
+                        </div>
+                        <div class="metric">
+                            <span>Parametri chiave:</span>
+                            <span class="metric-value" id="key-parameters">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-step">
+                    <h3><i class="fas fa-chart-bar"></i> 3) ANALISI STATISTICA</h3>
                     <div class="step-content">
                         <div class="metric">
                             <span>Media statistica:</span>
@@ -1115,7 +1172,7 @@
                 </div>
                 
                 <div class="analysis-step">
-                    <h3><i class="fas fa-calculator"></i> 3) CALCOLO PROBABILITÀ</h3>
+                    <h3><i class="fas fa-calculator"></i> 4) CALCOLO PROBABILITÀ</h3>
                     <div class="step-content">
                         <div class="probability-container">
                             <div class="probability-circle" id="probability-circle">
@@ -1127,7 +1184,7 @@
                 </div>
                 
                 <div class="analysis-step">
-                    <h3><i class="fas fa-money-bill-wave"></i> 4) ANALISI QUOTE E VALUE</h3>
+                    <h3><i class="fas fa-money-bill-wave"></i> 5) ANALISI QUOTE E VALUE</h3>
                     <div class="step-content">
                         <div class="metric">
                             <span>Quota teorica:</span>
@@ -1145,7 +1202,7 @@
                 </div>
                 
                 <div class="explanation">
-                    <h3><i class="fas fa-robot"></i> 5) SPIEGAZIONE AI</h3>
+                    <h3><i class="fas fa-robot"></i> 6) SPIEGAZIONE AI</h3>
                     <div id="ai-explanation">
                         <!-- Il contenuto verrà popolato dinamicamente -->
                     </div>
@@ -1171,6 +1228,235 @@
         let currentAnalysis = null;
         let darkMode = localStorage.getItem('darkMode') === 'true';
         let currentSport = 'calcio';
+
+        // DATABASE MERCATI DI SCOMMESSA
+        const bettingMarkets = {
+            // PRINCIPALI
+            '1X2': {
+                name: 'Esito Finale 1X2',
+                category: 'Principali',
+                patterns: ['1', 'x', '2', '1x2', 'esito', 'vittoria', 'pareggio'],
+                description: 'Pronostico sull\'esito finale della partita: 1=vittoria casa, X=pareggio, 2=vittoria ospite'
+            },
+            'Doppia Chance': {
+                name: 'Doppia Chance',
+                category: 'Principali',
+                patterns: ['dc', 'doppia chance', '1x', 'x2', '12', 'casa o pareggio', 'ospite o pareggio'],
+                description: 'Pronostico che la partita non si concluda con la vittoria di una specifica squadra'
+            },
+            'Under/Over': {
+                name: 'Under/Over',
+                category: 'Principali',
+                patterns: ['under', 'over', 'u/', 'o/', 'sotto', 'sopra'],
+                description: 'Pronostico sul numero totale di gol/punti rispetto a una soglia'
+            },
+            'Gol/No Gol': {
+                name: 'Gol/No Gol',
+                category: 'Principali',
+                patterns: ['gg', 'ng', 'gol/nogol', 'both teams to score', 'btts', 'goal', 'no goal'],
+                description: 'Pronostico se entrambe le squadre segneranno (GG) o no (NG)'
+            },
+            '1X2 Handicap': {
+                name: '1X2 Handicap',
+                category: 'Principali',
+                patterns: ['handicap', 'hcp', '+', '-', 'asiatico'],
+                description: 'Pronostico sul vincitore considerando un handicap'
+            },
+            'Draw No Bet': {
+                name: 'Draw No Bet',
+                category: 'Principali',
+                patterns: ['dnb', 'draw no bet', 'senza pareggio'],
+                description: 'Pronostico sul vincitore con rimborso in caso di pareggio'
+            },
+            
+            // TEMPO
+            '1X2 Tempo': {
+                name: '1X2 Tempo',
+                category: 'Tempo',
+                patterns: ['1°t', '2°t', 'primo tempo', 'secondo tempo', 'tempo'],
+                description: 'Pronostico sull\'esito di un tempo specifico'
+            },
+            'DC Tempo': {
+                name: 'DC Tempo',
+                category: 'Tempo',
+                patterns: ['dc tempo', 'doppia chance tempo'],
+                description: 'Doppia chance applicata a un tempo specifico'
+            },
+            'U/O Tempo': {
+                name: 'Under/Over Tempo',
+                category: 'Tempo',
+                patterns: ['under tempo', 'over tempo', 'u/ tempo', 'o/ tempo'],
+                description: 'Under/Over applicato a un tempo specifico'
+            },
+            
+            // SQUADRE
+            'U/O Casa': {
+                name: 'Under/Over Casa',
+                category: 'Squadre',
+                patterns: ['under casa', 'over casa', 'casa under', 'casa over'],
+                description: 'Under/Over sui gol/punti della squadra di casa'
+            },
+            'U/O Ospite': {
+                name: 'Under/Over Ospite',
+                category: 'Squadre',
+                patterns: ['under ospite', 'over ospite', 'ospite under', 'ospite over'],
+                description: 'Under/Over sui gol/punti della squadra ospite'
+            },
+            'Segna Gol Casa': {
+                name: 'Segna Gol Casa',
+                category: 'Squadre',
+                patterns: ['casa segna', 'casa goal', 'home to score'],
+                description: 'Pronostico se la squadra di casa segnerà'
+            },
+            'Segna Gol Ospite': {
+                name: 'Segna Gol Ospite',
+                category: 'Squadre',
+                patterns: ['ospite segna', 'ospite goal', 'away to score'],
+                description: 'Pronostico se la squadra ospite segnerà'
+            },
+            
+            // RISULTATO ESATTO
+            'Risultato Esatto': {
+                name: 'Risultato Esatto',
+                category: 'Risultato Esatto',
+                patterns: ['risultato esatto', 'exact score', '1-0', '2-0', '2-1', '0-0', '1-1', '2-2'],
+                description: 'Pronostico sul risultato esatto della partita'
+            },
+            'Risultato Esatto Multiplo': {
+                name: 'Risultato Esatto Multiplo',
+                category: 'Risultato Esatto',
+                patterns: ['multiplo', 'gruppo risultati', 'exact score group'],
+                description: 'Pronostico su un gruppo di risultati esatti'
+            },
+            
+            // PARZIALE/FINALE
+            'Parziale/Finale': {
+                name: 'Parziale/Finale',
+                category: 'Parziale/Finale',
+                patterns: ['parziale/finale', '1/1', '1/x', '1/2', 'x/1', 'x/x', 'x/2', '2/1', '2/x', '2/2'],
+                description: 'Pronostico combinato sul primo tempo e risultato finale'
+            },
+            
+            // MULTIGOL
+            'MultiGol': {
+                name: 'MultiGol',
+                category: 'MultiGol',
+                patterns: ['multigol', 'gol range', '1-2 gol', '2-3 gol', '3-4 gol'],
+                description: 'Pronostico sul range di gol totali'
+            },
+            
+            // COMBO
+            'Combo 1X2 + U/O': {
+                name: 'Combo 1X2 + Under/Over',
+                category: 'Combo',
+                patterns: ['combo', '1+u', '1+o', 'x+u', 'x+o', '2+u', '2+o'],
+                description: 'Pronostico combinato su esito e under/over'
+            },
+            'Combo DC + U/O': {
+                name: 'Combo DC + Under/Over',
+                category: 'Combo',
+                patterns: ['dc+u', 'dc+o', '1x+u', '1x+o', '12+u', '12+o', 'x2+u', 'x2+o'],
+                description: 'Pronostico combinato su doppia chance e under/over'
+            },
+            
+            // CHANCE MIX
+            'Chance Mix': {
+                name: 'Chance Mix',
+                category: 'Chance Mix',
+                patterns: ['chance mix', '1oov', 'xoov', '2oov', '1oung', '2oung'],
+                description: 'Pronostico che almeno uno di due esiti si verifichi'
+            },
+            
+            // SOMMA GOL
+            'Somma Gol': {
+                name: 'Somma Gol',
+                category: 'Somma Gol',
+                patterns: ['somma gol', 'total goals', '0 gol', '1 gol', '2 gol', '3 gol', '4+ gol'],
+                description: 'Pronostico sul numero esatto di gol totali'
+            },
+            
+            // PARI/DISPARI
+            'Pari/Dispari': {
+                name: 'Pari/Dispari',
+                category: 'Pari/Dispari',
+                patterns: ['pari', 'dispari', 'even/odd', 'pari dispari'],
+                description: 'Pronostico se il totale gol/punti sarà pari o dispari'
+            },
+            
+            // PRIMO/ULTIMO GOL
+            'Primo Gol': {
+                name: 'Primo Gol',
+                category: 'Primo/Ultimo Gol',
+                patterns: ['primo gol', 'first goal', 'primo marcatore'],
+                description: 'Pronostico su chi segnerà il primo gol'
+            },
+            'Ultimo Gol': {
+                name: 'Ultimo Gol',
+                category: 'Primo/Ultimo Gol',
+                patterns: ['ultimo gol', 'last goal', 'ultimo marcatore'],
+                description: 'Pronostico su chi segnerà l\'ultimo gol'
+            },
+            
+            // HANDICAP ASIATICO
+            'Handicap Asiatico': {
+                name: 'Handicap Asiatico',
+                category: 'Handicap Asiatico',
+                patterns: ['handicap asiatico', 'asian handicap', 'ah'],
+                description: 'Handicap con rimborso in caso di pareggio virtuale'
+            },
+            
+            // MARCATORI
+            'Marcatore': {
+                name: 'Marcatore',
+                category: 'Giocatori',
+                patterns: ['marcatore', 'goalscorer', 'segna', 'anytime scorer', 'marchera'],
+                description: 'Pronostico se un giocatore segnerà'
+            },
+            'Doppietta': {
+                name: 'Doppietta',
+                category: 'Giocatori',
+                patterns: ['doppietta', 'double', '2 gol'],
+                description: 'Pronostico se un giocatore segnerà 2 gol'
+            },
+            'Tripletta': {
+                name: 'Tripletta',
+                category: 'Giocatori',
+                patterns: ['tripletta', 'hat-trick', '3 gol'],
+                description: 'Pronostico se un giocatore segnerà 3 gol'
+            },
+            
+            // CORNER
+            'Corner': {
+                name: 'Corner',
+                category: 'Corner',
+                patterns: ['corner', 'angoli', 'calci d\'angolo'],
+                description: 'Pronostico sui corner'
+            },
+            
+            // CARTELLINI
+            'Cartellini': {
+                name: 'Cartellini',
+                category: 'Sanzioni',
+                patterns: ['cartellini', 'gialli', 'rossi', 'ammonizioni', 'espulsioni'],
+                description: 'Pronostico sui cartellini'
+            },
+            
+            // STATISTICHE
+            'Statistiche': {
+                name: 'Statistiche Partita',
+                category: 'Statistiche',
+                patterns: ['tiri', 'rimbalzi', 'assist', 'passaggi', 'possesso', 'falli'],
+                description: 'Pronostico su statistiche di partita'
+            },
+            
+            // SPECIALI
+            'Speciali': {
+                name: 'Mercati Speciali',
+                category: 'Speciali',
+                patterns: ['var', 'rigore', 'autogol', 'supplementari', 'rigori'],
+                description: 'Pronostico su eventi speciali'
+            }
+        };
 
         // INIZIALIZZAZIONE
         document.addEventListener('DOMContentLoaded', function() {
@@ -1272,8 +1558,9 @@
                         return;
                     }
                     
-                    // 1) ANALISI MERCATO
-                    const marketAnalysis = analyzeMarket(formData.bet, formData.team1, formData.team2);
+                    // 1) IDENTIFICAZIONE MERCATO
+                    const marketAnalysis = identifyMarket(formData.bet, formData.team1, formData.team2);
+                    console.log('🎯 Mercato identificato:', marketAnalysis);
                     
                     // 2) ELABORAZIONE STATISTICA
                     const statistics = processStatistics(
@@ -1286,8 +1573,8 @@
                         marketAnalysis.type
                     );
                     
-                    // 3) CALCOLO PROBABILITÀ
-                    const probability = calculateProbability(statistics, marketAnalysis.type);
+                    // 3) CALCOLO PROBABILITÀ (con logica specifica per mercato)
+                    const probability = calculateProbability(statistics, marketAnalysis);
                     
                     // 4) ANALISI QUOTE
                     const oddsAnalysis = analyzeOdds(probability, formData.odds);
@@ -1297,11 +1584,12 @@
                         marketAnalysis, 
                         statistics, 
                         probability, 
-                        oddsAnalysis
+                        oddsAnalysis,
+                        formData
                     );
                     
                     // 6) VERDETTO FINALE
-                    const verdict = generateVerdict(probability, oddsAnalysis.valueMargin);
+                    const verdict = generateVerdict(probability, oddsAnalysis.valueMargin, marketAnalysis.type);
                     
                     // Salva l'analisi corrente CON TUTTI I DATI
                     currentAnalysis = {
@@ -1315,12 +1603,12 @@
                         oddsAnalysis,
                         explanation,
                         verdict,
-                        formData: formData, // SALVA TUTTI I DATI ORIGINALI
+                        formData: formData,
                         timestamp: new Date().toLocaleString('it-IT')
                     };
                     
                     // Aggiorna l'interfaccia
-                    updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict);
+                    updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict, formData);
                     
                     // Abilita il pulsante di salvataggio
                     document.getElementById('saveBtn').disabled = false;
@@ -1338,6 +1626,174 @@
                     showLoading(false);
                 }
             }, 1000);
+        }
+        
+        // FUNZIONE MIGLIORATA PER IDENTIFICAZIONE MERCATO
+        function identifyMarket(bet, team1, team2) {
+            if (!bet || typeof bet !== 'string') {
+                return {
+                    type: "Personalizzato",
+                    normalizedBet: bet || "",
+                    category: "Altro",
+                    description: "Mercato non riconosciuto",
+                    analysisType: "standard"
+                };
+            }
+            
+            // PULIZIA COMPLETA DEL TESTO
+            let cleanText = bet
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace(/[\u200B-\u200D\uFEFF]/g, '')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            
+            console.log("🔍 Identificazione mercato - Testo pulito:", cleanText);
+            
+            let identifiedMarket = null;
+            let marketType = "Personalizzato";
+            let category = "Altro";
+            let description = "Mercato non riconosciuto";
+            let analysisType = "standard";
+            let normalizedBet = cleanText;
+            
+            // Cerca corrispondenze nei pattern dei mercati
+            for (const [key, market] of Object.entries(bettingMarkets)) {
+                for (const pattern of market.patterns) {
+                    const regex = new RegExp(`\\b${pattern}\\b`, 'i');
+                    if (regex.test(cleanText)) {
+                        identifiedMarket = market;
+                        marketType = market.name;
+                        category = market.category;
+                        description = market.description;
+                        analysisType = getAnalysisTypeForMarket(key);
+                        console.log(`✅ Mercato riconosciuto: ${marketType} (${category})`);
+                        break;
+                    }
+                }
+                if (identifiedMarket) break;
+            }
+            
+            // Logiche specifiche per mercati comuni
+            if (!identifiedMarket) {
+                // Controllo per Under/Over con numero
+                const uoMatch = cleanText.match(/(under|over|u\/|o\/)\s*(\d+[.,]?\d*)/i);
+                if (uoMatch) {
+                    identifiedMarket = bettingMarkets['Under/Over'];
+                    marketType = "Under/Over";
+                    category = "Principali";
+                    description = "Pronostico sul numero totale di gol/punti rispetto a una soglia";
+                    analysisType = "underOver";
+                    normalizedBet = `${uoMatch[1].toLowerCase().includes('under') || uoMatch[1].toLowerCase().includes('u/') ? 'Under' : 'Over'} ${uoMatch[2].replace(',', '.')}`;
+                }
+                // Controllo per 1X2 semplice
+                else if (/^[12x]$/i.test(cleanText)) {
+                    identifiedMarket = bettingMarkets['1X2'];
+                    marketType = "Esito Finale 1X2";
+                    category = "Principali";
+                    description = "Pronostico sull'esito finale della partita";
+                    analysisType = "1x2";
+                }
+                // Controllo per Doppia Chance
+                else if (/^(1x|x2|12)$/i.test(cleanText)) {
+                    identifiedMarket = bettingMarkets['Doppia Chance'];
+                    marketType = "Doppia Chance";
+                    category = "Principali";
+                    description = "Pronostico che la partita non si concluda con la vittoria di una specifica squadra";
+                    analysisType = "doubleChance";
+                }
+                // Controllo per Gol/NoGol
+                else if (/^(gg|ng|btts)$/i.test(cleanText)) {
+                    identifiedMarket = bettingMarkets['Gol/No Gol'];
+                    marketType = "Gol/No Gol";
+                    category = "Principali";
+                    description = "Pronostico se entrambe le squadre segneranno (GG) o no (NG)";
+                    analysisType = "ggng";
+                }
+                // Controllo per risultato esatto
+                else if (/^\d+-\d+$/i.test(cleanText)) {
+                    identifiedMarket = bettingMarkets['Risultato Esatto'];
+                    marketType = "Risultato Esatto";
+                    category = "Risultato Esatto";
+                    description = "Pronostico sul risultato esatto della partita";
+                    analysisType = "exactScore";
+                }
+                // Controllo per marcatore
+                else if (cleanText.includes('marcatore') || cleanText.includes('goalscorer') || cleanText.includes('segna')) {
+                    identifiedMarket = bettingMarkets['Marcatore'];
+                    marketType = "Marcatore";
+                    category = "Giocatori";
+                    description = "Pronostico se un giocatore segnerà";
+                    analysisType = "goalscorer";
+                }
+            }
+            
+            // Se non riconosciuto, cerca per parole chiave generiche
+            if (!identifiedMarket) {
+                const keywords = {
+                    'under': 'Under/Over',
+                    'over': 'Under/Over',
+                    'u/': 'Under/Over',
+                    'o/': 'Under/Over',
+                    'handicap': '1X2 Handicap',
+                    'hcp': '1X2 Handicap',
+                    'dnb': 'Draw No Bet',
+                    'doppia': 'Doppia Chance',
+                    'dc': 'Doppia Chance',
+                    'corner': 'Corner',
+                    'angoli': 'Corner',
+                    'cartellin': 'Cartellini',
+                    'giall': 'Cartellini',
+                    'ross': 'Cartellini',
+                    'rigore': 'Speciali',
+                    'var': 'Speciali',
+                    'supplementari': 'Speciali'
+                };
+                
+                for (const [keyword, marketKey] of Object.entries(keywords)) {
+                    if (cleanText.includes(keyword)) {
+                        identifiedMarket = bettingMarkets[marketKey];
+                        if (identifiedMarket) {
+                            marketType = identifiedMarket.name;
+                            category = identifiedMarket.category;
+                            description = identifiedMarket.description;
+                            analysisType = getAnalysisTypeForMarket(marketKey);
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            return {
+                type: marketType,
+                normalizedBet: normalizedBet,
+                category: category,
+                description: description,
+                analysisType: analysisType,
+                rawText: bet
+            };
+        }
+        
+        function getAnalysisTypeForMarket(marketKey) {
+            const analysisTypes = {
+                'Under/Over': 'underOver',
+                '1X2': '1x2',
+                'Doppia Chance': 'doubleChance',
+                'Gol/No Gol': 'ggng',
+                '1X2 Handicap': 'handicap',
+                'Draw No Bet': 'drawNoBet',
+                'Marcatore': 'goalscorer',
+                'Doppietta': 'multipleGoals',
+                'Tripletta': 'multipleGoals',
+                'Risultato Esatto': 'exactScore',
+                'Corner': 'corners',
+                'Cartellini': 'cards',
+                'Pari/Dispari': 'evenOdd',
+                'Primo Gol': 'firstGoal',
+                'Ultimo Gol': 'lastGoal'
+            };
+            
+            return analysisTypes[marketKey] || 'standard';
         }
         
         function getFormData() {
@@ -1433,91 +1889,6 @@
             }
         }
         
-        // FUNZIONE MIGLIORATA PER ANALISI MERCATO
-        function analyzeMarket(bet, team1, team2) {
-            if (!bet || typeof bet !== 'string') {
-                return { type: "Personalizzato", normalizedBet: bet || "" };
-            }
-            
-            // PULIZIA COMPLETA DEL TESTO
-            let cleanText = bet
-                .trim()
-                .replace(/\s+/g, ' ')
-                .replace(/[\u200B-\u200D\uFEFF]/g, '')
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            
-            // Versione per matching (case-insensitive)
-            const matchText = cleanText.toLowerCase();
-            
-            let type = "Personalizzato";
-            let normalizedBet = cleanText;
-            
-            console.log("🔍 Analisi mercato - Originale:", bet);
-            console.log("🔍 Analisi mercato - Pulito:", cleanText);
-            console.log("🔍 Analisi mercato - Per matching:", matchText);
-            
-            // CONTROLLO CASE-INSENSITIVE ROBUSTO
-            const isOver = /\bover\b/i.test(cleanText);
-            const isUnder = /\bunder\b/i.test(cleanText);
-            
-            if (isOver) {
-                type = "Over";
-                const match = cleanText.match(/over\s+([\d\.,]+)/i);
-                if (match) {
-                    const number = match[1].replace(',', '.');
-                    if (/\bpunti\b/i.test(cleanText)) {
-                        const teamMatch = cleanText.match(/punti\s+([^,\.]+)/i);
-                        normalizedBet = `Over ${number} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
-                    } else {
-                        normalizedBet = `Over ${number}`;
-                    }
-                }
-                console.log("✅ Riconosciuto come: Over");
-            } 
-            else if (isUnder) {
-                type = "Under";
-                const match = cleanText.match(/under\s+([\d\.,]+)/i);
-                if (match) {
-                    const number = match[1].replace(',', '.');
-                    if (/\bpunti\b/i.test(cleanText)) {
-                        const teamMatch = cleanText.match(/punti\s+([^,\.]+)/i);
-                        normalizedBet = `Under ${number} punti${teamMatch ? ` ${teamMatch[1].trim()}` : ''}`;
-                    } else {
-                        normalizedBet = `Under ${number}`;
-                    }
-                }
-                console.log("✅ Riconosciuto come: Under");
-            }
-            else if (matchText.includes("marcatore") || matchText.includes("goalscorer") || matchText.includes("segna")) {
-                type = "Marcatore";
-                console.log("✅ Riconosciuto come: Marcatore");
-            } 
-            else if (matchText.includes("btts") || matchText.includes("both teams to score")) {
-                type = "BTTS";
-                console.log("✅ Riconosciuto come: BTTS");
-            } 
-            else if (matchText.includes("1x2") || matchText.includes("doppia chance")) {
-                type = "1X2/Double Chance";
-                console.log("✅ Riconosciuto come: 1X2/Double Chance");
-            } 
-            else if (cleanText.includes("-") || cleanText.includes("+")) {
-                type = "Handicap";
-                console.log("✅ Riconosciuto come: Handicap");
-            } 
-            else if (matchText === "1" || matchText === "x" || matchText === "2") {
-                type = "1X2";
-                console.log("✅ Riconosciuto come: 1X2");
-            }
-            
-            console.log("✅ Tipo finale:", type);
-            console.log("✅ Pronostico normalizzato:", normalizedBet);
-            
-            return {
-                type,
-                normalizedBet
-            };
-        }
-        
         // FUNZIONE MIGLIORATA PER ELABORAZIONE STATISTICA
         function processStatistics(average, threshold, historical, recentForm, difficulty, additionalNotes, marketType) {
             const diffAverageThreshold = average - threshold;
@@ -1593,6 +1964,23 @@
                     break;
             }
             
+            // Analisi note aggiuntive
+            let notesAnalysis = 0;
+            if (additionalNotes) {
+                const notes = additionalNotes.toLowerCase();
+                // Punteggio basato su parole chiave positive/negative
+                const positiveKeywords = ['forma buona', 'infortuni pochi', 'motivati', 'favoriti', 'casa', 'campo'];
+                const negativeKeywords = ['infortuni', 'squalifiche', 'stanchi', 'demotivati', 'trasferta', 'problemi'];
+                
+                positiveKeywords.forEach(keyword => {
+                    if (notes.includes(keyword)) notesAnalysis += 5;
+                });
+                
+                negativeKeywords.forEach(keyword => {
+                    if (notes.includes(keyword)) notesAnalysis -= 5;
+                });
+            }
+            
             return {
                 average,
                 threshold,
@@ -1600,52 +1988,98 @@
                 historicalFrequency,
                 recentFormValue,
                 difficultyWeight,
+                notesAnalysis,
                 marketType
             };
         }
         
         // FUNZIONE MIGLIORATA PER CALCOLO PROBABILITÀ
-        function calculateProbability(statistics, marketType) {
+        function calculateProbability(statistics, marketAnalysis) {
             let baseProbability = 50;
             
-            console.log("🧮 Calcolo probabilità - Tipo:", marketType);
-            console.log("🧮 Calcolo probabilità - Diff:", statistics.diffAverageThreshold);
-            console.log("🧮 Calcolo probabilità - Storico:", statistics.historicalFrequency);
-            console.log("🧮 Calcolo probabilità - Forma:", statistics.recentFormValue);
+            console.log("🧮 Calcolo probabilità - Tipo mercato:", marketAnalysis.type);
+            console.log("🧮 Calcolo probabilità - Analisi tipo:", marketAnalysis.analysisType);
             
-            // Gestione speciale per Over/Under
-            if (marketType === "Under") {
-                // Per UNDER: differenza NEGATIVA è positiva
-                const underAdjustment = -statistics.diffAverageThreshold * 2.5;
-                baseProbability += underAdjustment;
-                console.log(`🧮 Under adjustment: ${underAdjustment.toFixed(1)}`);
-            } else if (marketType === "Over") {
-                // Per OVER: differenza POSITIVA è positiva
-                const overAdjustment = statistics.diffAverageThreshold * 2.5;
-                baseProbability += overAdjustment;
-                console.log(`🧮 Over adjustment: ${overAdjustment.toFixed(1)}`);
-            } else {
-                // Logica standard
-                if (statistics.diffAverageThreshold !== 0) {
-                    baseProbability += statistics.diffAverageThreshold * 3;
-                }
+            // LOGICA SPECIFICA PER TIPO DI MERCATO
+            switch(marketAnalysis.analysisType) {
+                case 'underOver':
+                    // Per UNDER: differenza NEGATIVA è positiva
+                    // Per OVER: differenza POSITIVA è positiva
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
+                        baseProbability += (-statistics.diffAverageThreshold * 3);
+                        console.log(`🧮 Under adjustment: ${(-statistics.diffAverageThreshold * 3).toFixed(1)}`);
+                    } else {
+                        baseProbability += (statistics.diffAverageThreshold * 3);
+                        console.log(`🧮 Over adjustment: ${(statistics.diffAverageThreshold * 3).toFixed(1)}`);
+                    }
+                    break;
+                    
+                case '1x2':
+                    // Per 1X2: dipende dalla forma e difficoltà
+                    baseProbability += statistics.difficultyWeight;
+                    baseProbability += statistics.notesAnalysis;
+                    break;
+                    
+                case 'doubleChance':
+                    // Doppia chance: probabilità base più alta
+                    baseProbability = 65; // Base più alta per DC
+                    baseProbability += statistics.difficultyWeight * 0.5;
+                    break;
+                    
+                case 'ggng':
+                    // Gol/NoGol: dipende dalla media gol
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('gg') || 
+                        marketAnalysis.normalizedBet.toLowerCase().includes('goal')) {
+                        // GG: più alta con media gol alta
+                        baseProbability = Math.min(80, 40 + (statistics.average * 10));
+                    } else {
+                        // NG: più alta con media gol bassa
+                        baseProbability = Math.min(80, 60 - (statistics.average * 10));
+                    }
+                    break;
+                    
+                case 'goalscorer':
+                    // Marcatore: probabilità più bassa di base
+                    baseProbability = 30;
+                    baseProbability += statistics.recentFormValue * 0.3;
+                    baseProbability += statistics.notesAnalysis;
+                    break;
+                    
+                case 'exactScore':
+                    // Risultato esatto: probabilità molto bassa
+                    baseProbability = 15;
+                    baseProbability += statistics.historicalFrequency * 0.2;
+                    break;
+                    
+                default:
+                    // Logica standard
+                    if (statistics.diffAverageThreshold !== 0) {
+                        baseProbability += statistics.diffAverageThreshold * 2;
+                    }
+                    break;
             }
+            
+            // AGGIUSTAMENTI COMUNI A TUTTI I MERCATI
             
             // Aggiustamento basato sulla frequenza storica
             if (statistics.historicalFrequency > 0) {
-                baseProbability = (baseProbability + statistics.historicalFrequency) / 2;
+                baseProbability = (baseProbability * 0.6) + (statistics.historicalFrequency * 0.4);
                 console.log(`🧮 Dopo storico: ${baseProbability.toFixed(1)}`);
             }
             
             // Aggiustamento basato sulla forma recente
             if (statistics.recentFormValue > 0) {
-                baseProbability = (baseProbability + statistics.recentFormValue) / 2;
+                baseProbability = (baseProbability * 0.7) + (statistics.recentFormValue * 0.3);
                 console.log(`🧮 Dopo forma: ${baseProbability.toFixed(1)}`);
             }
             
             // Aggiustamento per difficoltà
             baseProbability += statistics.difficultyWeight;
             console.log(`🧮 Dopo difficoltà: ${baseProbability.toFixed(1)}`);
+            
+            // Aggiustamento per note aggiuntive
+            baseProbability += statistics.notesAnalysis;
+            console.log(`🧮 Dopo note: ${baseProbability.toFixed(1)}`);
             
             // Limita la probabilità tra 1% e 95%
             const finalProbability = Math.max(1, Math.min(95, Math.round(baseProbability * 10) / 10));
@@ -1672,64 +2106,117 @@
         }
         
         // FUNZIONE MIGLIORATA PER SPIEGAZIONE
-        function generateExplanation(marketAnalysis, statistics, probability, oddsAnalysis) {
-            let explanation = `<p>Analisi del pronostico <strong>${marketAnalysis.normalizedBet}</strong> (${marketAnalysis.type}):</p><ul>`;
+        function generateExplanation(marketAnalysis, statistics, probability, oddsAnalysis, formData) {
+            let explanation = `<p>Analisi del pronostico <strong>${marketAnalysis.normalizedBet}</strong> (${marketAnalysis.type} - ${marketAnalysis.category}):</p>`;
+            explanation += `<p><em>${marketAnalysis.description}</em></p><ul>`;
             
-            // Logica specifica per Under
-            if (marketAnalysis.type === "Under") {
-                if (statistics.diffAverageThreshold < 0) {
-                    explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Under</li>`;
-                } else if (statistics.diffAverageThreshold > 0) {
-                    explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Under</li>`;
-                } else {
-                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
-                }
-            } 
-            // Logica specifica per Over
-            else if (marketAnalysis.type === "Over") {
-                if (statistics.diffAverageThreshold > 0) {
-                    explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Over</li>`;
-                } else if (statistics.diffAverageThreshold < 0) {
-                    explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Over</li>`;
-                } else {
-                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
-                }
-            } 
-            // Logica standard per altri tipi
-            else {
-                if (statistics.diffAverageThreshold > 0) {
-                    explanation += `<li class="positive">La media statistica (${statistics.average}) supera la soglia (${statistics.threshold}) di ${statistics.diffAverageThreshold.toFixed(1)}, fattore positivo</li>`;
-                } else if (statistics.diffAverageThreshold < 0) {
-                    explanation += `<li class="negative">La media statistica (${statistics.average}) è inferiore alla soglia (${statistics.threshold}) di ${Math.abs(statistics.diffAverageThreshold).toFixed(1)}, fattore negativo</li>`;
-                } else {
-                    explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold})</li>`;
-                }
+            // Logica specifica per tipo di analisi
+            switch(marketAnalysis.analysisType) {
+                case 'underOver':
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
+                        if (statistics.diffAverageThreshold < 0) {
+                            explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Under</li>`;
+                        } else if (statistics.diffAverageThreshold > 0) {
+                            explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Under</li>`;
+                        } else {
+                            explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
+                        }
+                    } else {
+                        if (statistics.diffAverageThreshold > 0) {
+                            explanation += `<li class="positive">La media statistica (${statistics.average}) è <strong>${statistics.diffAverageThreshold.toFixed(1)} punti SUPERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE POSITIVO per Over</li>`;
+                        } else if (statistics.diffAverageThreshold < 0) {
+                            explanation += `<li class="negative">La media statistica (${statistics.average}) è <strong>${Math.abs(statistics.diffAverageThreshold).toFixed(1)} punti INFERIORE</strong> alla soglia (${statistics.threshold}) → FATTORE NEGATIVO per Over</li>`;
+                        } else {
+                            explanation += `<li class="neutral">La media statistica (${statistics.average}) è uguale alla soglia (${statistics.threshold}) → FATTORE NEUTRO</li>`;
+                        }
+                    }
+                    break;
+                    
+                case '1x2':
+                    explanation += `<li>Analisi basata sulla forma delle squadre e difficoltà dell'avversario</li>`;
+                    if (statistics.difficultyWeight > 0) {
+                        explanation += `<li class="positive">Difficoltà avversario: BASSA → FATTORE POSITIVO</li>`;
+                    } else if (statistics.difficultyWeight < 0) {
+                        explanation += `<li class="negative">Difficoltà avversario: ALTA → FATTORE NEGATIVO</li>`;
+                    } else {
+                        explanation += `<li class="neutral">Difficoltà avversario: MEDIA → FATTORE NEUTRO</li>`;
+                    }
+                    break;
+                    
+                case 'doubleChance':
+                    explanation += `<li class="positive">La doppia chance offre naturalmente una probabilità più alta rispetto al semplice 1X2</li>`;
+                    break;
+                    
+                case 'ggng':
+                    if (marketAnalysis.normalizedBet.toLowerCase().includes('gg')) {
+                        explanation += `<li>Media gol partita: ${statistics.average.toFixed(1)}</li>`;
+                        if (statistics.average > 2.5) {
+                            explanation += `<li class="positive">Alta media gol favorisce Gol/Gol</li>`;
+                        } else {
+                            explanation += `<li class="negative">Bassa media gol sfavorisce Gol/Gol</li>`;
+                        }
+                    } else {
+                        explanation += `<li>Media gol partita: ${statistics.average.toFixed(1)}</li>`;
+                        if (statistics.average < 2.5) {
+                            explanation += `<li class="positive">Bassa media gol favorisce NoGol</li>`;
+                        } else {
+                            explanation += `<li class="negative">Alta media gol sfavorisce NoGol</li>`;
+                        }
+                    }
+                    break;
+                    
+                case 'goalscorer':
+                    explanation += `<li class="neutral">I pronostici sui marcatori hanno generalmente probabilità più basse</li>`;
+                    if (statistics.recentFormValue > 0) {
+                        explanation += `<li class="positive">Forma recente del giocatore: ${statistics.recentFormValue.toFixed(1)}%</li>`;
+                    }
+                    break;
+                    
+                case 'exactScore':
+                    explanation += `<li class="neutral">I risultati esatti hanno naturalmente probabilità più basse</li>`;
+                    if (statistics.historicalFrequency > 0) {
+                        explanation += `<li class="positive">Frequenza storica di questo risultato: ${statistics.historicalFrequency.toFixed(1)}%</li>`;
+                    }
+                    break;
+                    
+                default:
+                    if (statistics.diffAverageThreshold !== 0) {
+                        if (statistics.diffAverageThreshold > 0) {
+                            explanation += `<li class="positive">La media statistica (${statistics.average}) supera la soglia (${statistics.threshold}) di ${statistics.diffAverageThreshold.toFixed(1)}, fattore positivo</li>`;
+                        } else {
+                            explanation += `<li class="negative">La media statistica (${statistics.average}) è inferiore alla soglia (${statistics.threshold}) di ${Math.abs(statistics.diffAverageThreshold).toFixed(1)}, fattore negativo</li>`;
+                        }
+                    }
+                    break;
             }
             
+            // AGGIUNTE COMUNI
             if (statistics.historicalFrequency > 0) {
                 if (statistics.historicalFrequency > 60) {
-                    explanation += `<li class="positive">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano il pronostico</li>`;
-                } else if (statistics.historicalFrequency < 40) {
-                    explanation += `<li class="negative">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) non supportano il pronostico</li>`;
+                    explanation += `<li class="positive">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano fortemente il pronostico</li>`;
+                } else if (statistics.historicalFrequency > 40) {
+                    explanation += `<li class="neutral">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) supportano moderatamente il pronostico</li>`;
                 } else {
-                    explanation += `<li class="neutral">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) sono neutrali</li>`;
+                    explanation += `<li class="negative">I dati storici (${statistics.historicalFrequency.toFixed(1)}%) non supportano il pronostico</li>`;
                 }
             }
             
             if (statistics.recentFormValue > 0) {
                 if (statistics.recentFormValue > 60) {
-                    explanation += `<li class="positive">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è favorevole</li>`;
-                } else if (statistics.recentFormValue < 40) {
-                    explanation += `<li class="negative">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è sfavorevole</li>`;
+                    explanation += `<li class="positive">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è eccellente</li>`;
+                } else if (statistics.recentFormValue > 40) {
+                    explanation += `<li class="neutral">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è discreta</li>`;
                 } else {
-                    explanation += `<li class="neutral">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è neutrale</li>`;
+                    explanation += `<li class="negative">La forma recente (${statistics.recentFormValue.toFixed(1)}%) è scarsa</li>`;
                 }
             }
             
             if (oddsAnalysis.valueMargin > 0) {
-                explanation += `<li class="positive">Value margin positivo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica potenziale valore</li>`;
+                explanation += `<li class="positive">Value margin positivo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica POTENZIALE VALORE nella quota</li>`;
+            } else if (oddsAnalysis.valueMargin < -0.1) {
+                explanation += `<li class="negative">Value margin negativo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica ASSENZA DI VALORE nella quota</li>`;
             } else {
-                explanation += `<li class="negative">Value margin negativo del ${(oddsAnalysis.valueMargin * 100).toFixed(1)}% indica assenza di valore</li>`;
+                explanation += `<li class="neutral">Value margin neutro (${(oddsAnalysis.valueMargin * 100).toFixed(1)}%) - quota in linea con la probabilità</li>`;
             }
             
             explanation += `</ul>`;
@@ -1737,22 +2224,39 @@
             return explanation;
         }
         
-        function generateVerdict(probability, valueMargin) {
+        function generateVerdict(probability, valueMargin, marketType) {
             const score = probability + (valueMargin > 0 ? valueMargin * 100 : 0);
             
-            if (score > 80 && valueMargin > 0.1) {
+            // Soglie specifiche per tipo di mercato
+            let strongThreshold = 75;
+            let recommendedThreshold = 60;
+            let cautionThreshold = 40;
+            
+            if (marketType.includes('Esatto') || marketType.includes('Marcatore')) {
+                // Soglie più basse per mercati difficili
+                strongThreshold = 40;
+                recommendedThreshold = 25;
+                cautionThreshold = 10;
+            } else if (marketType.includes('Doppia Chance')) {
+                // Soglie più alte per mercati facili
+                strongThreshold = 85;
+                recommendedThreshold = 70;
+                cautionThreshold = 55;
+            }
+            
+            if (score > strongThreshold && valueMargin > 0.1) {
                 return {
                     text: "CONSIGLIO FORTE",
                     class: "verdict-strong",
                     description: "Alta probabilità combinata con value positivo significativo"
                 };
-            } else if (score > 65 && valueMargin > 0) {
+            } else if (score > recommendedThreshold && valueMargin > 0) {
                 return {
                     text: "CONSIGLIATO",
                     class: "verdict-recommended",
                     description: "Buona probabilità con value positivo"
                 };
-            } else if (score > 50 || valueMargin > 0) {
+            } else if (score > cautionThreshold || valueMargin > -0.05) {
                 return {
                     text: "VALUTABILE",
                     class: "verdict-caution",
@@ -1767,10 +2271,32 @@
             }
         }
         
-        function updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict) {
-            // Aggiorna analisi mercato
+        function updateInterface(marketAnalysis, statistics, probability, oddsAnalysis, explanation, verdict, formData) {
+            // Aggiorna riconoscimento mercato
             document.getElementById('market-type').textContent = marketAnalysis.type;
+            document.getElementById('market-category').textContent = marketAnalysis.category;
             document.getElementById('normalized-bet').textContent = marketAnalysis.normalizedBet;
+            document.getElementById('analysis-type').textContent = marketAnalysis.analysisType;
+            
+            // Aggiorna tags mercato
+            const marketTags = document.getElementById('market-tags');
+            marketTags.innerHTML = `
+                <div class="market-tag">${marketAnalysis.category}</div>
+                <div class="market-tag">${marketAnalysis.analysisType}</div>
+            `;
+            
+            // Aggiorna parametri chiave
+            const keyParams = [];
+            if (statistics.diffAverageThreshold !== 0) {
+                keyParams.push(`Diff: ${statistics.diffAverageThreshold > 0 ? '+' : ''}${statistics.diffAverageThreshold.toFixed(1)}`);
+            }
+            if (statistics.historicalFrequency > 0) {
+                keyParams.push(`Storico: ${statistics.historicalFrequency.toFixed(1)}%`);
+            }
+            if (statistics.recentFormValue > 0) {
+                keyParams.push(`Forma: ${statistics.recentFormValue.toFixed(1)}%`);
+            }
+            document.getElementById('key-parameters').textContent = keyParams.join(' | ') || 'Nessun parametro chiave';
             
             // Aggiorna statistiche
             document.getElementById('stat-avg').textContent = statistics.average.toFixed(1);
@@ -1779,12 +2305,17 @@
             const diffElement = document.getElementById('diff-avg-threshold');
             const diffValue = statistics.diffAverageThreshold;
             diffElement.textContent = diffValue >= 0 ? `+${diffValue.toFixed(1)}` : diffValue.toFixed(1);
-            diffElement.className = "metric-value " + (
-                (marketAnalysis.type === "Under" && diffValue < 0) || 
-                (marketAnalysis.type === "Over" && diffValue > 0) || 
-                (marketAnalysis.type !== "Under" && marketAnalysis.type !== "Over" && diffValue > 0) ? "positive" : 
-                (diffValue < 0 ? "negative" : "neutral")
-            );
+            
+            // Colore basato sul tipo di mercato
+            if (marketAnalysis.analysisType === 'underOver') {
+                if (marketAnalysis.normalizedBet.toLowerCase().includes('under')) {
+                    diffElement.className = "metric-value " + (diffValue < 0 ? "positive" : diffValue > 0 ? "negative" : "neutral");
+                } else {
+                    diffElement.className = "metric-value " + (diffValue > 0 ? "positive" : diffValue < 0 ? "negative" : "neutral");
+                }
+            } else {
+                diffElement.className = "metric-value " + (diffValue > 0 ? "positive" : diffValue < 0 ? "negative" : "neutral");
+            }
             
             document.getElementById('historical-freq').textContent = statistics.historicalFrequency > 0 ? 
                 `${statistics.historicalFrequency.toFixed(1)}%` : "N/D";
@@ -1822,6 +2353,8 @@
                 probabilityColor = 'var(--success)';
             } else if (probability >= 50) {
                 probabilityColor = 'var(--warning)';
+            } else if (probability >= 30) {
+                probabilityColor = 'var(--info)';
             } else {
                 probabilityColor = 'var(--danger)';
             }
@@ -1835,7 +2368,7 @@
             currentAnalysis = null;
         }
 
-        // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI - MODIFICATA PER SALVARE TUTTI I DATI
+        // FUNZIONE PER IL SALVATAGGIO DEI PRONOSTICI
         function saveForecast() {
             console.log('💾 Tentativo di salvataggio pronostico...');
             
@@ -1846,7 +2379,7 @@
             }
             
             try {
-                // Crea una copia COMPLETA dell'analisi corrente CON TUTTI I DATI
+                // Crea una copia COMPLETA dell'analisi corrente
                 const forecast = {
                     id: Date.now(),
                     sport: currentAnalysis.sport || 'calcio',
@@ -1859,11 +2392,11 @@
                     oddsAnalysis: currentAnalysis.oddsAnalysis || {},
                     explanation: currentAnalysis.explanation || '',
                     verdict: currentAnalysis.verdict || {},
-                    formData: currentAnalysis.formData || {}, // SALVA TUTTI I DATI ORIGINALI DEL FORM
+                    formData: currentAnalysis.formData || {},
                     timestamp: new Date().toLocaleString('it-IT')
                 };
                 
-                console.log('📝 Nuovo pronostico da salvare con TUTTI i dati:', forecast);
+                console.log('📝 Nuovo pronostico da salvare:', forecast);
                 
                 // Assicurati che savedForecasts sia un array
                 if (!Array.isArray(savedForecasts)) {
@@ -1883,7 +2416,7 @@
                 
                 // Mostra conferma
                 showAlert('✅ Pronostico salvato con successo!', 'success');
-                console.log('✅ Pronostico salvato correttamente con tutti i dati');
+                console.log('✅ Pronostico salvato correttamente');
                 
             } catch (error) {
                 console.error('❌ Errore durante il salvataggio:', error);
@@ -1891,7 +2424,7 @@
             }
         }
         
-        // FUNZIONE AGGIORNATA PER MOSTRARE I PRONOSTICI SALVATI
+        // FUNZIONE PER MOSTRARE I PRONOSTICI SALVATI
         function updateSavedForecasts() {
             const container = document.getElementById('savedForecastsList');
             console.log('🔄 Aggiornamento lista pronostici salvati');
@@ -1914,8 +2447,10 @@
                 const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
                 const valueClass = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? 'value-positive' : 'value-negative';
                 const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
-                const marketTypeIcon = forecast.marketAnalysis?.type === 'Under' ? '📉' : 
-                                    forecast.marketAnalysis?.type === 'Over' ? '📈' : 
+                const marketTypeIcon = forecast.marketAnalysis?.type?.includes('Under') ? '📉' : 
+                                    forecast.marketAnalysis?.type?.includes('Over') ? '📈' : 
+                                    forecast.marketAnalysis?.type?.includes('1X2') ? '⚽' : 
+                                    forecast.marketAnalysis?.type?.includes('Marcatore') ? '👤' :
                                     forecast.sport === 'calcio' ? '⚽' : '🏀';
                 
                 return `
@@ -1954,7 +2489,7 @@
             console.log('✅ Lista pronostici aggiornata');
         }
         
-        // FUNZIONE AGGIORNATA PER MOSTRARE TUTTI I DATI DEL PRONOSTICO SALVATO
+        // FUNZIONE PER MOSTRARE I DETTAGLI DEL PRONOSTICO SALVATO
         function showForecastDetail(id) {
             console.log('🔍 Mostra dettaglio pronostico:', id);
             const forecast = savedForecasts.find(f => f.id === id);
@@ -1972,7 +2507,7 @@
                     document.querySelector('.sport-btn[data-sport="calcio"]').click();
                 }
                 
-                // Popola i campi calcio con i dati ORIGINALI
+                // Popola i campi calcio
                 document.getElementById('calcio-squadra1').value = forecast.team1 || '';
                 document.getElementById('calcio-squadra2').value = forecast.team2 || '';
                 document.getElementById('calcio-pronostico').value = forecast.bet || '';
@@ -1988,7 +2523,7 @@
                     document.querySelector('.sport-btn[data-sport="basket"]').click();
                 }
                 
-                // Popola i campi basket con i dati ORIGINALI
+                // Popola i campi basket
                 document.getElementById('basket-squadra1').value = forecast.team1 || '';
                 document.getElementById('basket-squadra2').value = forecast.team2 || '';
                 document.getElementById('basket-pronostico').value = forecast.bet || '';
@@ -2003,17 +2538,18 @@
             // Popola note aggiuntive
             document.getElementById('note-aggiuntive').value = forecast.formData?.additionalNotes || '';
             
-            // Imposta currentAnalysis con i dati COMPLETI salvati
+            // Imposta currentAnalysis
             currentAnalysis = forecast;
             
-            // Aggiorna l'interfaccia con TUTTI i dati
+            // Aggiorna l'interfaccia
             updateInterface(
                 forecast.marketAnalysis,
                 forecast.statistics,
                 forecast.probability,
                 forecast.oddsAnalysis,
                 forecast.explanation,
-                forecast.verdict
+                forecast.verdict,
+                forecast.formData
             );
             
             // Mostra la sezione risultati
@@ -2026,7 +2562,7 @@
             // Chiudi il pannello dei pronostici salvati
             closeSavedPanel();
             
-            console.log('✅ Dettaglio pronostico mostrato e form popolato con TUTTI i dati');
+            console.log('✅ Dettaglio pronostico mostrato');
         }
         
         function deleteForecast(id) {
@@ -2069,7 +2605,8 @@
         }
     </script>
 </body>
-</html>
+    </html>
+
 
 
 
