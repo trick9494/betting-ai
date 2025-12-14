@@ -1267,6 +1267,79 @@
                 justify-content: center;
             }
         }
+
+        /* Stili per la visualizzazione di tutti i pronostici nel chatbot */
+        .all-forecasts-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+            padding-right: 5px;
+        }
+
+        .forecast-item-mini {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .forecast-item-mini.recommended {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            border-left-color: var(--success);
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2);
+        }
+
+        .forecast-mini-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .forecast-mini-match {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .forecast-mini-bet {
+            font-size: 0.85rem;
+            color: var(--text-color);
+        }
+
+        .forecast-mini-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+
+        .forecast-mini-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .forecast-mini-value {
+            font-weight: 700;
+        }
+
+        .recommendation-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(245, 158, 11, 0.2));
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 5px solid var(--success);
+            box-shadow: var(--shadow);
+        }
+
+        .recommendation-banner h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1338,7 +1411,7 @@
         </div>
         
         <div class="chatbot-quick-actions" id="chatbotQuickActions">
-            <button class="quick-action-btn" data-action="best">🎯 Migliori pronostici</button>
+            <button class="quick-action-btn" data-action="best">🎯 Tutti i pronostici</button>
             <button class="quick-action-btn" data-action="today">💡 Consigli oggi</button>
             <button class="quick-action-btn" data-action="analyze">📊 Analizza salvati</button>
             <button class="quick-action-btn" data-action="help">❓ Come funziona</button>
@@ -1891,7 +1964,7 @@
 
         function handleQuickAction(action) {
             const messages = {
-                'best': 'Quali sono i migliori pronostici che ho salvato?',
+                'best': 'Mostrami tutti i pronostici salvati con consigli',
                 'today': 'Consigliami qualche pronostico per oggi',
                 'analyze': 'Analizza tutti i miei pronostici salvati',
                 'help': 'Come funziona questo sistema di analisi?'
@@ -2843,13 +2916,14 @@
             overlay.classList.remove('active');
         }
 
-        // FUNZIONI AI
+        // FUNZIONI AI - MODIFICATE PER MOSTRARE TUTTI I PRONOSTICI
         function generateAIResponse(message) {
             const lowerMessage = message.toLowerCase();
             
-            if (lowerMessage.includes('miglior') || lowerMessage.includes('consigli') || 
-                lowerMessage.includes('top') || lowerMessage.includes('analizza')) {
-                return analyzeSavedForecasts();
+            if (lowerMessage.includes('tutti') || lowerMessage.includes('tutto') || 
+                lowerMessage.includes('mostrami') || lowerMessage.includes('pronostici') ||
+                lowerMessage.includes('salvati') || lowerMessage.includes('list')) {
+                return showAllForecastsWithRecommendation();
             }
             
             if (lowerMessage.includes('statistic') || lowerMessage.includes('report') || 
@@ -2875,7 +2949,8 @@
             return generateIntelligentResponse(message);
         }
 
-        function analyzeSavedForecasts() {
+        // NUOVA FUNZIONE: MOSTRA TUTTI I PRONOSTICI CON CONSIGLIO
+        function showAllForecastsWithRecommendation() {
             if (savedForecasts.length === 0) {
                 return {
                     text: "📭 Non hai ancora salvato nessun pronostico. Per iniziare, analizza e salva alcuni pronostici utilizzando il form principale."
@@ -2887,22 +2962,98 @@
                 return { ...forecast, score };
             }).sort((a, b) => b.score - a.score);
             
-            const topForecasts = scoredForecasts.slice(0, 3);
+            let response = `📊 <strong>TUTTI I PRONOSTICI SALVATI</strong><br><br>`;
+            response += `Hai <strong>${savedForecasts.length}</strong> pronostici salvati:<br><br>`;
             
-            let response = `📊 <strong>ANALISI PRONOSTICI SALVATI</strong><br><br>`;
-            response += `Hai <strong>${savedForecasts.length}</strong> pronostici salvati. Ecco i migliori:<br><br>`;
+            // Lista di TUTTI i pronostici
+            response += `<div class="all-forecasts-list">`;
             
-            topForecasts.forEach((forecast, index) => {
-                const scoreClass = getScoreClass(forecast.score);
+            scoredForecasts.forEach((forecast, index) => {
+                const isRecommended = index === 0 && forecast.score >= 60;
+                const forecastClass = isRecommended ? 'forecast-item-mini recommended' : 'forecast-item-mini';
                 const valuePercent = ((forecast.oddsAnalysis?.valueMargin || 0) * 100).toFixed(1);
                 const valueSign = (forecast.oddsAnalysis?.valueMargin || 0) >= 0 ? '+' : '';
                 
-                response += `<strong>${index + 1}. ${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</strong><br>`;
-                response += `🎯 ${forecast.bet || 'N/D'}<br>`;
-                response += `📈 Probabilità: ${forecast.probability || 0}%<br>`;
-                response += `💰 Value: ${valueSign}${valuePercent}%<br>`;
-                response += `⭐ Punteggio: <span class="forecast-score ${scoreClass}">${forecast.score.toFixed(1)}/100</span><br><br>`;
+                response += `
+                <div class="${forecastClass}">
+                    <div class="forecast-mini-header">
+                        <span>${index + 1}. ${forecast.sport === 'calcio' ? '⚽' : '🏀'} ${forecast.marketAnalysis?.type || ''}</span>
+                        <span>${isRecommended ? '⭐ RACCOMANDATO' : ''}</span>
+                    </div>
+                    <div class="forecast-mini-match">${forecast.team1 || 'N/D'} vs ${forecast.team2 || 'N/D'}</div>
+                    <div class="forecast-mini-bet">🎯 ${forecast.bet || 'N/D'}</div>
+                    <div class="forecast-mini-stats">
+                        <div class="forecast-mini-stat">
+                            <div class="forecast-mini-value">${forecast.probability || 0}%</div>
+                            <div class="forecast-mini-label">Prob.</div>
+                        </div>
+                        <div class="forecast-mini-stat">
+                            <div class="forecast-mini-value">${forecast.oddsAnalysis?.bookmakerOdds || '0'}</div>
+                            <div class="forecast-mini-label">Quota</div>
+                        </div>
+                        <div class="forecast-mini-stat">
+                            <div class="forecast-mini-value">${valueSign}${valuePercent}%</div>
+                            <div class="forecast-mini-label">Value</div>
+                        </div>
+                        <div class="forecast-mini-stat">
+                            <div class="forecast-mini-value">${forecast.score.toFixed(1)}</div>
+                            <div class="forecast-mini-label">Punteggio</div>
+                        </div>
+                    </div>
+                </div>
+                `;
             });
+            
+            response += `</div><br>`;
+            
+            // CONSIGLIO SUL PIÙ SICURO E AFFIDABILE
+            if (scoredForecasts.length > 0) {
+                const bestForecast = scoredForecasts[0];
+                
+                response += `<div class="recommendation-banner">`;
+                response += `<h4><i class="fas fa-crown"></i> CONSIGLIO AI</h4>`;
+                response += `<p>🎯 <strong>Il pronostico più sicuro e affidabile:</strong></p>`;
+                response += `<p><strong>${bestForecast.team1 || 'N/D'} vs ${bestForecast.team2 || 'N/D'}</strong><br>`;
+                response += `<strong>Pronostico:</strong> ${bestForecast.bet || 'N/D'}<br>`;
+                response += `<strong>Motivazione:</strong><br>`;
+                
+                if (bestForecast.probability >= 70) {
+                    response += `• Probabilità molto alta (${bestForecast.probability}%)<br>`;
+                } else if (bestForecast.probability >= 60) {
+                    response += `• Probabilità alta (${bestForecast.probability}%)<br>`;
+                }
+                
+                const valueMargin = bestForecast.oddsAnalysis?.valueMargin || 0;
+                if (valueMargin > 0.1) {
+                    response += `• Value positivo forte (+${(valueMargin * 100).toFixed(1)}%)<br>`;
+                } else if (valueMargin > 0) {
+                    response += `• Value positivo (+${(valueMargin * 100).toFixed(1)}%)<br>`;
+                }
+                
+                response += `• Punteggio complessivo: ${bestForecast.score.toFixed(1)}/100<br>`;
+                
+                if (bestForecast.score >= 80) {
+                    response += `<br><strong>⭐ PRONOSTICO ECCELLENTE ⭐</strong>`;
+                } else if (bestForecast.score >= 60) {
+                    response += `<br><strong>👍 PRONOSTICO CONSIGLIATO 👍</strong>`;
+                }
+                
+                response += `</p>`;
+                response += `</div>`;
+                
+                // CONSIGLI SU ALTRI PRONOSTICI VALIDI
+                const goodForecasts = scoredForecasts.filter(f => f.score >= 60 && f.id !== bestForecast.id);
+                if (goodForecasts.length > 0) {
+                    response += `<br><p><strong>Altri pronostici validi:</strong></p>`;
+                    response += `<ul>`;
+                    goodForecasts.slice(0, 3).forEach(forecast => {
+                        response += `<li>${forecast.team1} vs ${forecast.team2} - ${forecast.bet} (Punteggio: ${forecast.score.toFixed(1)})</li>`;
+                    });
+                    response += `</ul>`;
+                }
+            }
+            
+            response += `<br><small><i class="fas fa-lightbulb"></i> Suggerimento: Il punteggio tiene conto di probabilità, value e affidabilità statistica.</small>`;
             
             return {
                 text: response
@@ -2912,11 +3063,26 @@
         function calculateForecastScore(forecast) {
             let score = 0;
             
+            // Punteggio base sulla probabilità
             score += (forecast.probability || 0) * 0.5;
             
+            // Bonus per value positivo
             const valueMargin = forecast.oddsAnalysis?.valueMargin || 0;
             if (valueMargin > 0) {
                 score += Math.min(30, valueMargin * 100 * 3);
+            }
+            
+            // Bonus per tipo di mercato più sicuro
+            const marketType = forecast.marketAnalysis?.type || '';
+            if (marketType.includes('Under/Over') || marketType.includes('Gol/No Gol')) {
+                score += 5; // Mercati relativamente più stabili
+            }
+            
+            // Bonus per alta probabilità storica
+            if (forecast.statistics?.historicalFrequency > 70) {
+                score += 10;
+            } else if (forecast.statistics?.historicalFrequency > 60) {
+                score += 5;
             }
             
             return Math.max(0, Math.min(100, score));
@@ -2942,10 +3108,27 @@
             const avgProbability = savedForecasts.reduce((sum, f) => sum + (f.probability || 0), 0) / totalForecasts;
             const avgValue = savedForecasts.reduce((sum, f) => sum + ((f.oddsAnalysis?.valueMargin || 0) * 100), 0) / totalForecasts;
             
-            report += `<strong>Statistiche:</strong><br>`;
+            // Calcola distribuzione per sport
+            const calcioForecasts = savedForecasts.filter(f => f.sport === 'calcio').length;
+            const basketForecasts = savedForecasts.filter(f => f.sport === 'basket').length;
+            
+            report += `<strong>Statistiche generali:</strong><br>`;
             report += `• Pronostici totali: ${totalForecasts}<br>`;
+            report += `• Calcio: ${calcioForecasts} | Basket: ${basketForecasts}<br>`;
             report += `• Probabilità media: ${avgProbability.toFixed(1)}%<br>`;
             report += `• Value medio: ${avgValue.toFixed(1)}%<br>`;
+            
+            // Calcola pronostici consigliati
+            const recommendedForecasts = savedForecasts.filter(f => {
+                const score = calculateForecastScore(f);
+                return score >= 60;
+            }).length;
+            
+            const recommendationRate = totalForecasts > 0 ? (recommendedForecasts / totalForecasts * 100).toFixed(1) : 0;
+            
+            report += `<br><strong>Analisi qualità:</strong><br>`;
+            report += `• Pronostici consigliati: ${recommendedForecasts} su ${totalForecasts}<br>`;
+            report += `• Tasso di raccomandazione: ${recommendationRate}%<br>`;
             
             return {
                 text: report
@@ -3025,7 +3208,8 @@
         }
     </script>
 </body>
-                                    </html>
+    </html>
+
 
 
 
